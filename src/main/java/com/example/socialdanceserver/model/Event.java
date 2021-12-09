@@ -1,5 +1,7 @@
 package com.example.socialdanceserver.model;
 
+import com.example.socialdanceserver.model.enums.TypeEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ public class Event extends School{
     private LocalDateTime datePublication;
 
     public Event() {
+        this.setTypeEntity(TypeEntity.EVENT);
     }
 
     public Event(String name, String description, EntityInfo entityInfo, LocalDateTime dateEvent,
@@ -21,6 +24,7 @@ public class Event extends School{
         this.dateEvent = dateEvent;
         this.dateFinishEvent = dateFinishEvent;
         this.datePublication = datePublication;
+        this.setTypeEntity(TypeEntity.EVENT);
     }
 
     public Event(Integer id, String name, String description, LocalDateTime dateEvent,
@@ -29,6 +33,7 @@ public class Event extends School{
         this.dateEvent = dateEvent;
         this.dateFinishEvent = dateFinishEvent;
         this.datePublication = datePublication;
+        this.setTypeEntity(TypeEntity.EVENT);
     }
 
     public LocalDateTime getDateEvent() {

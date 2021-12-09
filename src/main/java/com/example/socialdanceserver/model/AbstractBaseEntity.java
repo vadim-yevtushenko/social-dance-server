@@ -1,6 +1,8 @@
 package com.example.socialdanceserver.model;
 
 import com.example.socialdanceserver.model.enums.Dance;
+import com.example.socialdanceserver.model.enums.TypeEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,6 +21,9 @@ public abstract class AbstractBaseEntity {
     private String name;
     private String description;
 
+    @Enumerated(EnumType.STRING)
+    private TypeEntity typeEntity;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entity_info_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -27,6 +32,7 @@ public abstract class AbstractBaseEntity {
     @OneToMany(mappedBy = "abstractBaseEntity", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
     private Set<Rating> ratings;
 
     @Enumerated(EnumType.STRING)
@@ -114,12 +120,29 @@ public abstract class AbstractBaseEntity {
         this.dances = dances;
     }
 
+    public TypeEntity getTypeEntity() {
+        return typeEntity;
+    }
+
+    public void setTypeEntity(TypeEntity typeEntity) {
+        this.typeEntity = typeEntity;
+    }
+
+    public EntityInfo getEntityInfo() {
+        return entityInfo;
+    }
+
+    public void setEntityInfo(EntityInfo entityInfo) {
+        this.entityInfo = entityInfo;
+    }
+
     @Override
     public String toString() {
         return "AbstractBaseEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", typeEntity=" + typeEntity +
                 ", entityInfo=" + entityInfo +
                 ", ratings=" + ratings +
                 ", dances=" + dances +

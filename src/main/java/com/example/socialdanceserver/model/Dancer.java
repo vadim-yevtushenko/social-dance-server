@@ -1,6 +1,7 @@
 package com.example.socialdanceserver.model;
 
 import com.example.socialdanceserver.model.enums.Role;
+import com.example.socialdanceserver.model.enums.TypeEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,6 +22,7 @@ public class Dancer extends AbstractBaseEntity{
 
 
     public Dancer() {
+        this.setTypeEntity(TypeEntity.DANCER);
     }
 
     public Dancer(String name, String description, EntityInfo entityInfo,
@@ -30,6 +32,7 @@ public class Dancer extends AbstractBaseEntity{
         this.sex = sex;
         this.birthday = birthday;
         this.role = role;
+        this.setTypeEntity(TypeEntity.DANCER);
     }
 
     public Dancer(Integer id, String name, String description, String surname,
@@ -39,6 +42,7 @@ public class Dancer extends AbstractBaseEntity{
         this.sex = sex;
         this.birthday = birthday;
         this.role = role;
+        this.setTypeEntity(TypeEntity.DANCER);
     }
 
     public String getSurname() {

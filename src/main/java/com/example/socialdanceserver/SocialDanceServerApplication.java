@@ -69,17 +69,15 @@ public class SocialDanceServerApplication {
         eventRepo.save(event);
 
 //        eventRepo.deleteAll();
-        Dancer dancer1 = null;
-        Optional<AbstractBaseEntity> dancer123 = dancerRepo.findById(1);
-        if (dancer123.isPresent()) {
-            dancer1 = (Dancer) dancer123.get();
-            System.out.println(dancer1);
-        }
+//        Dancer dancer1 = null;
+//        Optional<AbstractBaseEntity> dancer123 = dancerRepo.findById(1);
+//        if (dancer123.isPresent()) {
+//            dancer1 = (Dancer) dancer123.get();
+//            System.out.println(dancer1);
+//        }
 
-        dancer1.setRole(Role.TEACHER);
-        dancerRepo.save(dancer1);
-
-
+//        dancer1.setRole(Role.TEACHER);
+//        dancerRepo.save(dancer1);
 
         Optional<AbstractBaseEntity> dancer12 = dancerRepo.findById(1);
         if (dancer12.isPresent()) {

@@ -33,8 +33,7 @@ CREATE table entity_info
     building         VARCHAR,
     suites           VARCHAR,
     phone_number     VARCHAR,
-    email            VARCHAR     NOT NULL,
-    CONSTRAINT email_unique UNIQUE (email)
+    email            VARCHAR
 );
 
 CREATE SEQUENCE base_seq ;
@@ -43,6 +42,7 @@ create table abstract_base_entity
     id                           INTEGER PRIMARY KEY DEFAULT nextval('base_seq'),
     name                         VARCHAR                           NOT NULL,
     description                  VARCHAR,
+    type_entity                  VARCHAR,
     entity_info_id               INTEGER ,
     FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE
 );

@@ -1,5 +1,8 @@
 package com.example.socialdanceserver.model;
 
+import com.example.socialdanceserver.model.enums.TypeEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,19 +18,21 @@ public class School extends AbstractBaseEntity{
     @OneToMany(mappedBy = "school", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonManagedReference
     private List<Review> reviews;
 
     public School() {
+        this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
     public School(String name, String description, EntityInfo entityInfo) {
         super(name, description, entityInfo);
-
+        this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
     public School(Integer id, String name, String description) {
         super(id, name, description);
-
+        this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
     public List<Review> getReviews() {

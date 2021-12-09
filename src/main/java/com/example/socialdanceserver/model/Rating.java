@@ -1,5 +1,6 @@
 package com.example.socialdanceserver.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,6 +17,7 @@ public class Rating {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "abstract_base_entity_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private AbstractBaseEntity abstractBaseEntity;
     private int rating;
 

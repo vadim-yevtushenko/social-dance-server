@@ -2,11 +2,10 @@ package com.example.socialdanceserver.model;
 
 import com.example.socialdanceserver.model.enums.Role;
 import com.example.socialdanceserver.model.enums.TypeEntity;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -19,6 +18,11 @@ public class Dancer extends AbstractBaseEntity{
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "login_password_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private LoginPassword loginPassword;
 
 
     public Dancer() {
@@ -75,6 +79,14 @@ public class Dancer extends AbstractBaseEntity{
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LoginPassword getLoginPassword() {
+        return loginPassword;
+    }
+
+    public void setLoginPassword(LoginPassword loginPassword) {
+        this.loginPassword = loginPassword;
     }
 
     @Override

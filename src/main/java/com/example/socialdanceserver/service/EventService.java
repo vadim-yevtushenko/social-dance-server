@@ -10,6 +10,8 @@ public interface EventService {
 
     List<AbstractBaseEntity> getAll();
 
+    List<Event> getAllByType();
+
     Event getById(int id);
 
     Event create(Event event);

@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.model;
 
 import com.example.socialdanceserver.model.enums.TypeEntity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "schools")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class School extends AbstractBaseEntity{
 
 
@@ -46,7 +44,7 @@ public class School extends AbstractBaseEntity{
     @Override
     public String toString() {
         return "School{" +
-                ", reviews=" + reviews +
+                "reviews=" + reviews +
                 "} " + super.toString();
     }
 }

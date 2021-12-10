@@ -9,6 +9,8 @@ public interface DancerService {
 
     List<AbstractBaseEntity> getAll();
 
+    List<Dancer> getAllByType();
+
     Dancer getById(int id);
 
     Dancer create(Dancer dancer);

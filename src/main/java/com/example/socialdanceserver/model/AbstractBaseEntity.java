@@ -95,14 +95,6 @@ public abstract class AbstractBaseEntity {
         this.description = description;
     }
 
-    public EntityInfo getDancerInfo() {
-        return entityInfo;
-    }
-
-    public void setDancerInfo(EntityInfo entityInfo) {
-        this.entityInfo = entityInfo;
-    }
-
     public Set<Rating> getRatings() {
         return ratings;
     }

@@ -22,6 +22,11 @@ public class DanceServiceImpl implements DancerService {
     }
 
     @Override
+    public List<Dancer> getAllByType() {
+        return dancerRepository.findAllByType();
+    }
+
+    @Override
     public Dancer getById(int id) {
         Dancer dancer = null;
         Optional<AbstractBaseEntity> dancerOptional = dancerRepository.findById(id);

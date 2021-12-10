@@ -1,6 +1,5 @@
 drop table if exists dances;
 drop table if exists abstract_base_entity_dances;
-drop table if exists login_password;
 drop table if exists reviews;
 drop table if exists schools;
 drop table if exists dancers;
@@ -8,6 +7,8 @@ drop table if exists events;
 drop table if exists ratings;
 drop table if exists abstract_base_entity;
 drop table if exists entity_info;
+drop table if exists login_password;
+
 
 
 drop sequence if exists schools_seq;
@@ -19,9 +20,19 @@ drop sequence if exists ratings_seq;
 drop sequence if exists reviews_seq;
 drop sequence if exists base_seq;
 drop sequence if exists hibernate_sequence;
+drop sequence if exists login_password_seq;
 
 
 CREATE SEQUENCE hibernate_sequence ;
+
+CREATE SEQUENCE login_password_seq START WITH 1;
+CREATE table login_password
+(
+    id                      INTEGER PRIMARY KEY DEFAULT nextval('login_password_seq'),
+    email            VARCHAR                           NOT NULL,
+    password         VARCHAR                           NOT NULL,
+    CONSTRAINT email_password UNIQUE (email)
+);
 
 CREATE SEQUENCE entity_info_seq ;
 CREATE table entity_info
@@ -43,7 +54,8 @@ create table abstract_base_entity
     name                         VARCHAR                           NOT NULL,
     description                  VARCHAR,
     type_entity                  VARCHAR,
-    entity_info_id               INTEGER ,
+    entity_info_id               INTEGER,
+    CONSTRAINT id_constr UNIQUE (id),
     FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE
 );
 
@@ -63,7 +75,9 @@ CREATE table dancers
     sex              VARCHAR,
     birthday         TIMESTAMP,
     role             VARCHAR,
-    FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
+    login_password_id   INTEGER,
+    FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE,
+    FOREIGN KEY (login_password_id) REFERENCES login_password (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE events_seq ;
@@ -95,7 +109,9 @@ CREATE table ratings
 (
     id                      INTEGER PRIMARY KEY DEFAULT nextval('ratings_seq'),
     abstract_base_entity_id INTEGER  NOT NULL,
+    reviewer_id             INTEGER  NOT NULL,
     rating                  INTEGER  NOT NULL,
+    CONSTRAINT id_con UNIQUE (id),
     FOREIGN KEY (abstract_base_entity_id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
 );
 
@@ -108,13 +124,4 @@ CREATE table reviews
     review                  varchar    NOT NULL,
     date_time               TIMESTAMP  NOT NULL,
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE
-);
-
-CREATE table login_password
-(
-    dancer_id        integer not null,
-    email            VARCHAR                           NOT NULL,
-    password         VARCHAR                           NOT NULL,
-    CONSTRAINT email_password UNIQUE (email),
-    FOREIGN KEY (dancer_id) REFERENCES dancers (id) ON DELETE CASCADE
 );

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
-public class Event extends School{
+public class Event extends AbstractBaseEntity{
 
     private LocalDateTime dateEvent;
     private LocalDateTime dateFinishEvent;

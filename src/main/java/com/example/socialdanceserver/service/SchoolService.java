@@ -9,6 +9,8 @@ public interface SchoolService {
 
     List<AbstractBaseEntity> getAll();
 
+    List<School> getAllByType();
+
     School getById(int id);
 
     School create(School school);

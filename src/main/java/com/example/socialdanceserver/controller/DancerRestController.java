@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.controller;
 
 
-import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.Dancer;
 import com.example.socialdanceserver.service.DancerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ public class DancerRestController {
     private DancerService dancerService;
 
     @GetMapping
-    public List<AbstractBaseEntity> dancers (){
-        return dancerService.getAll();
+    public List<Dancer> dancers (){
+        return dancerService.getAllByType();
     }
 
     @GetMapping("/{id}")
@@ -30,14 +29,10 @@ public class DancerRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dancer create(@RequestBody Dancer dancer){
+    public Dancer save(@RequestBody Dancer dancer){
         return dancerService.create(dancer);
     }
 
-//    @PostMapping
-//    public void update(@RequestBody Dancer dancer){
-//        dancerService.update(dancer);
-//    }
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id){

@@ -22,6 +22,11 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Event> getAllByType() {
+        return eventRepository.findAllByType();
+    }
+
+    @Override
     public Event getById(int id) {
         Event event = null;
         Optional<AbstractBaseEntity> eventOptional = eventRepository.findById(id);

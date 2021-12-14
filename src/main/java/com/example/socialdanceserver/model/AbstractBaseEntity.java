@@ -61,7 +61,7 @@ public abstract class AbstractBaseEntity {
     }
 
     public Integer countRating() {
-        if (ratings == null) {
+        if (ratings == null || ratings.size() == 0) {
             return 0;
         }
         int sum = 0;

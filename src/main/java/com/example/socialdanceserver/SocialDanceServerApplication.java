@@ -47,41 +47,23 @@ public class SocialDanceServerApplication {
         AbstractBaseEntity dancer =
                 new Dancer("Ivan", "salsa", entityInfo, "Ivanov",
                         "male", null, Role.DANCER);
-//        dancer.setRatings(new HashSet<>());
 
-
-        School school =
-                new School("latin dance", "salsa, bachata", entityInfo1);
-//        school.setReviews(new ArrayList<>());
-//        school.getReviews().add(new Review(1, school, "good review", LocalDateTime.now()));
-//        school.setRatings(new HashSet<>());
-//        school.setReviews(new ArrayList<>());
-
-
-        Event event =
-                new Event("party", "open air", entityInfo2,
-                        LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
-//        event.setRatings(new HashSet<>());
-
-        event.setDances(new HashSet<>());
-        event.getDances().add(Dance.SALSA);
-        event.getDances().add(Dance.BACHATA);
-
-        dancerRepo.save(dancer);
-        schoolRepo.save(school);
-        eventRepo.save(event);
+//        dancerRepo.save(dancer);
 
         Optional<AbstractBaseEntity> dancer12 = dancerRepo.findById(1);
         if (dancer12.isPresent()) {
-            dancer = (Dancer) dancer12.get();
+            dancer = dancer12.get();
             System.out.println(dancer);
         }
 
-        Optional<AbstractBaseEntity> event123 = eventRepo.findById(3);
-        if (event123.isPresent()) {
-            event = (Event) event123.get();
-            System.out.println(event);
-        }
+        School school =
+                new School("latin dance", "salsa, bachata", entityInfo1, dancer.getId());
+
+        school.setDances(new HashSet<>());
+        school.getDances().add(Dance.SALSA);
+        school.getDances().add(Dance.BACHATA);
+
+//        schoolRepo.save(school);
 
         Optional<AbstractBaseEntity> school123 = eventRepo.findById(2);
         if (school123.isPresent()) {
@@ -89,15 +71,31 @@ public class SocialDanceServerApplication {
             System.out.println(school);
         }
 
-        dancer.getRatings().add(new Rating(dancer, dancer.getId(), 7));
-        event.getRatings().add(new Rating(event, dancer.getId(), 10));
+        Event event =
+                new Event("party", "open air", entityInfo2, school.getId(),
+                        LocalDateTime.now(), LocalDateTime.now(), LocalDateTime.now());
+
+        event.setDances(new HashSet<>());
+        event.getDances().add(Dance.SALSA);
+        event.getDances().add(Dance.BACHATA);
+
+//        eventRepo.save(event);
+
+        Optional<AbstractBaseEntity> event123 = eventRepo.findById(3);
+        if (event123.isPresent()) {
+            event = (Event) event123.get();
+            System.out.println(event);
+        }
+
+        school.getRatings().add(new Rating(dancer, dancer.getId(), 7));
+        school.getRatings().add(new Rating(event, dancer.getId(), 10));
         school.getRatings().add(new Rating(school, dancer.getId(), 8));
         school.getReviews().add(new Review(dancer.getId(), school, "good school", LocalDateTime.now()));
 
         ((Dancer)dancer).setLoginPassword(new LoginPassword("a@b.c", "asd"));
 
-        dancerRepo.save(dancer);
-        schoolRepo.save(school);
-        eventRepo.save(event);
+//        dancerRepo.save(dancer);
+//        schoolRepo.save(school);
+//        eventRepo.save(event);
     }
 }

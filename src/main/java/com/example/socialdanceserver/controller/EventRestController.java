@@ -1,7 +1,9 @@
 package com.example.socialdanceserver.controller;
 
+import com.example.socialdanceserver.dto.EventTo;
 import com.example.socialdanceserver.model.Event;
 import com.example.socialdanceserver.service.EventService;
+import com.example.socialdanceserver.util.EventUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +19,13 @@ public class EventRestController {
     private EventService eventService;
 
     @GetMapping
-    public List<Event> events(){
-        return eventService.getAllByType();
+    public List<EventTo> events(){
+        return EventUtils.getEventTos(eventService.getAllByType());
     }
 
     @GetMapping("/{id}")
-    public Event get(@PathVariable int id){
-        return eventService.getById(id);
+    public EventTo get(@PathVariable int id){
+        return EventUtils.createEventTo(eventService.getById(id));
     }
 
     @PostMapping

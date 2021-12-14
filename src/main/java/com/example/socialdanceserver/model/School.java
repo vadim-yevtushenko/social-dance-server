@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "schools")
 public class School extends AbstractBaseEntity{
 
+    private int ownerId;
 
     @OneToMany(mappedBy = "school", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
@@ -23,13 +24,15 @@ public class School extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public School(String name, String description, EntityInfo entityInfo) {
+    public School(String name, String description, EntityInfo entityInfo, int ownerId) {
         super(name, description, entityInfo);
+        this.ownerId = ownerId;
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public School(Integer id, String name, String description) {
+    public School(Integer id, String name, String description, int ownerId) {
         super(id, name, description);
+        this.ownerId = ownerId;
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
@@ -41,10 +44,19 @@ public class School extends AbstractBaseEntity{
         this.reviews = reviews;
     }
 
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
+    }
+
     @Override
     public String toString() {
         return "School{" +
-                "reviews=" + reviews +
+                "ownerId=" + ownerId +
+                ", reviews=" + reviews +
                 "} " + super.toString();
     }
 }

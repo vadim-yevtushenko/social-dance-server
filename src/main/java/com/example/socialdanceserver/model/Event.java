@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 public class Event extends AbstractBaseEntity{
 
+    private int ownerId;
     private LocalDateTime dateEvent;
     private LocalDateTime dateFinishEvent;
     private LocalDateTime datePublication;
@@ -18,22 +19,30 @@ public class Event extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.EVENT);
     }
 
-    public Event(String name, String description, EntityInfo entityInfo, LocalDateTime dateEvent,
-                 LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
+    public Event(String name, String description, EntityInfo entityInfo, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
         super(name, description, entityInfo);
+        this.ownerId = ownerId;
         this.dateEvent = dateEvent;
         this.dateFinishEvent = dateFinishEvent;
         this.datePublication = datePublication;
         this.setTypeEntity(TypeEntity.EVENT);
     }
 
-    public Event(Integer id, String name, String description, LocalDateTime dateEvent,
-                 LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
+    public Event(Integer id, String name, String description, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
         super(id, name, description);
+        this.ownerId = ownerId;
         this.dateEvent = dateEvent;
         this.dateFinishEvent = dateFinishEvent;
         this.datePublication = datePublication;
         this.setTypeEntity(TypeEntity.EVENT);
+    }
+
+    public int getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(int ownerId) {
+        this.ownerId = ownerId;
     }
 
     public LocalDateTime getDateEvent() {
@@ -63,7 +72,8 @@ public class Event extends AbstractBaseEntity{
     @Override
     public String toString() {
         return "Event{" +
-                "dateEvent=" + dateEvent +
+                "ownerId=" + ownerId +
+                ", dateEvent=" + dateEvent +
                 ", dateFinishEvent=" + dateFinishEvent +
                 ", datePublication=" + datePublication +
                 "} " + super.toString();

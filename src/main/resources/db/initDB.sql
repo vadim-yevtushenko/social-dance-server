@@ -10,7 +10,6 @@ drop table if exists entity_info;
 drop table if exists login_password;
 
 
-
 drop sequence if exists schools_seq;
 drop sequence if exists dancers_seq;
 drop sequence if exists events_seq;
@@ -63,6 +62,7 @@ CREATE SEQUENCE schools_seq ;
 CREATE table schools
 (
     id               INTEGER PRIMARY KEY DEFAULT nextval('schools_seq'),
+    owner_id         INTEGER,
     FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
 );
 
@@ -70,11 +70,11 @@ CREATE table schools
 CREATE SEQUENCE dancers_seq ;
 CREATE table dancers
 (
-    id               INTEGER PRIMARY KEY DEFAULT nextval('dancers_seq'),
-    surname          VARCHAR,
-    sex              VARCHAR,
-    birthday         TIMESTAMP,
-    role             VARCHAR,
+    id                  INTEGER PRIMARY KEY DEFAULT nextval('dancers_seq'),
+    surname             VARCHAR,
+    sex                 VARCHAR,
+    birthday            TIMESTAMP,
+    role                VARCHAR,
     login_password_id   INTEGER,
     FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE,
     FOREIGN KEY (login_password_id) REFERENCES login_password (id) ON DELETE CASCADE
@@ -84,6 +84,7 @@ CREATE SEQUENCE events_seq ;
 CREATE table events
 (
     id                 INTEGER PRIMARY KEY DEFAULT nextval('events_seq'),
+    owner_id           INTEGER,
     date_event         TIMESTAMP                           NOT NULL,
     date_finish_event  TIMESTAMP                           NOT NULL,
     date_publication   TIMESTAMP             DEFAULT now() NOT NULL,
@@ -93,8 +94,8 @@ CREATE table events
 CREATE SEQUENCE dances_seq START WITH 1;
 CREATE table dances
 (
-    id               INTEGER PRIMARY KEY DEFAULT nextval('dances_seq'),
-    name             VARCHAR  NOT NULL
+    id   INTEGER PRIMARY KEY DEFAULT nextval('dances_seq'),
+    name VARCHAR  NOT NULL
 );
 
 CREATE table abstract_base_entity_dances

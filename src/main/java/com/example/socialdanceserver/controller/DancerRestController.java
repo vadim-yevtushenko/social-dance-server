@@ -1,8 +1,10 @@
 package com.example.socialdanceserver.controller;
 
 
+import com.example.socialdanceserver.dto.DancerTo;
 import com.example.socialdanceserver.model.Dancer;
 import com.example.socialdanceserver.service.DancerService;
+import com.example.socialdanceserver.util.DancerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +21,13 @@ public class DancerRestController {
     private DancerService dancerService;
 
     @GetMapping
-    public List<Dancer> dancers (){
-        return dancerService.getAllByType();
+    public List<DancerTo> dancers (){
+        return DancerUtils.getDancerTos(dancerService.getAllByType());
     }
 
     @GetMapping("/{id}")
-    public Dancer get(@PathVariable int id){
-        return dancerService.getById(id);
+    public DancerTo get(@PathVariable int id){
+        return DancerUtils.createDancerTo(dancerService.getById(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

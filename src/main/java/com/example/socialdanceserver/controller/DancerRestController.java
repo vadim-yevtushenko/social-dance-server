@@ -4,7 +4,9 @@ package com.example.socialdanceserver.controller;
 import com.example.socialdanceserver.dto.DancerTo;
 import com.example.socialdanceserver.model.Dancer;
 import com.example.socialdanceserver.service.DancerService;
+import com.example.socialdanceserver.util.CustomDateSerializer;
 import com.example.socialdanceserver.util.DancerUtils;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +33,23 @@ public class DancerRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dancer save(@RequestBody Dancer dancer){
-        return dancerService.create(dancer);
+    public DancerTo save(@RequestBody DancerTo dancerTo){
+        return dancerService.save(dancerTo);
     }
 
 
     @DeleteMapping("/{id}")
-    void delete(@PathVariable int id){
+    public void delete(@PathVariable int id){
         dancerService.deleteById(id);
+    }
+
+    @GetMapping("/registration/{email}")
+    public Integer checkSignUp(@PathVariable String email){
+        return dancerService.checkSignUpByEmail(email);
+    }
+
+    @GetMapping("/identification/{email}/{password}")
+    public Integer checkSignIn(@PathVariable String email, @PathVariable String password){
+        return dancerService.checkSignIpByEmailAndPassword(email, password);
     }
 }

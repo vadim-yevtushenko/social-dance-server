@@ -29,9 +29,9 @@ public class SocialDanceServerApplication {
         LoginPasswordRepository logRepo =
                 context.getBean(LoginPasswordRepository.class);
 
-        EntityInfo entityInfo = new EntityInfo();
         EntityInfo entityInfo1 = new EntityInfo();
         EntityInfo entityInfo2 = new EntityInfo();
+        EntityInfo entityInfo = new EntityInfo();
         entityInfo.setCountry("Ukraine");
         entityInfo.setCity("Zp");
         entityInfo.setEmail("dance@gmail.com");
@@ -91,6 +91,10 @@ public class SocialDanceServerApplication {
         school.getRatings().add(new Rating(event, dancer.getId(), 10));
         school.getRatings().add(new Rating(school, dancer.getId(), 8));
         school.getReviews().add(new Review(dancer.getId(), school, "good school", LocalDateTime.now()));
+
+        System.out.println(((DancerRepository)dancerRepo).checkSignUpByEmail("a@b.c"));
+        System.out.println(((DancerRepository)dancerRepo).checkSignInByEmailAndPassword("a@b.c", "asd"));
+
 
         ((Dancer)dancer).setLoginPassword(new LoginPassword("a@b.c", "asd"));
 

@@ -1,5 +1,6 @@
 package com.example.socialdanceserver.service;
 
+import com.example.socialdanceserver.dto.DancerTo;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.Dancer;
 
@@ -13,9 +14,15 @@ public interface DancerService {
 
     Dancer getById(int id);
 
-    Dancer create(Dancer dancer);
+//    Dancer save(Dancer dancer);
 
-    void update(Dancer dancer);
+//    void update(Dancer dancer);
+
+    DancerTo save(DancerTo dancerTo);
 
     void deleteById(int id);
+
+    Integer checkSignUpByEmail(String email);
+
+    Integer checkSignIpByEmailAndPassword(String email, String password);
 }

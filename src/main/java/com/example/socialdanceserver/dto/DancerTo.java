@@ -1,6 +1,7 @@
 package com.example.socialdanceserver.dto;
 
 import com.example.socialdanceserver.model.EntityInfo;
+import com.example.socialdanceserver.model.LoginPassword;
 import com.example.socialdanceserver.model.enums.Dance;
 import com.example.socialdanceserver.model.enums.Role;
 
@@ -13,15 +14,21 @@ public class DancerTo {
     private String name;
     private String surname;
     private String sex;
+
     private Date birthday;
+
     private EntityInfo entityInfo;
     private Role role;
     private List<Dance> dances;
+    private LoginPassword loginPassword;
+    private String description;
 
     public DancerTo() {
     }
 
-    public DancerTo(Integer id, String name, String surname, String sex, Date birthday, EntityInfo entityInfo, Role role, List<Dance> dances) {
+    public DancerTo(Integer id, String name, String surname, String sex,
+                    Date birthday, EntityInfo entityInfo, Role role,
+                    List<Dance> dances, LoginPassword loginPassword, String description) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -30,6 +37,14 @@ public class DancerTo {
         this.entityInfo = entityInfo;
         this.role = role;
         this.dances = dances;
+        this.loginPassword = loginPassword;
+        this.description = description;
+    }
+
+    public DancerTo(String name, EntityInfo entityInfo, LoginPassword loginPassword) {
+        this.name = name;
+        this.entityInfo = entityInfo;
+        this.loginPassword = loginPassword;
     }
 
     public Integer getId() {
@@ -94,5 +109,37 @@ public class DancerTo {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LoginPassword getLoginPassword() {
+        return loginPassword;
+    }
+
+    public void setLoginPassword(LoginPassword loginPassword) {
+        this.loginPassword = loginPassword;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "DancerTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", sex='" + sex + '\'' +
+                ", birthday=" + birthday +
+                ", entityInfo=" + entityInfo +
+                ", role=" + role +
+                ", dances=" + dances +
+                ", loginPassword=" + loginPassword +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -8,14 +8,9 @@ import org.springframework.boot.jackson.JsonComponent;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
+
 import java.util.Date;
 import java.util.Locale;
-
-import static com.example.socialdanceserver.util.DateTimeUtils.fromLocalDateTimeToDate;
 
 @JsonComponent
 public class CustomDateSerializer {

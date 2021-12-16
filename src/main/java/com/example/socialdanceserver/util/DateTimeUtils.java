@@ -9,15 +9,36 @@ public class DateTimeUtils {
         if (localDateTime == null){
             return null;
         }
-        return Date.from(localDateTime.toInstant(ZoneOffset.UTC));
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault())
+                .toInstant());
+    }
+
+    public static Date fromLocalDateToDate(LocalDate localDate){
+        if (localDate == null){
+            return null;
+        }
+        return Date.from(localDate.atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
     }
 
     public static LocalDateTime fromDateToLocalDateTime(Date date){
         if (date == null){
             return null;
         }
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
+    public static LocalDate fromDateToLocalDate(Date date){
+        if (date == null){
+            return null;
+        }
         Instant instant = Instant.ofEpochMilli(date.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 
 

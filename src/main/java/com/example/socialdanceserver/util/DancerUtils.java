@@ -23,7 +23,7 @@ public class DancerUtils {
         }
         return new DancerTo(dancer.getId(), dancer.getName(),
                 dancer.getSurname(), dancer.getSex(),
-                DateTimeUtils.fromLocalDateTimeToDate(dancer.getBirthday()),
+                DateTimeUtils.fromLocalDateToDate(dancer.getBirthday()),
                 dancer.getEntityInfo(), dancer.getRole(),
                 dances, dancer.getLoginPassword(), dancer.getDescription());
     }
@@ -43,7 +43,7 @@ public class DancerUtils {
         dancer.setEntityInfo(dancerTo.getEntityInfo());
         dancer.setDances(new HashSet<>(dancerTo.getDances()));
         dancer.setRole(dancerTo.getRole());
-        dancer.setBirthday(DateTimeUtils.fromDateToLocalDateTime(dancerTo.getBirthday()));
+        dancer.setBirthday(DateTimeUtils.fromDateToLocalDate(dancerTo.getBirthday()));
         return dancer;
     }
 }

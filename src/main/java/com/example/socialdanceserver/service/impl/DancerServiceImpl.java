@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DanceServiceImpl implements DancerService {
+public class DancerServiceImpl implements DancerService {
 
     @Autowired
     private DancerRepository dancerRepository;

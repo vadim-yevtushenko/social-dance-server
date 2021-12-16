@@ -15,7 +15,7 @@ public class Dancer extends AbstractBaseEntity{
 
     private String surname;
     private String sex;
-    private LocalDateTime birthday;
+    private LocalDate birthday;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -31,7 +31,7 @@ public class Dancer extends AbstractBaseEntity{
     }
 
     public Dancer(String name, String description, EntityInfo entityInfo,
-                  String surname, String sex, LocalDateTime birthday, Role role) {
+                  String surname, String sex, LocalDate birthday, Role role) {
         super(name, description, entityInfo);
         this.surname = surname;
         this.sex = sex;
@@ -41,7 +41,7 @@ public class Dancer extends AbstractBaseEntity{
     }
 
     public Dancer(Integer id, String name, String description, String surname,
-                  String sex, LocalDateTime birthday, Role role) {
+                  String sex, LocalDate birthday, Role role) {
         super(id, name, description);
         this.surname = surname;
         this.sex = sex;
@@ -58,11 +58,11 @@ public class Dancer extends AbstractBaseEntity{
         this.surname = surname;
     }
 
-    public LocalDateTime getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(LocalDateTime birthDay) {
+    public void setBirthday(LocalDate birthDay) {
         this.birthday = birthDay;
     }
 

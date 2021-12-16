@@ -29,7 +29,8 @@ public class DancerRestController {
 
     @GetMapping("/{id}")
     public DancerTo get(@PathVariable int id){
-        return DancerUtils.createDancerTo(dancerService.getById(id));
+        Dancer dancer = dancerService.getById(id);
+        return  dancer != null ? DancerUtils.createDancerTo(dancer) : null;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

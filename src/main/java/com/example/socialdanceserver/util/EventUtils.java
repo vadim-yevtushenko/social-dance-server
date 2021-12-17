@@ -1,9 +1,12 @@
 package com.example.socialdanceserver.util;
 
+import com.example.socialdanceserver.dto.DancerTo;
 import com.example.socialdanceserver.dto.EventTo;
+import com.example.socialdanceserver.model.Dancer;
 import com.example.socialdanceserver.model.Event;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,5 +23,18 @@ public class EventUtils {
                 DateTimeUtils.fromLocalDateTimeToDate(event.getDateFinishEvent()),
                 DateTimeUtils.fromLocalDateTimeToDate(event.getDatePublication()),
                 new ArrayList<>(event.getDances()), event.getOwnerId());
+    }
+
+    public static Event fromEventTo(EventTo eventTo, Event event) {
+
+        event.setName(eventTo.getName());
+        event.setOwnerId(eventTo.getOwnerId());
+        event.setDescription(eventTo.getDescription());
+        event.setEntityInfo(eventTo.getEntityInfo());
+        event.setDances(new HashSet<>(eventTo.getDances()));
+        event.setDatePublication(DateTimeUtils.fromDateToLocalDateTime(eventTo.getDatePublication()));
+        event.setDateEvent(DateTimeUtils.fromDateToLocalDateTime(eventTo.getDateEvent()));
+        event.setDateFinishEvent(DateTimeUtils.fromDateToLocalDateTime(eventTo.getDateFinishEvent()));
+        return event;
     }
 }

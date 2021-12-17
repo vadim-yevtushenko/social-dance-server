@@ -1,6 +1,7 @@
 package com.example.socialdanceserver.service;
 
 
+import com.example.socialdanceserver.dto.EventTo;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.Event;
 
@@ -12,11 +13,13 @@ public interface EventService {
 
     List<Event> getAllByType();
 
+    List<Event> getAllByOwnerId(int id);
+
     Event getById(int id);
 
-    Event create(Event event);
+    EventTo save(EventTo eventTo);
 
-    void update(Event event);
+//    void update(Event event);
 
     void deleteById(int id);
 }

@@ -27,6 +27,11 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    public List<School> getAllByOwnerId(int id) {
+        return schoolRepository.findAllByOwnerId(id);
+    }
+
+    @Override
     public School getById(int id) {
         School school = null;
         Optional<AbstractBaseEntity> optionalSchool = schoolRepository.findById(id);

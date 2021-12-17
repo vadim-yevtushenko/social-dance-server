@@ -30,7 +30,7 @@ public class DancerRestController {
     @GetMapping("/{id}")
     public DancerTo get(@PathVariable int id){
         Dancer dancer = dancerService.getById(id);
-        return  dancer != null ? DancerUtils.createDancerTo(dancer) : null;
+        return  dancer != null ? DancerUtils.createDancerTo(dancer) : new DancerTo();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

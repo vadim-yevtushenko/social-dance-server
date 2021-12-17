@@ -104,4 +104,19 @@ public class EventTo {
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
     }
+
+    @Override
+    public String toString() {
+        return "EventTo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", entityInfo=" + entityInfo +
+                ", dateEvent=" + dateEvent +
+                ", dateFinishEvent=" + dateFinishEvent +
+                ", datePublication=" + datePublication +
+                ", dances=" + dances +
+                ", ownerId=" + ownerId +
+                '}';
+    }
 }

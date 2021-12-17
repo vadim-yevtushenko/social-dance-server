@@ -29,7 +29,7 @@ public class DancerUtils {
     }
 
     public static Dancer fromDancerTo(DancerTo dancerTo, Dancer dancer) {
-        if (dancer == null) {
+        if (dancer.getId() == null) {
             Dancer transformDancer = new Dancer();
             transformDancer.setName(dancerTo.getName());
             transformDancer.setEntityInfo(dancerTo.getEntityInfo());

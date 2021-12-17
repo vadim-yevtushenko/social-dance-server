@@ -40,7 +40,7 @@ public class DancerServiceImpl implements DancerService {
 
     @Override
     public DancerTo save(DancerTo dancerTo) {
-        Dancer oldDancer = null;
+        Dancer oldDancer = new Dancer();
         if (dancerTo.getId() != null){
             oldDancer = getById(dancerTo.getId());
         }

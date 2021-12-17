@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.controller;
 
 import com.example.socialdanceserver.dto.EventTo;
-import com.example.socialdanceserver.model.Event;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.util.EventUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,19 @@ public class EventRestController {
         return EventUtils.getEventTos(eventService.getAllByType());
     }
 
+    @GetMapping("/owner/{id}")
+    public List<EventTo> eventsByOwner(@PathVariable int id){
+        return EventUtils.getEventTos(eventService.getAllByOwnerId(id));
+    }
+
     @GetMapping("/{id}")
     public EventTo get(@PathVariable int id){
         return EventUtils.createEventTo(eventService.getById(id));
     }
 
     @PostMapping
-    public Event save(@RequestBody Event event){
-        return eventService.create(event);
+    public EventTo save(@RequestBody EventTo eventTo){
+        return eventService.save(eventTo);
     }
 
     @DeleteMapping("/{id}")

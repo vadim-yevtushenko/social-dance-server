@@ -92,9 +92,8 @@ public class SocialDanceServerApplication {
         school.getRatings().add(new Rating(school, dancer.getId(), 8));
         school.getReviews().add(new Review(dancer.getId(), school, "good school", LocalDateTime.now()));
 
-        System.out.println(((DancerRepository)dancerRepo).checkSignUpByEmail("a@b.c"));
-        System.out.println(((DancerRepository)dancerRepo).checkSignInByEmailAndPassword("a@b.c", "asd"));
-
+        System.out.println(((EventRepository)eventRepo).findAllByOwnerId(14));
+        System.out.println(((SchoolRepository)schoolRepo).findAllByOwnerId(14));
 
         ((Dancer)dancer).setLoginPassword(new LoginPassword("a@b.c", "asd"));
 

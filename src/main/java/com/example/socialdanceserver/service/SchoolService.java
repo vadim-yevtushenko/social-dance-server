@@ -11,6 +11,8 @@ public interface SchoolService {
 
     List<School> getAllByType();
 
+    List<School> getAllByOwnerId(int id);
+
     School getById(int id);
 
     School create(School school);

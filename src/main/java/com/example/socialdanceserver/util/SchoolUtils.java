@@ -1,6 +1,8 @@
 package com.example.socialdanceserver.util;
 
+import com.example.socialdanceserver.dto.ReviewTo;
 import com.example.socialdanceserver.dto.SchoolTo;
+import com.example.socialdanceserver.model.Review;
 import com.example.socialdanceserver.model.School;
 
 import java.util.ArrayList;
@@ -17,7 +19,18 @@ public class SchoolUtils {
     public static SchoolTo createSchoolTo(School school){
         return new SchoolTo(school.getId(), school.getName(),
                 school.getDescription(), school.getEntityInfo(),
-                String.valueOf(school.countRating()), school.getOwnerId(),
+                school.countRating(), school.getOwnerId(),
                 new ArrayList<>(school.getDances()));
+    }
+
+    public static List<ReviewTo> getReviewTos(List<Review> reviewList){
+        return reviewList.stream().map(SchoolUtils::createReviewTo).
+                collect(Collectors.toList());
+    }
+
+    private static ReviewTo createReviewTo(Review review) {
+        return new ReviewTo(review.getId(), review.getAbstractBaseEntityId(),
+                review.getSchool().getId(), review.getReview(),
+                DateTimeUtils.fromLocalDateTimeToDate(review.getDateTime()));
     }
 }

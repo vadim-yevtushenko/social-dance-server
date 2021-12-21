@@ -12,9 +12,9 @@ public interface DancerRepository extends AbstractBaseEntityRepository {
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +
-            "left join ratings r on abe.id = r.abstract_base_entity_id " +
             "left join entity_info ei on abe.entity_info_id = ei.id " +
-            "where type_entity = 'DANCER'",
+            "where type_entity = 'DANCER' " +
+            "order by name, surname",
             nativeQuery = true)
     List<Dancer> findAllByType();
 

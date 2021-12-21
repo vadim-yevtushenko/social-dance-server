@@ -1,5 +1,7 @@
 package com.example.socialdanceserver.controller;
 
+import com.example.socialdanceserver.dto.RatingTo;
+import com.example.socialdanceserver.dto.ReviewTo;
 import com.example.socialdanceserver.dto.SchoolTo;
 import com.example.socialdanceserver.model.School;
 import com.example.socialdanceserver.service.SchoolService;
@@ -36,11 +38,27 @@ public class SchoolRestController {
 
     @PostMapping
     public School save(@RequestBody School school){
-        return schoolService.create(school);
+        return schoolService.save(school);
     }
 
     @DeleteMapping("/{id}")
-    void delete(@PathVariable int id){
+    public void delete(@PathVariable int id){
         schoolService.deleteById(id);
+    }
+
+    @GetMapping("/reviews/{id}")
+    public List<ReviewTo> findReviewsBySchool(@PathVariable int id) {
+        return SchoolUtils.getReviewTos(schoolService.getReviewsBySchoolId(id));
+    }
+
+    @PostMapping("/ratings")
+    public void saveRating(@RequestBody RatingTo ratingTo){
+        schoolService.saveRating(ratingTo);
+    }
+
+    @PostMapping("/reviews")
+    public void saveReview(@RequestBody ReviewTo reviewTo){
+        System.out.println(reviewTo);
+        schoolService.createReview(reviewTo);
     }
 }

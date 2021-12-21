@@ -60,15 +60,15 @@ public abstract class AbstractBaseEntity {
         this.description = description;
     }
 
-    public Integer countRating() {
+    public String countRating() {
         if (ratings == null || ratings.size() == 0) {
-            return 0;
+            return "0";
         }
         int sum = 0;
         for (Rating rating : ratings) {
             sum += rating.getRating();
         }
-        return sum / ratings.size();
+        return String.format("%.2f / dancers: %d", ((double)sum / ratings.size()), ratings.size());
     }
 
     public Integer getId() {

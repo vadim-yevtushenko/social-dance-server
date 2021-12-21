@@ -21,7 +21,6 @@ drop sequence if exists base_seq;
 drop sequence if exists hibernate_sequence;
 drop sequence if exists login_password_seq;
 
-
 CREATE SEQUENCE hibernate_sequence ;
 
 CREATE SEQUENCE login_password_seq START WITH 1;

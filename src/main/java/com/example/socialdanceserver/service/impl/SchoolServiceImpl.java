@@ -1,14 +1,16 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.School;
+import com.example.socialdanceserver.dto.RatingTo;
+import com.example.socialdanceserver.dto.ReviewTo;
+import com.example.socialdanceserver.model.*;
 import com.example.socialdanceserver.repository.SchoolRepository;
 import com.example.socialdanceserver.service.SchoolService;
+import com.example.socialdanceserver.util.DateTimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SchoolServiceImpl implements SchoolService {
@@ -23,12 +25,20 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<School> getAllByType() {
-        return schoolRepository.findAllByType();
+
+        return new ArrayList<>(new HashSet<>(schoolRepository.findAllByType())) ;
     }
 
     @Override
     public List<School> getAllByOwnerId(int id) {
         return schoolRepository.findAllByOwnerId(id);
+    }
+
+    @Override
+    public List<Review> getReviewsBySchoolId(int id) {
+        return new HashSet<>(getById(id).getReviews())
+                .stream().sorted(Comparator.comparing(Review::getDateTime))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -42,8 +52,45 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public School create(School school) {
+    public School save(School school) {
         return schoolRepository.save(school);
+    }
+
+    @Override
+    public void createRating(RatingTo ratingTo) {
+        schoolRepository.createRating(ratingTo.getEntityId(),
+                ratingTo.getReviewerId(), ratingTo.getRating());
+    }
+
+    @Override
+    public void createReview(ReviewTo reviewTo) {
+        schoolRepository.createReview(reviewTo.getAbstractBaseEntityId(),
+                reviewTo.getSchoolId(), reviewTo.getReview(),
+                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()));
+    }
+
+    @Override
+    public void saveRating(RatingTo ratingTo) {
+        School school = getById(ratingTo.getEntityId());
+        boolean isExist = false;
+        for (Rating rating : school.getRatings()){
+            if (rating.getReviewer_id() == ratingTo.getReviewerId()){
+                isExist = true;
+                break;
+            }
+        }
+        if (isExist) {
+            schoolRepository.saveRating(ratingTo.getReviewerId(), ratingTo.getRating());
+        } else {
+            System.out.println(ratingTo);
+            schoolRepository.createRating(ratingTo.getEntityId(), ratingTo.getReviewerId(), ratingTo.getRating());
+        }
+    }
+
+    @Override
+    public void saveReview(ReviewTo reviewTo) {
+        schoolRepository.saveReview(reviewTo.getId(), reviewTo.getReview(),
+                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()));
     }
 
     @Override

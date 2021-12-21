@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ratings")
@@ -63,6 +64,19 @@ public class Rating {
 
     public void setReviewer_id(int reviewer) {
         this.reviewer_id = reviewer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rating rating1 = (Rating) o;
+        return id == rating1.id && reviewer_id == rating1.reviewer_id && rating == rating1.rating && Objects.equals(abstractBaseEntity, rating1.abstractBaseEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, abstractBaseEntity, reviewer_id, rating);
     }
 
     @Override

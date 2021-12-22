@@ -3,6 +3,7 @@ package com.example.socialdanceserver.controller;
 import com.example.socialdanceserver.dto.RatingTo;
 import com.example.socialdanceserver.dto.ReviewTo;
 import com.example.socialdanceserver.dto.SchoolTo;
+import com.example.socialdanceserver.model.Rating;
 import com.example.socialdanceserver.model.School;
 import com.example.socialdanceserver.service.SchoolService;
 import com.example.socialdanceserver.util.SchoolUtils;
@@ -36,6 +37,20 @@ public class SchoolRestController {
         return SchoolUtils.createSchoolTo(schoolService.getById(id));
     }
 
+    @GetMapping("/{id}/{dancerId}")
+    public Integer getRatingByDancerId(@PathVariable int id, @PathVariable int dancerId){
+        School school = schoolService.getById(id);
+        if (school.getRatings() == null){
+            return 0;
+        }
+        for (Rating schoolRating : school.getRatings()) {
+            if (schoolRating.getReviewer_id() == dancerId){
+                return schoolRating.getRating();
+            }
+        }
+        return 0;
+    }
+
     @PostMapping
     public School save(@RequestBody School school){
         return schoolService.save(school);
@@ -58,7 +73,6 @@ public class SchoolRestController {
 
     @PostMapping("/reviews")
     public void saveReview(@RequestBody ReviewTo reviewTo){
-        System.out.println(reviewTo);
         schoolService.createReview(reviewTo);
     }
 }

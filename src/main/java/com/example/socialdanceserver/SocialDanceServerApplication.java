@@ -29,10 +29,5 @@ public class SocialDanceServerApplication {
         SchoolService schoolService =
                 context.getBean(SchoolService.class);
 
-
-//        schoolService.createRating(new RatingTo(22,10,3));
-//        System.out.println(schoolService.getReviewsBySchoolId(23));
-
-
     }
 }

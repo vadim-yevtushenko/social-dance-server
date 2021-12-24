@@ -8,6 +8,7 @@ import com.example.socialdanceserver.util.CustomDateSerializer;
 import com.example.socialdanceserver.util.DancerUtils;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,22 @@ public class DancerRestController {
         return DancerUtils.getDancerTos(dancerService.getAllByType());
     }
 
+    @GetMapping("/search/{city}")
+    public List<DancerTo> dancersByCity(@PathVariable String city){
+        return DancerUtils.getDancerTos(dancerService.getAllByCity(city));
+    }
+
+    @GetMapping("/search")
+    public List<DancerTo> dancersByCity(@RequestParam(value = "name", required = false) String name,
+                                        @RequestParam(value = "surname", required = false) String surname){
+        if (name.isEmpty()){
+            return DancerUtils.getDancerTos(dancerService.getAllBySurname(surname));
+        }else if (surname.isEmpty()){
+            return DancerUtils.getDancerTos(dancerService.getAllByName(name));
+        }
+        return DancerUtils.getDancerTos(dancerService.getAllByNameAndSurname(name, surname));
+    }
+
     @GetMapping("/{id}")
     public DancerTo get(@PathVariable int id){
         Dancer dancer = dancerService.getById(id);
@@ -44,13 +61,15 @@ public class DancerRestController {
         dancerService.deleteById(id);
     }
 
-    @GetMapping("/registration/{email}")
-    public Integer checkSignUp(@PathVariable String email){
+    @GetMapping("/registration")
+    public Integer checkSignUp(@RequestParam(value = "email", required = false) String email){
+
         return dancerService.checkSignUpByEmail(email);
     }
 
-    @GetMapping("/identification/{email}/{password}")
-    public Integer checkSignIn(@PathVariable String email, @PathVariable String password){
+    @GetMapping("/identification")
+    public Integer checkSignIn(@RequestParam(value = "email", required = false) String email,
+                               @RequestParam(value = "password", required = false) String password){
         return dancerService.checkSignIpByEmailAndPassword(email, password);
     }
 }

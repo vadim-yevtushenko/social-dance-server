@@ -35,6 +35,11 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
+    public List<School> getAllByCity(String city) {
+        return schoolRepository.findAllByCity(city);
+    }
+
+    @Override
     public List<Review> getReviewsBySchoolId(int id) {
         return new HashSet<>(getById(id).getReviews())
                 .stream().sorted(Comparator.comparing(Review::getDateTime))

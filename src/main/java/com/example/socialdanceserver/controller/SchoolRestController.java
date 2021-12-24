@@ -32,6 +32,11 @@ public class SchoolRestController {
         return SchoolUtils.getSchoolTos(schoolService.getAllByOwnerId(id));
     }
 
+    @GetMapping("/search/{city}")
+    public List<SchoolTo> schoolsByCity (@PathVariable String city){
+        return SchoolUtils.getSchoolTos(schoolService.getAllByCity(city));
+    }
+
     @GetMapping("/{id}")
     public SchoolTo get(@PathVariable int id){
         return SchoolUtils.createSchoolTo(schoolService.getById(id));

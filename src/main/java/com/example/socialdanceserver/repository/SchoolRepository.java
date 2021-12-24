@@ -17,11 +17,19 @@ public interface SchoolRepository extends AbstractBaseEntityRepository {
             "left join schools s on abe.id = s.id " +
             "left join ratings r on abe.id = r.abstract_base_entity_id " +
             "left join entity_info ei on abe.entity_info_id = ei.id " +
-//            "left join reviews rv on rv.school_id = s.id " +
             "where type_entity = 'SCHOOL' " +
             "order by name"
             , nativeQuery = true)
     List<School> findAllByType();
+
+    @Query(value = "select * from abstract_base_entity abe " +
+            "left join schools s on abe.id = s.id " +
+            "left join ratings r on abe.id = r.abstract_base_entity_id " +
+            "left join entity_info ei on abe.entity_info_id = ei.id " +
+            "where type_entity = 'SCHOOL' and lower(ei.city) = lower(:city) " +
+            "order by name"
+            , nativeQuery = true)
+    List<School> findAllByCity(@Param("city") String city);
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join schools s on abe.id = s.id " +

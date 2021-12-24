@@ -16,6 +16,8 @@ public interface SchoolService {
 
     List<School> getAllByOwnerId(int id);
 
+    List<School> getAllByCity(String city);
+
     List<Review> getReviewsBySchoolId(int id);
 
     School getById(int id);

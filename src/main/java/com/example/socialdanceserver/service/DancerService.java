@@ -12,6 +12,14 @@ public interface DancerService {
 
     List<Dancer> getAllByType();
 
+    List<Dancer> getAllByCity(String city);
+
+    List<Dancer> getAllByName(String name);
+
+    List<Dancer> getAllBySurname(String surname);
+
+    List<Dancer> getAllByNameAndSurname(String name, String surname);
+
     Dancer getById(int id);
 
 //    Dancer save(Dancer dancer);

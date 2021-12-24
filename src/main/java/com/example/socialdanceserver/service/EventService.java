@@ -15,6 +15,8 @@ public interface EventService {
 
     List<Event> getAllByOwnerId(int id);
 
+    List<Event> getAllByCity(String city);
+
     Event getById(int id);
 
     EventTo save(EventTo eventTo);

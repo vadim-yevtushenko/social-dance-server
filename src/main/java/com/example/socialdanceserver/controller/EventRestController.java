@@ -27,6 +27,11 @@ public class EventRestController {
         return EventUtils.getEventTos(eventService.getAllByOwnerId(id));
     }
 
+    @GetMapping("/search/{city}")
+    public List<EventTo> eventsByCity(@PathVariable String city){
+        return EventUtils.getEventTos(eventService.getAllByCity(city));
+    }
+
     @GetMapping("/{id}")
     public EventTo get(@PathVariable int id){
         return EventUtils.createEventTo(eventService.getById(id));

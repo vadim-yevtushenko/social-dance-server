@@ -29,6 +29,26 @@ public class DancerServiceImpl implements DancerService {
     }
 
     @Override
+    public List<Dancer> getAllByCity(String city) {
+        return dancerRepository.findAllByCity(city);
+    }
+
+    @Override
+    public List<Dancer> getAllByName(String name) {
+        return dancerRepository.findAllByName(name);
+    }
+
+    @Override
+    public List<Dancer> getAllBySurname(String surname) {
+        return dancerRepository.findAllBySurname(surname);
+    }
+
+    @Override
+    public List<Dancer> getAllByNameAndSurname(String name, String surname) {
+        return dancerRepository.findAllByNameAndSurname(name, surname);
+    }
+
+    @Override
     public Dancer getById(int id) {
         Dancer dancer = null;
         Optional<AbstractBaseEntity> dancerOptional = dancerRepository.findById(id);

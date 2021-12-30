@@ -36,7 +36,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<School> getAllByCity(String city) {
-        return schoolRepository.findAllByCity(city);
+        return new ArrayList<>(new HashSet<>(schoolRepository.findAllByCity(city)));
     }
 
     @Override

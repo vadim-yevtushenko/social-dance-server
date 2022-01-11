@@ -19,8 +19,8 @@ public class Event extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.EVENT);
     }
 
-    public Event(String name, String description, EntityInfo entityInfo, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
-        super(name, description, entityInfo);
+    public Event(String image, String name, String description, EntityInfo entityInfo, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
+        super(image, name, description, entityInfo);
         this.ownerId = ownerId;
         this.dateEvent = dateEvent;
         this.dateFinishEvent = dateFinishEvent;
@@ -28,8 +28,8 @@ public class Event extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.EVENT);
     }
 
-    public Event(Integer id, String name, String description, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
-        super(id, name, description);
+    public Event(Integer id, String image, String name, String description, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
+        super(id, image, name, description);
         this.ownerId = ownerId;
         this.dateEvent = dateEvent;
         this.dateFinishEvent = dateFinishEvent;

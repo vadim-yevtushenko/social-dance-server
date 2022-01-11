@@ -24,14 +24,14 @@ public class School extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public School(String name, String description, EntityInfo entityInfo, int ownerId) {
-        super(name, description, entityInfo);
+    public School(String image, String name, String description, EntityInfo entityInfo, int ownerId) {
+        super(image, name, description, entityInfo);
         this.ownerId = ownerId;
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public School(Integer id, String name, String description, int ownerId) {
-        super(id, name, description);
+    public School(Integer id, String image, String name, String description, int ownerId) {
+        super(id, image, name, description);
         this.ownerId = ownerId;
         this.setTypeEntity(TypeEntity.SCHOOL);
     }

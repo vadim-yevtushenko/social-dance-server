@@ -4,13 +4,14 @@ package com.example.socialdanceserver.controller;
 import com.example.socialdanceserver.dto.DancerTo;
 import com.example.socialdanceserver.model.Dancer;
 import com.example.socialdanceserver.service.DancerService;
-import com.example.socialdanceserver.util.CustomDateSerializer;
+import com.example.socialdanceserver.service.ImageStorageService;
 import com.example.socialdanceserver.util.DancerUtils;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ import java.util.List;
 public class DancerRestController {
 
     static final String REST_URL = "/dancers";
+
+    @Autowired
+    private ImageStorageService imageStorageService;
 
     @Autowired
     private DancerService dancerService;
@@ -53,6 +57,39 @@ public class DancerRestController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public DancerTo save(@RequestBody DancerTo dancerTo){
         return dancerService.save(dancerTo);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/upload-image",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String uploadFile(@RequestParam(value = "id", required = false) int id,
+                             @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        if (file != null) {
+            DancerTo dancerTo = get(id);
+            if (dancerTo.getImage() != null) {
+                imageStorageService.deleteImage(dancerTo.getImage());
+            }
+            dancerTo.setImage(imageStorageService.uploadImage(file));
+            save(dancerTo);
+            return "upload";
+        }
+        return "not upload";
+    }
+
+    @DeleteMapping("/delete-image")
+    public void deleteFile(@RequestParam(value = "id", required = false) int id){
+        DancerTo dancerTo = get(id);
+        imageStorageService.deleteImage(dancerTo.getImage());
+        dancerTo.setImage(null);
+    }
+
+    @GetMapping("/download-image")
+    public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) int id) {
+        DancerTo dancerTo = get(id);
+        Resource resource = imageStorageService.downloadImage(dancerTo.getImage());
+        return ResponseEntity.ok()
+                .body(resource);
     }
 
 

@@ -21,11 +21,11 @@ public class DancerUtils {
         if (dancer.getDances() != null){
             dances = new ArrayList<>(dancer.getDances());
         }
-        return new DancerTo(dancer.getId(), dancer.getName(),
+        return new DancerTo(dancer.getId(), dancer.getImage(), dancer.getName(),
                 dancer.getSurname(), dancer.getSex(),
                 DateTimeUtils.fromLocalDateToDate(dancer.getBirthday()),
                 dancer.getEntityInfo(), dancer.getRole(),
-                dances, dancer.getLoginPassword(), dancer.getDescription());
+                dances, dancer.getDescription());
     }
 
     public static Dancer fromDancerTo(DancerTo dancerTo, Dancer dancer) {
@@ -36,6 +36,7 @@ public class DancerUtils {
             transformDancer.setLoginPassword(dancerTo.getLoginPassword());
             return transformDancer;
         }
+        dancer.setImage(dancerTo.getImage());
         dancer.setName(dancerTo.getName());
         dancer.setSurname(dancerTo.getSurname());
         dancer.setSex(dancerTo.getSex());

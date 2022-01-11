@@ -19,11 +19,6 @@ public class DancerServiceImpl implements DancerService {
     private DancerRepository dancerRepository;
 
     @Override
-    public List<AbstractBaseEntity> getAll() {
-        return dancerRepository.findAll();
-    }
-
-    @Override
     public List<Dancer> getAllByType() {
         return dancerRepository.findAllByType();
     }

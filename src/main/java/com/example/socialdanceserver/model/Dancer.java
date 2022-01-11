@@ -7,7 +7,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "dancers")
@@ -30,9 +29,9 @@ public class Dancer extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.DANCER);
     }
 
-    public Dancer(String name, String description, EntityInfo entityInfo,
+    public Dancer(String image, String name, String description, EntityInfo entityInfo,
                   String surname, String sex, LocalDate birthday, Role role) {
-        super(name, description, entityInfo);
+        super(image, name, description, entityInfo);
         this.surname = surname;
         this.sex = sex;
         this.birthday = birthday;
@@ -40,9 +39,9 @@ public class Dancer extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.DANCER);
     }
 
-    public Dancer(Integer id, String name, String description, String surname,
+    public Dancer(Integer id, String image, String name, String description, String surname,
                   String sex, LocalDate birthday, Role role) {
-        super(id, name, description);
+        super(id, image, name, description);
         this.surname = surname;
         this.sex = sex;
         this.birthday = birthday;

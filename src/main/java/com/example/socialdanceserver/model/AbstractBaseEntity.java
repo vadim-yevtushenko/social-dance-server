@@ -18,6 +18,7 @@ public abstract class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auto_gen")
     @SequenceGenerator(name = "auto_gen", sequenceName = "base_seq", initialValue = 1, allocationSize = 1)
     private Integer id;
+    private String image;
     private String name;
     private String description;
 
@@ -48,14 +49,16 @@ public abstract class AbstractBaseEntity {
 
     }
 
-    public AbstractBaseEntity(String name, String description, EntityInfo entityInfo) {
+    public AbstractBaseEntity(String image, String name, String description, EntityInfo entityInfo) {
+        this.image = image;
         this.name = name;
         this.description = description;
         this.entityInfo = entityInfo;
     }
 
-    public AbstractBaseEntity(Integer id, String name, String description) {
+    public AbstractBaseEntity(Integer id, String image, String name, String description) {
         this.id = id;
+        this.image = image;
         this.name = name;
         this.description = description;
     }
@@ -77,6 +80,14 @@ public abstract class AbstractBaseEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

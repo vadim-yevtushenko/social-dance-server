@@ -125,3 +125,6 @@ CREATE table reviews
     date_time               TIMESTAMP  NOT NULL,
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE
 );
+
+ALTER TABLE abstract_base_entity
+    ADD COLUMN image varchar;

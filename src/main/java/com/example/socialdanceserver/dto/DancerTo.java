@@ -11,6 +11,7 @@ import java.util.List;
 public class DancerTo {
 
     private Integer id;
+    private String image;
     private String name;
     private String surname;
     private String sex;
@@ -26,10 +27,11 @@ public class DancerTo {
     public DancerTo() {
     }
 
-    public DancerTo(Integer id, String name, String surname, String sex,
+    public DancerTo(Integer id, String image, String name, String surname, String sex,
                     Date birthday, EntityInfo entityInfo, Role role,
-                    List<Dance> dances, LoginPassword loginPassword, String description) {
+                    List<Dance> dances, String description) {
         this.id = id;
+        this.image = image;
         this.name = name;
         this.surname = surname;
         this.sex = sex;
@@ -37,15 +39,16 @@ public class DancerTo {
         this.entityInfo = entityInfo;
         this.role = role;
         this.dances = dances;
-        this.loginPassword = loginPassword;
         this.description = description;
     }
 
-    public DancerTo(String name, EntityInfo entityInfo, LoginPassword loginPassword) {
+    public DancerTo(String image, String name, EntityInfo entityInfo, LoginPassword loginPassword) {
+        this.image = image;
         this.name = name;
         this.entityInfo = entityInfo;
         this.loginPassword = loginPassword;
     }
+
 
     public Integer getId() {
         return id;
@@ -53,6 +56,14 @@ public class DancerTo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

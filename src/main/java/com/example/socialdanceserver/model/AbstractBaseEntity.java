@@ -1,5 +1,7 @@
 package com.example.socialdanceserver.model;
 
+import com.example.socialdanceserver.dto.AverageRating;
+import com.example.socialdanceserver.dto.SchoolTo;
 import com.example.socialdanceserver.model.enums.Dance;
 import com.example.socialdanceserver.model.enums.TypeEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -63,15 +65,15 @@ public abstract class AbstractBaseEntity {
         this.description = description;
     }
 
-    public String countRating() {
+    public AverageRating createAverageRating() {
         if (ratings == null || ratings.size() == 0) {
-            return "0";
+            return null;
         }
         int sum = 0;
         for (Rating rating : ratings) {
             sum += rating.getRating();
         }
-        return String.format("%.2f / dancers: %d", ((double)sum / ratings.size()), ratings.size());
+        return new AverageRating((float)sum / ratings.size(), ratings.size());
     }
 
     public Integer getId() {

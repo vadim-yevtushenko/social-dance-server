@@ -16,6 +16,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
+    @Column(name = "incognito")
+    private boolean isIncognito;
+
     private int abstractBaseEntityId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,11 +34,12 @@ public class Review {
     public Review() {
     }
 
-    public Review(int abstractBaseEntityId, School school, String review, LocalDateTime dateTime) {
+    public Review(boolean isIncognito, int abstractBaseEntityId, School school, String review, LocalDateTime dateTime) {
+        this.isIncognito = isIncognito;
         this.abstractBaseEntityId = abstractBaseEntityId;
         this.school = school;
-        this.dateTime = dateTime;
         this.review = review;
+        this.dateTime = dateTime;
     }
 
     public int getId() {
@@ -44,6 +48,14 @@ public class Review {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isIncognito() {
+        return isIncognito;
+    }
+
+    public void setIncognito(boolean incognito) {
+        isIncognito = incognito;
     }
 
     public String getReview() {

@@ -11,14 +11,14 @@ public class SchoolTo {
     private String name;
     private String description;
     private EntityInfo entityInfo;
-    private String rating;
+    private AverageRating rating;
     private int ownerId;
     private List<Dance> dances;
 
     public SchoolTo() {
     }
 
-    public SchoolTo(Integer id, String name, String description, EntityInfo entityInfo, String rating, int ownerId, List<Dance> dances) {
+    public SchoolTo(Integer id, String name, String description, EntityInfo entityInfo, AverageRating rating, int ownerId, List<Dance> dances) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -60,11 +60,11 @@ public class SchoolTo {
         this.entityInfo = entityInfo;
     }
 
-    public String getRating() {
+    public AverageRating getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(AverageRating rating) {
         this.rating = rating;
     }
 

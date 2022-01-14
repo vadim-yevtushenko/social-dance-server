@@ -19,7 +19,7 @@ public class SchoolUtils {
     public static SchoolTo createSchoolTo(School school){
         return new SchoolTo(school.getId(), school.getName(),
                 school.getDescription(), school.getEntityInfo(),
-                school.countRating(), school.getOwnerId(),
+                school.createAverageRating(), school.getOwnerId(),
                 new ArrayList<>(school.getDances()));
     }
 

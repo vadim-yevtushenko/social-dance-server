@@ -128,3 +128,6 @@ CREATE table reviews
 
 ALTER TABLE abstract_base_entity
     ADD COLUMN image varchar;
+
+ALTER TABLE reviews
+    ADD COLUMN incognito boolean;

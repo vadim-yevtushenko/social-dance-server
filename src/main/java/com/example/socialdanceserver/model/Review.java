@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,8 +15,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
 
-    @Column(name = "incognito")
-    private boolean isIncognito;
+    private Boolean incognito;
 
     private int abstractBaseEntityId;
 
@@ -34,8 +32,8 @@ public class Review {
     public Review() {
     }
 
-    public Review(boolean isIncognito, int abstractBaseEntityId, School school, String review, LocalDateTime dateTime) {
-        this.isIncognito = isIncognito;
+    public Review(Boolean incognito, int abstractBaseEntityId, School school, String review, LocalDateTime dateTime) {
+        this.incognito = incognito;
         this.abstractBaseEntityId = abstractBaseEntityId;
         this.school = school;
         this.review = review;
@@ -50,12 +48,12 @@ public class Review {
         this.id = id;
     }
 
-    public boolean isIncognito() {
-        return isIncognito;
+    public Boolean getIncognito() {
+        return incognito;
     }
 
-    public void setIncognito(boolean incognito) {
-        isIncognito = incognito;
+    public void setIncognito(Boolean incognito) {
+        this.incognito = incognito;
     }
 
     public String getReview() {

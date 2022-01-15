@@ -87,7 +87,14 @@ public class DancerRestController {
     @GetMapping("/download-image")
     public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) int id) {
         DancerTo dancerTo = get(id);
-        Resource resource = imageStorageService.downloadImage(dancerTo.getImage());
+        Resource resource = null;
+        if (dancerTo.getImage() != null) {
+            resource = imageStorageService.downloadImage(dancerTo.getImage());
+            if (resource == null){
+                dancerTo.setImage(null);
+                save(dancerTo);
+            }
+        }
         return ResponseEntity.ok()
                 .body(resource);
     }

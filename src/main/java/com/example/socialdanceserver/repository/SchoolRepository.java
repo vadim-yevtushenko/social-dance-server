@@ -65,11 +65,12 @@ public interface SchoolRepository extends AbstractBaseEntityRepository {
 
     @Transactional
     @Modifying(clearAutomatically = true)
-    @Query(value = "insert into reviews (abstract_base_entity_id, school_id, review, date_time) " +
-            "values (:abstractBaseEntityId, :schoolId, :review, :dateTime)"
+    @Query(value = "insert into reviews (abstract_base_entity_id, school_id, review, date_time, incognito) " +
+            "values (:abstractBaseEntityId, :schoolId, :review, :dateTime, :incognito)"
             , nativeQuery = true)
     void createReview(@Param("abstractBaseEntityId") int abstractBaseEntityId,
                       @Param("schoolId") int schoolId, @Param("review") String review,
-                      @Param("dateTime") LocalDateTime dateTime);
+                      @Param("dateTime") LocalDateTime dateTime,
+                      @Param("incognito") Boolean incognito);
 
 }

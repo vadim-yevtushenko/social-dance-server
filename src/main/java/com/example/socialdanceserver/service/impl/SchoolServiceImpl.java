@@ -71,7 +71,8 @@ public class SchoolServiceImpl implements SchoolService {
     public void createReview(ReviewTo reviewTo) {
         schoolRepository.createReview(reviewTo.getAbstractBaseEntityId(),
                 reviewTo.getSchoolId(), reviewTo.getReview(),
-                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()));
+                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()),
+                reviewTo.getIncognito());
     }
 
     @Override

@@ -142,6 +142,7 @@ public class DancerTo {
     public String toString() {
         return "DancerTo{" +
                 "id=" + id +
+                ", image='" + image + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", sex='" + sex + '\'' +

@@ -29,7 +29,7 @@ public class SchoolUtils {
     }
 
     private static ReviewTo createReviewTo(Review review) {
-        return new ReviewTo(review.getId(), review.getAbstractBaseEntityId(),
+        return new ReviewTo(review.getId(), review.getIncognito(), review.getAbstractBaseEntityId(),
                 review.getSchool().getId(), review.getReview(),
                 DateTimeUtils.fromLocalDateTimeToDate(review.getDateTime()));
     }

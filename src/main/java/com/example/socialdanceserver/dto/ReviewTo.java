@@ -6,6 +6,8 @@ public class ReviewTo {
 
     private int id;
 
+    private Boolean incognito;
+
     private int abstractBaseEntityId;
 
     private int schoolId;
@@ -17,15 +19,9 @@ public class ReviewTo {
     public ReviewTo() {
     }
 
-    public ReviewTo(int abstractBaseEntityId, int school, String review, Date dateTime) {
-        this.abstractBaseEntityId = abstractBaseEntityId;
-        this.schoolId = school;
-        this.dateTime = dateTime;
-        this.review = review;
-    }
-
-    public ReviewTo(int id, int abstractBaseEntityId, int schoolId, String review, Date dateTime) {
+    public ReviewTo(int id, Boolean incognito, int abstractBaseEntityId, int schoolId, String review, Date dateTime) {
         this.id = id;
+        this.incognito = incognito;
         this.abstractBaseEntityId = abstractBaseEntityId;
         this.schoolId = schoolId;
         this.review = review;
@@ -38,6 +34,14 @@ public class ReviewTo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Boolean getIncognito() {
+        return incognito;
+    }
+
+    public void setIncognito(Boolean incognito) {
+        this.incognito = incognito;
     }
 
     public int getAbstractBaseEntityId() {
@@ -74,8 +78,9 @@ public class ReviewTo {
 
     @Override
     public String toString() {
-        return "ReviewDto{" +
+        return "ReviewTo{" +
                 "id=" + id +
+                ", incognito=" + incognito +
                 ", abstractBaseEntityId=" + abstractBaseEntityId +
                 ", schoolId=" + schoolId +
                 ", review='" + review + '\'' +

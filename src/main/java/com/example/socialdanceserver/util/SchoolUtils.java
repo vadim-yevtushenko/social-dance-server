@@ -17,7 +17,7 @@ public class SchoolUtils {
     }
 
     public static SchoolTo createSchoolTo(School school){
-        return new SchoolTo(school.getId(), school.getName(),
+        return new SchoolTo(school.getId(), school.getImage(), school.getName(),
                 school.getDescription(), school.getEntityInfo(),
                 school.createAverageRating(), school.getOwnerId(),
                 new ArrayList<>(school.getDances()));

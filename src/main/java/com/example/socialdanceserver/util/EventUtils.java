@@ -18,7 +18,7 @@ public class EventUtils {
     }
 
     public static EventTo createEventTo(Event event){
-        return new EventTo(event.getId(), event.getName(), event.getDescription(),
+        return new EventTo(event.getId(), event.getImage(), event.getName(), event.getDescription(),
                 event.getEntityInfo(), DateTimeUtils.fromLocalDateTimeToDate(event.getDateEvent()),
                 DateTimeUtils.fromLocalDateTimeToDate(event.getDateFinishEvent()),
                 DateTimeUtils.fromLocalDateTimeToDate(event.getDatePublication()),
@@ -26,7 +26,7 @@ public class EventUtils {
     }
 
     public static Event fromEventTo(EventTo eventTo, Event event) {
-
+        event.setImage(eventTo.getImage());
         event.setName(eventTo.getName());
         event.setOwnerId(eventTo.getOwnerId());
         event.setDescription(eventTo.getDescription());

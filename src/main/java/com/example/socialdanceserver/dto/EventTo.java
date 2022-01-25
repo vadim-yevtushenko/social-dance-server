@@ -9,6 +9,7 @@ import java.util.List;
 public class EventTo {
 
     private Integer id;
+    private String image;
     private String name;
     private String description;
     private EntityInfo entityInfo;
@@ -21,8 +22,9 @@ public class EventTo {
     public EventTo() {
     }
 
-    public EventTo(Integer id, String name, String description, EntityInfo entityInfo, Date dateEvent, Date dateFinishEvent, Date datePublication, List<Dance> dances, int ownerId) {
+    public EventTo(Integer id, String image, String name, String description, EntityInfo entityInfo, Date dateEvent, Date dateFinishEvent, Date datePublication, List<Dance> dances, int ownerId) {
         this.id = id;
+        this.image = image;
         this.name = name;
         this.description = description;
         this.entityInfo = entityInfo;
@@ -39,6 +41,14 @@ public class EventTo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

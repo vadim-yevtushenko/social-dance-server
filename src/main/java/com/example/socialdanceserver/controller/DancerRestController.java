@@ -72,9 +72,9 @@ public class DancerRestController {
             }
             dancerTo.setImage(imageStorageService.uploadImage(file));
             save(dancerTo);
-            return "upload";
+            return "uploaded";
         }
-        return "not upload";
+        return "not uploaded";
     }
 
     @DeleteMapping("/delete-image")
@@ -82,6 +82,7 @@ public class DancerRestController {
         DancerTo dancerTo = get(id);
         imageStorageService.deleteImage(dancerTo.getImage());
         dancerTo.setImage(null);
+        save(dancerTo);
     }
 
     @GetMapping("/download-image")

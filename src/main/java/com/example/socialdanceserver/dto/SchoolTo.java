@@ -8,6 +8,7 @@ import java.util.List;
 public class SchoolTo {
 
     private Integer id;
+    private String image;
     private String name;
     private String description;
     private EntityInfo entityInfo;
@@ -18,8 +19,9 @@ public class SchoolTo {
     public SchoolTo() {
     }
 
-    public SchoolTo(Integer id, String name, String description, EntityInfo entityInfo, AverageRating rating, int ownerId, List<Dance> dances) {
+    public SchoolTo(Integer id, String image, String name, String description, EntityInfo entityInfo, AverageRating rating, int ownerId, List<Dance> dances) {
         this.id = id;
+        this.image = image;
         this.name = name;
         this.description = description;
         this.entityInfo = entityInfo;
@@ -34,6 +36,14 @@ public class SchoolTo {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

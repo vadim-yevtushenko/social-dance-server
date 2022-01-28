@@ -1,9 +1,11 @@
 package com.example.socialdanceserver.repository;
 
 import com.example.socialdanceserver.model.Dancer;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -62,6 +64,22 @@ public interface DancerRepository extends AbstractBaseEntityRepository {
             "where lp.email = :email and lp.password = :password",
             nativeQuery = true)
     Integer checkSignInByEmailAndPassword(@Param("email") String email,
-                                      @Param("password") String password);
+                                          @Param("password") String password);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update login_password set password = :password " +
+            "where email = :email"
+            , nativeQuery = true)
+    Integer changePassword(@Param("email") String email,
+                           @Param("password") String password);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update login_password set email = :newEmail " +
+            "where email = :oldEmail"
+    , nativeQuery = true)
+    Integer changeEmail(@Param("oldEmail") String oldEmail,
+                        @Param("newEmail") String newEmail);
 }
 

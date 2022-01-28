@@ -26,7 +26,7 @@ public class SchoolServiceImpl implements SchoolService {
     @Override
     public List<School> getAllByType() {
         List<School> schoolList = new ArrayList<>(new HashSet<>(schoolRepository.findAllByType()));
-        schoolList.sort(Comparator.comparing(s -> s.getEntityInfo().getCity()));
+        schoolList.sort(Comparator.comparing(s -> s.getEntityInfo().getCity().toLowerCase(Locale.ROOT)));
         return schoolList;
     }
 

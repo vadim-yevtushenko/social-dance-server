@@ -25,5 +25,9 @@ public interface DancerService {
 
     Integer checkSignUpByEmail(String email);
 
-    Integer checkSignIpByEmailAndPassword(String email, String password);
+    Integer checkSignInByEmailAndPassword(String email, String password);
+
+    Boolean changePassword(String email, String password);
+
+    Boolean changeEmail(String oldEmail, String newEmail);
 }

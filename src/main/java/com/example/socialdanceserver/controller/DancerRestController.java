@@ -103,6 +103,7 @@ public class DancerRestController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id){
+        deleteFile(id);
         dancerService.deleteById(id);
     }
 
@@ -115,6 +116,18 @@ public class DancerRestController {
     @GetMapping("/identification")
     public Integer checkSignIn(@RequestParam(value = "email", required = false) String email,
                                @RequestParam(value = "password", required = false) String password){
-        return dancerService.checkSignIpByEmailAndPassword(email, password);
+        return dancerService.checkSignInByEmailAndPassword(email, password);
+    }
+
+    @PostMapping("/change-password")
+    public Boolean changePassword(@RequestParam(value = "email", required = false) String email,
+                                  @RequestParam(value = "password", required = false) String password){
+        return dancerService.changePassword(email, password);
+    }
+
+    @PostMapping("/change-email")
+    public Boolean changeEmail(@RequestParam(value = "oldEmail", required = false) String oldEmail,
+                               @RequestParam(value = "newEmail", required = false) String newEmail){
+        return dancerService.changeEmail(oldEmail, newEmail);
     }
 }

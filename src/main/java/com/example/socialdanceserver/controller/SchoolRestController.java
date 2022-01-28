@@ -72,13 +72,14 @@ public class SchoolRestController {
     @PostMapping(value = "/upload-image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImage(@RequestParam(value = "id", required = false) int id,
-                              @RequestPart(value = "image", required = false)MultipartFile image){
-        if (image != null){
+                              @RequestPart(value = "file", required = false) MultipartFile file){
+        System.out.println(file);
+        if (file != null){
             School school = schoolService.getById(id);
             if (school.getImage() != null){
                 imageStorageService.deleteImage(school.getImage());
             }
-            school.setImage(imageStorageService.uploadImage(image));
+            school.setImage(imageStorageService.uploadImage(file));
             save(school);
             return "uploaded";
         }
@@ -109,6 +110,7 @@ public class SchoolRestController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
+        deleteImage(id);
         schoolService.deleteById(id);
     }
 

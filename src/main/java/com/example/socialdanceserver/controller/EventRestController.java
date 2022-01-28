@@ -52,15 +52,15 @@ public class EventRestController {
 
     @ResponseBody
     @PostMapping(value = "/upload-image",
-    consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImage(@RequestParam(value = "id", required = false) int id,
-                              @RequestPart(value = "image", required = false)MultipartFile image){
-        if (image != null){
+                              @RequestPart(value = "file", required = false)MultipartFile file){
+        if (file != null){
             EventTo eventTo = get(id);
             if (eventTo.getImage() != null){
                 imageStorageService.deleteImage(eventTo.getImage());
             }
-            eventTo.setImage(imageStorageService.uploadImage(image));
+            eventTo.setImage(imageStorageService.uploadImage(file));
             save(eventTo);
             return "uploaded";
         }
@@ -91,6 +91,7 @@ public class EventRestController {
 
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id){
+        deleteImage(id);
         eventService.deleteById(id);
     }
 }

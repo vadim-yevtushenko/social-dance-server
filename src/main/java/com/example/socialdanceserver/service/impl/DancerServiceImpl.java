@@ -83,11 +83,28 @@ public class DancerServiceImpl implements DancerService {
     }
 
     @Override
-    public Integer checkSignIpByEmailAndPassword(String email, String password) {
+    public Integer checkSignInByEmailAndPassword(String email, String password) {
         Integer check = dancerRepository.checkSignInByEmailAndPassword(email, password);
         if (check == null){
             return 0;
         }
         return check;
+    }
+
+    @Override
+    public Boolean changePassword(String email, String password) {
+        dancerRepository.changePassword(email, password);
+        return true;
+    }
+
+    @Override
+    public Boolean changeEmail(String oldEmail, String newEmail) {
+        Integer checkEmail = dancerRepository.checkSignUpByEmail(newEmail);
+        System.out.println("checkEmail " + checkEmail);
+        if (checkEmail == null){
+            dancerRepository.changeEmail(oldEmail, newEmail);
+            return true;
+        }
+        return false;
     }
 }

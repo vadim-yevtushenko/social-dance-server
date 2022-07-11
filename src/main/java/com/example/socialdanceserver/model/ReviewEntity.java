@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reviews")
-public class Review {
+public class ReviewEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -23,19 +23,19 @@ public class Review {
     @JoinColumn(name = "school_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    private School school;
+    private SchoolEntity schoolEntity;
 
     private String review;
 
     private LocalDateTime dateTime;
 
-    public Review() {
+    public ReviewEntity() {
     }
 
-    public Review(Boolean incognito, int abstractBaseEntityId, School school, String review, LocalDateTime dateTime) {
+    public ReviewEntity(Boolean incognito, int abstractBaseEntityId, SchoolEntity schoolEntity, String review, LocalDateTime dateTime) {
         this.incognito = incognito;
         this.abstractBaseEntityId = abstractBaseEntityId;
-        this.school = school;
+        this.schoolEntity = schoolEntity;
         this.review = review;
         this.dateTime = dateTime;
     }
@@ -72,12 +72,12 @@ public class Review {
         this.abstractBaseEntityId = abstractBaseEntityId;
     }
 
-    public School getSchool() {
-        return school;
+    public SchoolEntity getSchool() {
+        return schoolEntity;
     }
 
-    public void setSchool(School school) {
-        this.school = school;
+    public void setSchool(SchoolEntity schoolEntity) {
+        this.schoolEntity = schoolEntity;
     }
 
     public LocalDateTime getDateTime() {
@@ -93,7 +93,7 @@ public class Review {
         return "Review{" +
                 "id=" + id +
                 ", abstractBaseEntityId=" + abstractBaseEntityId +
-                ", school=" + school.getName() +
+                ", school=" + schoolEntity.getName() +
                 ", dateTime=" + dateTime +
                 ", review='" + review + '\'' +
                 '}';

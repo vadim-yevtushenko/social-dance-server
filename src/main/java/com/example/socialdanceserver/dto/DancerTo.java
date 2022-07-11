@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.dto;
 
 import com.example.socialdanceserver.model.EntityInfo;
-import com.example.socialdanceserver.model.LoginPassword;
+import com.example.socialdanceserver.model.LoginPasswordEntity;
 import com.example.socialdanceserver.model.enums.Dance;
 import com.example.socialdanceserver.model.enums.Role;
 
@@ -21,7 +21,7 @@ public class DancerTo {
     private EntityInfo entityInfo;
     private Role role;
     private List<Dance> dances;
-    private LoginPassword loginPassword;
+    private LoginPasswordEntity loginPasswordEntity;
     private String description;
 
     public DancerTo() {
@@ -41,14 +41,6 @@ public class DancerTo {
         this.dances = dances;
         this.description = description;
     }
-
-    public DancerTo(String image, String name, EntityInfo entityInfo, LoginPassword loginPassword) {
-        this.image = image;
-        this.name = name;
-        this.entityInfo = entityInfo;
-        this.loginPassword = loginPassword;
-    }
-
 
     public Integer getId() {
         return id;
@@ -122,12 +114,12 @@ public class DancerTo {
         this.role = role;
     }
 
-    public LoginPassword getLoginPassword() {
-        return loginPassword;
+    public LoginPasswordEntity getLoginPassword() {
+        return loginPasswordEntity;
     }
 
-    public void setLoginPassword(LoginPassword loginPassword) {
-        this.loginPassword = loginPassword;
+    public void setLoginPassword(LoginPasswordEntity loginPasswordEntity) {
+        this.loginPasswordEntity = loginPasswordEntity;
     }
 
     public String getDescription() {
@@ -150,7 +142,7 @@ public class DancerTo {
                 ", entityInfo=" + entityInfo +
                 ", role=" + role +
                 ", dances=" + dances +
-                ", loginPassword=" + loginPassword +
+                ", loginPassword=" + loginPasswordEntity +
                 ", description='" + description + '\'' +
                 '}';
     }

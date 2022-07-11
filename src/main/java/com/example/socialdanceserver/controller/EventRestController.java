@@ -3,7 +3,7 @@ package com.example.socialdanceserver.controller;
 import com.example.socialdanceserver.dto.EventTo;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
-import com.example.socialdanceserver.util.EventUtils;
+import com.example.socialdanceserver.mapper.EventMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -27,22 +27,22 @@ public class EventRestController {
 
     @GetMapping
     public List<EventTo> events(){
-        return EventUtils.getEventTos(eventService.getAllByType());
+        return EventMapper.mapEventTos(eventService.getAllByType());
     }
 
     @GetMapping("/owner/{id}")
     public List<EventTo> eventsByOwner(@PathVariable int id){
-        return EventUtils.getEventTos(eventService.getAllByOwnerId(id));
+        return EventMapper.mapEventTos(eventService.getAllByOwnerId(id));
     }
 
     @GetMapping("/search/{city}")
     public List<EventTo> eventsByCity(@PathVariable String city){
-        return EventUtils.getEventTos(eventService.getAllByCity(city));
+        return EventMapper.mapEventTos(eventService.getAllByCity(city));
     }
 
     @GetMapping("/{id}")
     public EventTo get(@PathVariable int id){
-        return EventUtils.createEventTo(eventService.getById(id));
+        return EventMapper.mapEventTo(eventService.getById(id));
     }
 
     @PostMapping

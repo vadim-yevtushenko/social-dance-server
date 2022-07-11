@@ -2,10 +2,10 @@ package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.dto.DancerTo;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Dancer;
+import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
-import com.example.socialdanceserver.util.DancerUtils;
+import com.example.socialdanceserver.mapper.DancerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,48 +19,48 @@ public class DancerServiceImpl implements DancerService {
     private DancerRepository dancerRepository;
 
     @Override
-    public List<Dancer> getAllByType() {
+    public List<DancerEntity> getAllByType() {
         return dancerRepository.findAllByType();
     }
 
     @Override
-    public List<Dancer> getAllByCity(String city) {
+    public List<DancerEntity> getAllByCity(String city) {
         return dancerRepository.findAllByCity(city);
     }
 
     @Override
-    public List<Dancer> getAllByName(String name) {
+    public List<DancerEntity> getAllByName(String name) {
         return dancerRepository.findAllByName(name);
     }
 
     @Override
-    public List<Dancer> getAllBySurname(String surname) {
+    public List<DancerEntity> getAllBySurname(String surname) {
         return dancerRepository.findAllBySurname(surname);
     }
 
     @Override
-    public List<Dancer> getAllByNameAndSurname(String name, String surname) {
+    public List<DancerEntity> getAllByNameAndSurname(String name, String surname) {
         return dancerRepository.findAllByNameAndSurname(name, surname);
     }
 
     @Override
-    public Dancer getById(int id) {
-        Dancer dancer = null;
+    public DancerEntity getById(int id) {
+        DancerEntity dancerEntity = null;
         Optional<AbstractBaseEntity> dancerOptional = dancerRepository.findById(id);
         if (dancerOptional.isPresent()){
-            dancer = (Dancer) dancerOptional.get();
+            dancerEntity = (DancerEntity) dancerOptional.get();
         }
-        return dancer;
+        return dancerEntity;
     }
 
     @Override
     public DancerTo save(DancerTo dancerTo) {
-        Dancer oldDancer = new Dancer();
+        DancerEntity oldDancerEntity = new DancerEntity();
         if (dancerTo.getId() != null){
-            oldDancer = getById(dancerTo.getId());
+            oldDancerEntity = getById(dancerTo.getId());
         }
-        Dancer dancer = DancerUtils.fromDancerTo(dancerTo, oldDancer);
-        return DancerUtils.createDancerTo(dancerRepository.save(dancer));
+        DancerEntity dancerEntity = DancerMapper.populateDancerEntity(dancerTo, oldDancerEntity);
+        return DancerMapper.mapDancerEntity(dancerRepository.save(dancerEntity));
     }
 
     @Override

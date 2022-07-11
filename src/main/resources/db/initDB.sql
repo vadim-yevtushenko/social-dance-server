@@ -1,10 +1,10 @@
 drop table if exists dances;
 drop table if exists abstract_base_entity_dances;
-drop table if exists reviews;
+drop table if exists reviewEntities;
 drop table if exists schools;
 drop table if exists dancers;
 drop table if exists events;
-drop table if exists ratings;
+drop table if exists ratingEntities;
 drop table if exists abstract_base_entity;
 drop table if exists entity_info;
 drop table if exists login_password;
@@ -105,23 +105,23 @@ CREATE table abstract_base_entity_dances
 );
 
 CREATE SEQUENCE ratings_seq START WITH 1;
-CREATE table ratings
+CREATE table ratingEntities
 (
     id                      INTEGER PRIMARY KEY DEFAULT nextval('ratings_seq'),
     abstract_base_entity_id INTEGER  NOT NULL,
     reviewer_id             INTEGER  NOT NULL,
-    rating                  INTEGER  NOT NULL,
+    ratingEntity                  INTEGER  NOT NULL,
     CONSTRAINT id_con UNIQUE (id),
     FOREIGN KEY (abstract_base_entity_id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE reviews_seq START WITH 1;
-CREATE table reviews
+CREATE table reviewEntities
 (
     id                      INTEGER PRIMARY KEY DEFAULT nextval('reviews_seq'),
     abstract_base_entity_id INTEGER    NOT NULL,
     school_id               INTEGER    NOT NULL,
-    review                  varchar    NOT NULL,
+    reviewEntity                  varchar    NOT NULL,
     date_time               TIMESTAMP  NOT NULL,
     FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE
 );
@@ -129,5 +129,5 @@ CREATE table reviews
 ALTER TABLE abstract_base_entity
     ADD COLUMN image varchar;
 
-ALTER TABLE reviews
+ALTER TABLE reviewEntities
     ADD COLUMN incognito boolean;

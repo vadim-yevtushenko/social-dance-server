@@ -2,10 +2,10 @@ package com.example.socialdanceserver.controller;
 
 
 import com.example.socialdanceserver.dto.DancerTo;
-import com.example.socialdanceserver.model.Dancer;
+import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
-import com.example.socialdanceserver.util.DancerUtils;
+import com.example.socialdanceserver.mapper.DancerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -29,29 +29,29 @@ public class DancerRestController {
 
     @GetMapping
     public List<DancerTo> dancers (){
-        return DancerUtils.getDancerTos(dancerService.getAllByType());
+        return DancerMapper.mapDancerTos(dancerService.getAllByType());
     }
 
     @GetMapping("/search/{city}")
-    public List<DancerTo> dancersByCity(@PathVariable String city){
-        return DancerUtils.getDancerTos(dancerService.getAllByCity(city));
+    public List<DancerTo> dancersByNameAndSurname(@PathVariable String city){
+        return DancerMapper.mapDancerTos(dancerService.getAllByCity(city));
     }
 
     @GetMapping("/search")
-    public List<DancerTo> dancersByCity(@RequestParam(value = "name", required = false) String name,
-                                        @RequestParam(value = "surname", required = false) String surname){
+    public List<DancerTo> dancersByNameAndSurname(@RequestParam(value = "name", required = false) String name,
+                                                  @RequestParam(value = "surname", required = false) String surname){
         if (name.isEmpty()){
-            return DancerUtils.getDancerTos(dancerService.getAllBySurname(surname));
+            return DancerMapper.mapDancerTos(dancerService.getAllBySurname(surname));
         }else if (surname.isEmpty()){
-            return DancerUtils.getDancerTos(dancerService.getAllByName(name));
+            return DancerMapper.mapDancerTos(dancerService.getAllByName(name));
         }
-        return DancerUtils.getDancerTos(dancerService.getAllByNameAndSurname(name, surname));
+        return DancerMapper.mapDancerTos(dancerService.getAllByNameAndSurname(name, surname));
     }
 
     @GetMapping("/{id}")
     public DancerTo get(@PathVariable int id){
-        Dancer dancer = dancerService.getById(id);
-        return  dancer != null ? DancerUtils.createDancerTo(dancer) : new DancerTo();
+        DancerEntity dancerEntity = dancerService.getById(id);
+        return  dancerEntity != null ? DancerMapper.mapDancerEntity(dancerEntity) : new DancerTo();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

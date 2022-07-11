@@ -3,11 +3,11 @@ package com.example.socialdanceserver.controller;
 import com.example.socialdanceserver.dto.RatingTo;
 import com.example.socialdanceserver.dto.ReviewTo;
 import com.example.socialdanceserver.dto.SchoolTo;
-import com.example.socialdanceserver.model.Rating;
-import com.example.socialdanceserver.model.School;
+import com.example.socialdanceserver.model.RatingEntity;
+import com.example.socialdanceserver.model.SchoolEntity;
 import com.example.socialdanceserver.service.ImageStorageService;
 import com.example.socialdanceserver.service.SchoolService;
-import com.example.socialdanceserver.util.SchoolUtils;
+import com.example.socialdanceserver.mapper.SchoolMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -31,41 +31,41 @@ public class SchoolRestController {
 
     @GetMapping
     public List<SchoolTo> schools() {
-        return SchoolUtils.getSchoolTos(schoolService.getAllByType());
+        return SchoolMapper.mapSchoolTos(schoolService.getAllByType());
     }
 
     @GetMapping("/owner/{id}")
     public List<SchoolTo> schoolsByOwner(@PathVariable int id) {
-        return SchoolUtils.getSchoolTos(schoolService.getAllByOwnerId(id));
+        return SchoolMapper.mapSchoolTos(schoolService.getAllByOwnerId(id));
     }
 
     @GetMapping("/search/{city}")
     public List<SchoolTo> schoolsByCity(@PathVariable String city) {
-        return SchoolUtils.getSchoolTos(schoolService.getAllByCity(city));
+        return SchoolMapper.mapSchoolTos(schoolService.getAllByCity(city));
     }
 
     @GetMapping("/{id}")
     public SchoolTo get(@PathVariable int id) {
-        return SchoolUtils.createSchoolTo(schoolService.getById(id));
+        return SchoolMapper.mapSchoolTo(schoolService.getById(id));
     }
 
     @GetMapping("/{id}/{dancerId}")
     public Integer getRatingByDancerId(@PathVariable int id, @PathVariable int dancerId) {
-        School school = schoolService.getById(id);
-        if (school.getRatings() == null) {
+        SchoolEntity schoolEntity = schoolService.getById(id);
+        if (schoolEntity.getRatings() == null) {
             return 0;
         }
-        for (Rating schoolRating : school.getRatings()) {
-            if (schoolRating.getReviewer_id() == dancerId) {
-                return schoolRating.getRating();
+        for (RatingEntity schoolRatingEntity : schoolEntity.getRatings()) {
+            if (schoolRatingEntity.getReviewer_id() == dancerId) {
+                return schoolRatingEntity.getRating();
             }
         }
         return 0;
     }
 
     @PostMapping
-    public School save(@RequestBody School school) {
-        return schoolService.save(school);
+    public SchoolEntity save(@RequestBody SchoolEntity schoolEntity) {
+        return schoolService.save(schoolEntity);
     }
 
     @ResponseBody
@@ -75,12 +75,12 @@ public class SchoolRestController {
                               @RequestPart(value = "file", required = false) MultipartFile file){
         System.out.println(file);
         if (file != null){
-            School school = schoolService.getById(id);
-            if (school.getImage() != null){
-                imageStorageService.deleteImage(school.getImage());
+            SchoolEntity schoolEntity = schoolService.getById(id);
+            if (schoolEntity.getImage() != null){
+                imageStorageService.deleteImage(schoolEntity.getImage());
             }
-            school.setImage(imageStorageService.uploadImage(file));
-            save(school);
+            schoolEntity.setImage(imageStorageService.uploadImage(file));
+            save(schoolEntity);
             return "uploaded";
         }
         return "not uploaded";
@@ -88,21 +88,21 @@ public class SchoolRestController {
 
     @DeleteMapping("/delete-image")
     public void deleteImage(@RequestParam(value = "id", required = false) int id){
-        School school = schoolService.getById(id);
-        imageStorageService.deleteImage(school.getImage());
-        school.setImage(null);
-        save(school);
+        SchoolEntity schoolEntity = schoolService.getById(id);
+        imageStorageService.deleteImage(schoolEntity.getImage());
+        schoolEntity.setImage(null);
+        save(schoolEntity);
     }
 
     @GetMapping("/download-image")
     public ResponseEntity<Resource> downloadImage(@RequestParam(value = "id", required = false) int id){
-        School school = schoolService.getById(id);
+        SchoolEntity schoolEntity = schoolService.getById(id);
         Resource resource = null;
-        if (school.getImage() != null){
-            resource = imageStorageService.downloadImage(school.getImage());
+        if (schoolEntity.getImage() != null){
+            resource = imageStorageService.downloadImage(schoolEntity.getImage());
             if (resource == null){
-                school.setImage(null);
-                save(school);
+                schoolEntity.setImage(null);
+                save(schoolEntity);
             }
         }
         return ResponseEntity.ok().body(resource);
@@ -116,7 +116,7 @@ public class SchoolRestController {
 
     @GetMapping("/reviews/{id}")
     public List<ReviewTo> findReviewsBySchool(@PathVariable int id) {
-        return SchoolUtils.getReviewTos(schoolService.getReviewsBySchoolId(id));
+        return SchoolMapper.mapReviewTos(schoolService.getReviewsBySchoolId(id));
     }
 
     @PostMapping("/ratings")

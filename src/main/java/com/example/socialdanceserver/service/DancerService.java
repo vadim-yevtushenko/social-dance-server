@@ -1,23 +1,23 @@
 package com.example.socialdanceserver.service;
 
 import com.example.socialdanceserver.dto.DancerTo;
-import com.example.socialdanceserver.model.Dancer;
+import com.example.socialdanceserver.model.DancerEntity;
 
 import java.util.List;
 
 public interface DancerService {
 
-    List<Dancer> getAllByType();
+    List<DancerEntity> getAllByType();
 
-    List<Dancer> getAllByCity(String city);
+    List<DancerEntity> getAllByCity(String city);
 
-    List<Dancer> getAllByName(String name);
+    List<DancerEntity> getAllByName(String name);
 
-    List<Dancer> getAllBySurname(String surname);
+    List<DancerEntity> getAllBySurname(String surname);
 
-    List<Dancer> getAllByNameAndSurname(String name, String surname);
+    List<DancerEntity> getAllByNameAndSurname(String name, String surname);
 
-    Dancer getById(int id);
+    DancerEntity getById(int id);
 
     DancerTo save(DancerTo dancerTo);
 

@@ -2,10 +2,10 @@ package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.dto.EventTo;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Event;
+import com.example.socialdanceserver.model.EventEntity;
 import com.example.socialdanceserver.repository.EventRepository;
 import com.example.socialdanceserver.service.EventService;
-import com.example.socialdanceserver.util.EventUtils;
+import com.example.socialdanceserver.mapper.EventMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,38 +24,38 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAllByType() {
+    public List<EventEntity> getAllByType() {
         return eventRepository.findAllByType();
     }
 
     @Override
-    public List<Event> getAllByOwnerId(int id) {
+    public List<EventEntity> getAllByOwnerId(int id) {
         return eventRepository.findAllByOwnerId(id);
     }
 
     @Override
-    public List<Event> getAllByCity(String city) {
+    public List<EventEntity> getAllByCity(String city) {
         return eventRepository.findAllByCity(city);
     }
 
     @Override
-    public Event getById(int id) {
-        Event event = null;
+    public EventEntity getById(int id) {
+        EventEntity eventEntity = null;
         Optional<AbstractBaseEntity> eventOptional = eventRepository.findById(id);
         if (eventOptional.isPresent()){
-            event = (Event) eventOptional.get();
+            eventEntity = (EventEntity) eventOptional.get();
         }
-        return event;
+        return eventEntity;
     }
 
     @Override
     public EventTo save(EventTo eventTo) {
-        Event oldEvent = new Event();
+        EventEntity oldEventEntity = new EventEntity();
         if (eventTo.getId() != null){
-            oldEvent = getById(eventTo.getId());
+            oldEventEntity = getById(eventTo.getId());
         }
-        Event event = EventUtils.fromEventTo(eventTo, oldEvent);
-        return EventUtils.createEventTo(eventRepository.save(event));
+        EventEntity eventEntity = EventMapper.populateEventTo(eventTo, oldEventEntity);
+        return EventMapper.mapEventTo(eventRepository.save(eventEntity));
     }
 
 //    @Override

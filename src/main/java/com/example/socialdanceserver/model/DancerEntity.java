@@ -10,7 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "dancers")
-public class Dancer extends AbstractBaseEntity{
+public class DancerEntity extends AbstractBaseEntity{
 
     private String surname;
     private String sex;
@@ -22,15 +22,15 @@ public class Dancer extends AbstractBaseEntity{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "login_password_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private LoginPassword loginPassword;
+    private LoginPasswordEntity loginPasswordEntity;
 
 
-    public Dancer() {
+    public DancerEntity() {
         this.setTypeEntity(TypeEntity.DANCER);
     }
 
-    public Dancer(String image, String name, String description, EntityInfo entityInfo,
-                  String surname, String sex, LocalDate birthday, Role role) {
+    public DancerEntity(String image, String name, String description, EntityInfo entityInfo,
+                        String surname, String sex, LocalDate birthday, Role role) {
         super(image, name, description, entityInfo);
         this.surname = surname;
         this.sex = sex;
@@ -39,8 +39,8 @@ public class Dancer extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.DANCER);
     }
 
-    public Dancer(Integer id, String image, String name, String description, String surname,
-                  String sex, LocalDate birthday, Role role) {
+    public DancerEntity(Integer id, String image, String name, String description, String surname,
+                        String sex, LocalDate birthday, Role role) {
         super(id, image, name, description);
         this.surname = surname;
         this.sex = sex;
@@ -81,12 +81,12 @@ public class Dancer extends AbstractBaseEntity{
         this.role = role;
     }
 
-    public LoginPassword getLoginPassword() {
-        return loginPassword;
+    public LoginPasswordEntity getLoginPassword() {
+        return loginPasswordEntity;
     }
 
-    public void setLoginPassword(LoginPassword loginPassword) {
-        this.loginPassword = loginPassword;
+    public void setLoginPassword(LoginPasswordEntity loginPasswordEntity) {
+        this.loginPasswordEntity = loginPasswordEntity;
     }
 
     @Override

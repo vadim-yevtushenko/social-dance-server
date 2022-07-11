@@ -3,7 +3,7 @@ package com.example.socialdanceserver.service;
 
 import com.example.socialdanceserver.dto.EventTo;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Event;
+import com.example.socialdanceserver.model.EventEntity;
 
 import java.util.List;
 
@@ -11,13 +11,13 @@ public interface EventService {
 
     List<AbstractBaseEntity> getAll();
 
-    List<Event> getAllByType();
+    List<EventEntity> getAllByType();
 
-    List<Event> getAllByOwnerId(int id);
+    List<EventEntity> getAllByOwnerId(int id);
 
-    List<Event> getAllByCity(String city);
+    List<EventEntity> getAllByCity(String city);
 
-    Event getById(int id);
+    EventEntity getById(int id);
 
     EventTo save(EventTo eventTo);
 

@@ -10,38 +10,38 @@ import java.util.List;
 
 @Entity
 @Table(name = "schools")
-public class School extends AbstractBaseEntity{
+public class SchoolEntity extends AbstractBaseEntity{
 
     private int ownerId;
 
-    @OneToMany(mappedBy = "school", fetch = FetchType.EAGER,
+    @OneToMany(mappedBy = "schoolEntity", fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    private List<Review> reviews;
+    private List<ReviewEntity> reviewEntities;
 
-    public School() {
+    public SchoolEntity() {
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public School(String image, String name, String description, EntityInfo entityInfo, int ownerId) {
+    public SchoolEntity(String image, String name, String description, EntityInfo entityInfo, int ownerId) {
         super(image, name, description, entityInfo);
         this.ownerId = ownerId;
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public School(Integer id, String image, String name, String description, int ownerId) {
+    public SchoolEntity(Integer id, String image, String name, String description, int ownerId) {
         super(id, image, name, description);
         this.ownerId = ownerId;
         this.setTypeEntity(TypeEntity.SCHOOL);
     }
 
-    public List<Review> getReviews() {
-        return reviews;
+    public List<ReviewEntity> getReviews() {
+        return reviewEntities;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public void setReviews(List<ReviewEntity> reviewEntities) {
+        this.reviewEntities = reviewEntities;
     }
 
     public int getOwnerId() {
@@ -56,7 +56,7 @@ public class School extends AbstractBaseEntity{
     public String toString() {
         return "School{" +
                 "ownerId=" + ownerId +
-                ", reviews=" + reviews +
+                ", reviews=" + reviewEntities +
                 "} " + super.toString();
     }
 }

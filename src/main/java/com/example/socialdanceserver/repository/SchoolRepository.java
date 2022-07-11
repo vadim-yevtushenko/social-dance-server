@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.repository;
 
-import com.example.socialdanceserver.model.School;
+import com.example.socialdanceserver.model.SchoolEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +20,7 @@ public interface SchoolRepository extends AbstractBaseEntityRepository {
             "where type_entity = 'SCHOOL' " +
             "order by name"
             , nativeQuery = true)
-    List<School> findAllByType();
+    List<SchoolEntity> findAllByType();
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join schools s on abe.id = s.id " +
@@ -29,7 +29,7 @@ public interface SchoolRepository extends AbstractBaseEntityRepository {
             "where type_entity = 'SCHOOL' and lower(ei.city) = lower(:city) " +
             "order by name"
             , nativeQuery = true)
-    List<School> findAllByCity(@Param("city") String city);
+    List<SchoolEntity> findAllByCity(@Param("city") String city);
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join schools s on abe.id = s.id " +
@@ -38,7 +38,7 @@ public interface SchoolRepository extends AbstractBaseEntityRepository {
 //            "left join reviews rv on rv.school_id = s.id " +
             "where s.owner_id = :id"
             , nativeQuery = true)
-    List<School> findAllByOwnerId(@Param("id") int id);
+    List<SchoolEntity> findAllByOwnerId(@Param("id") int id);
 
     @Transactional
     @Modifying(clearAutomatically = true)

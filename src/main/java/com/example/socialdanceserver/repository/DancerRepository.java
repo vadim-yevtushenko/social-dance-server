@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.repository;
 
-import com.example.socialdanceserver.model.Dancer;
+import com.example.socialdanceserver.model.DancerEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +18,7 @@ public interface DancerRepository extends AbstractBaseEntityRepository {
             "where type_entity = 'DANCER' " +
             "order by name, surname",
             nativeQuery = true)
-    List<Dancer> findAllByType();
+    List<DancerEntity> findAllByType();
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +
@@ -26,7 +26,7 @@ public interface DancerRepository extends AbstractBaseEntityRepository {
             "where type_entity = 'DANCER' and lower(ei.city) = lower(:city) " +
             "order by name, surname",
             nativeQuery = true)
-    List<Dancer> findAllByCity(@Param("city") String city);
+    List<DancerEntity> findAllByCity(@Param("city") String city);
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +
@@ -34,7 +34,7 @@ public interface DancerRepository extends AbstractBaseEntityRepository {
             "where type_entity = 'DANCER' and lower(abe.name) = lower(:name) " +
             "order by surname",
             nativeQuery = true)
-    List<Dancer> findAllByName(@Param("name") String name);
+    List<DancerEntity> findAllByName(@Param("name") String name);
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +
@@ -42,14 +42,14 @@ public interface DancerRepository extends AbstractBaseEntityRepository {
             "where type_entity = 'DANCER' and lower(d.surname) = lower(:surname) " +
             "order by name",
             nativeQuery = true)
-    List<Dancer> findAllBySurname(@Param("surname") String surname);
+    List<DancerEntity> findAllBySurname(@Param("surname") String surname);
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +
             "left join entity_info ei on abe.entity_info_id = ei.id " +
             "where type_entity = 'DANCER' and lower(abe.name) = lower(:name) and lower(d.surname) = lower(:surname) ",
             nativeQuery = true)
-    List<Dancer> findAllByNameAndSurname(@Param("name") String name, @Param("surname") String surname);
+    List<DancerEntity> findAllByNameAndSurname(@Param("name") String name, @Param("surname") String surname);
 
     @Query(value = "select abe.id from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +

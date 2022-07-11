@@ -24,42 +24,42 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public List<School> getAllByType() {
-        List<School> schoolList = new ArrayList<>(new HashSet<>(schoolRepository.findAllByType()));
-        schoolList.sort(Comparator.comparing(s -> s.getEntityInfo().getCity().toLowerCase(Locale.ROOT)));
-        return schoolList;
+    public List<SchoolEntity> getAllByType() {
+        List<SchoolEntity> schoolEntityList = new ArrayList<>(new HashSet<>(schoolRepository.findAllByType()));
+        schoolEntityList.sort(Comparator.comparing(s -> s.getEntityInfo().getCity().toLowerCase(Locale.ROOT)));
+        return schoolEntityList;
     }
 
     @Override
-    public List<School> getAllByOwnerId(int id) {
+    public List<SchoolEntity> getAllByOwnerId(int id) {
         return schoolRepository.findAllByOwnerId(id);
     }
 
     @Override
-    public List<School> getAllByCity(String city) {
+    public List<SchoolEntity> getAllByCity(String city) {
         return new ArrayList<>(new HashSet<>(schoolRepository.findAllByCity(city)));
     }
 
     @Override
-    public List<Review> getReviewsBySchoolId(int id) {
+    public List<ReviewEntity> getReviewsBySchoolId(int id) {
         return new HashSet<>(getById(id).getReviews())
-                .stream().sorted(Comparator.comparing(Review::getDateTime))
+                .stream().sorted(Comparator.comparing(ReviewEntity::getDateTime))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public School getById(int id) {
-        School school = null;
+    public SchoolEntity getById(int id) {
+        SchoolEntity schoolEntity = null;
         Optional<AbstractBaseEntity> optionalSchool = schoolRepository.findById(id);
         if (optionalSchool.isPresent()){
-            school = (School) optionalSchool.get();
+            schoolEntity = (SchoolEntity) optionalSchool.get();
         }
-        return school;
+        return schoolEntity;
     }
 
     @Override
-    public School save(School school) {
-        return schoolRepository.save(school);
+    public SchoolEntity save(SchoolEntity schoolEntity) {
+        return schoolRepository.save(schoolEntity);
     }
 
     @Override
@@ -78,10 +78,10 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public void saveRating(RatingTo ratingTo) {
-        School school = getById(ratingTo.getEntityId());
+        SchoolEntity schoolEntity = getById(ratingTo.getEntityId());
         boolean isExist = false;
-        for (Rating rating : school.getRatings()){
-            if (rating.getReviewer_id() == ratingTo.getReviewerId()){
+        for (RatingEntity ratingEntity : schoolEntity.getRatings()){
+            if (ratingEntity.getReviewer_id() == ratingTo.getReviewerId()){
                 isExist = true;
                 break;
             }
@@ -101,8 +101,8 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public void update(School school) {
-        schoolRepository.save(school);
+    public void update(SchoolEntity schoolEntity) {
+        schoolRepository.save(schoolEntity);
     }
 
     @Override

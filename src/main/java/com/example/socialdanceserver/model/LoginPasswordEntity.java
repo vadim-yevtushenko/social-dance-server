@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "login_password")
-public class LoginPassword {
+public class LoginPasswordEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -13,10 +13,10 @@ public class LoginPassword {
     private String email;
     private String password;
 
-    public LoginPassword() {
+    public LoginPasswordEntity() {
     }
 
-    public LoginPassword(String email, String password) {
+    public LoginPasswordEntity(String email, String password) {
         this.email = email;
         this.password = password;
     }

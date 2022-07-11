@@ -8,18 +8,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
-public class Event extends AbstractBaseEntity{
+public class EventEntity extends AbstractBaseEntity{
 
     private int ownerId;
     private LocalDateTime dateEvent;
     private LocalDateTime dateFinishEvent;
     private LocalDateTime datePublication;
 
-    public Event() {
+    public EventEntity() {
         this.setTypeEntity(TypeEntity.EVENT);
     }
 
-    public Event(String image, String name, String description, EntityInfo entityInfo, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
+    public EventEntity(String image, String name, String description, EntityInfo entityInfo, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
         super(image, name, description, entityInfo);
         this.ownerId = ownerId;
         this.dateEvent = dateEvent;
@@ -28,7 +28,7 @@ public class Event extends AbstractBaseEntity{
         this.setTypeEntity(TypeEntity.EVENT);
     }
 
-    public Event(Integer id, String image, String name, String description, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
+    public EventEntity(Integer id, String image, String name, String description, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
         super(id, image, name, description);
         this.ownerId = ownerId;
         this.dateEvent = dateEvent;

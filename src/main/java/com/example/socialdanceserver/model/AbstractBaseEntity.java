@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.model;
 
-import com.example.socialdanceserver.dto.AverageRating;
-import com.example.socialdanceserver.dto.SchoolTo;
+import com.example.socialdanceserver.dto.AverageRatingTo;
 import com.example.socialdanceserver.model.enums.Dance;
 import com.example.socialdanceserver.model.enums.TypeEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -18,7 +17,7 @@ public abstract class AbstractBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auto_gen")
-    @SequenceGenerator(name = "auto_gen", sequenceName = "base_seq", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "auto_gen", sequenceName = "base_seq", allocationSize = 1)
     private Integer id;
     private String image;
     private String name;
@@ -36,14 +35,14 @@ public abstract class AbstractBaseEntity {
             cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    private Set<Rating> ratings;
+    private Set<RatingEntity> ratingEntities;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "abstract_base_entity_dances",
             joinColumns = @JoinColumn(name = "entity_id"))
     @Column(name = "dance")
     @ElementCollection(fetch = FetchType.EAGER)
-    @JoinColumn(name = "entity_id")
+    @JoinColumn(name = "id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Dance> dances;
 
@@ -65,15 +64,15 @@ public abstract class AbstractBaseEntity {
         this.description = description;
     }
 
-    public AverageRating createAverageRating() {
-        if (ratings == null || ratings.size() == 0) {
+    public AverageRatingTo createAverageRating() {
+        if (ratingEntities == null || ratingEntities.size() == 0) {
             return null;
         }
         int sum = 0;
-        for (Rating rating : ratings) {
-            sum += rating.getRating();
+        for (RatingEntity ratingEntity : ratingEntities) {
+            sum += ratingEntity.getRating();
         }
-        return new AverageRating((float)sum / ratings.size(), ratings.size());
+        return new AverageRatingTo((float)sum / ratingEntities.size(), ratingEntities.size());
     }
 
     public Integer getId() {
@@ -108,12 +107,12 @@ public abstract class AbstractBaseEntity {
         this.description = description;
     }
 
-    public Set<Rating> getRatings() {
-        return ratings;
+    public Set<RatingEntity> getRatings() {
+        return ratingEntities;
     }
 
-    public void setRatings(Set<Rating> ratings) {
-        this.ratings = ratings;
+    public void setRatings(Set<RatingEntity> ratingEntities) {
+        this.ratingEntities = ratingEntities;
     }
 
 
@@ -149,7 +148,7 @@ public abstract class AbstractBaseEntity {
                 ", description='" + description + '\'' +
                 ", typeEntity=" + typeEntity +
                 ", entityInfo=" + entityInfo +
-                ", ratings=" + ratings +
+                ", ratings=" + ratingEntities +
                 ", dances=" + dances +
                 '}';
     }

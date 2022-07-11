@@ -11,22 +11,6 @@ public class RatingTo {
 
     private int rating;
 
-    public RatingTo() {
-    }
-
-    public RatingTo(int entityId, int reviewerId, int rating) {
-        this.entityId = entityId;
-        this.reviewerId = reviewerId;
-        this.rating = rating;
-    }
-
-    public RatingTo(int id, int entityId, int reviewerId, int rating) {
-        this.id = id;
-        this.entityId = entityId;
-        this.reviewerId = reviewerId;
-        this.rating = rating;
-    }
-
     public int getId() {
         return id;
     }

@@ -3,8 +3,8 @@ package com.example.socialdanceserver.service;
 import com.example.socialdanceserver.dto.RatingTo;
 import com.example.socialdanceserver.dto.ReviewTo;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Review;
-import com.example.socialdanceserver.model.School;
+import com.example.socialdanceserver.model.ReviewEntity;
+import com.example.socialdanceserver.model.SchoolEntity;
 
 import java.util.List;
 
@@ -12,17 +12,17 @@ public interface SchoolService {
 
     List<AbstractBaseEntity> getAll();
 
-    List<School> getAllByType();
+    List<SchoolEntity> getAllByType();
 
-    List<School> getAllByOwnerId(int id);
+    List<SchoolEntity> getAllByOwnerId(int id);
 
-    List<School> getAllByCity(String city);
+    List<SchoolEntity> getAllByCity(String city);
 
-    List<Review> getReviewsBySchoolId(int id);
+    List<ReviewEntity> getReviewsBySchoolId(int id);
 
-    School getById(int id);
+    SchoolEntity getById(int id);
 
-    School save(School school);
+    SchoolEntity save(SchoolEntity schoolEntity);
 
     void createRating(RatingTo ratingTo);
 
@@ -32,7 +32,7 @@ public interface SchoolService {
 
     void saveReview(ReviewTo reviewTo);
 
-    void update(School school);
+    void update(SchoolEntity schoolEntity);
 
     void deleteById(int id);
 

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "ratings")
-public class Rating {
+public class RatingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,10 +25,10 @@ public class Rating {
 
     private int rating;
 
-    public Rating() {
+    public RatingEntity() {
     }
 
-    public Rating(AbstractBaseEntity abstractBaseEntity, int reviewer_id, int rating) {
+    public RatingEntity(AbstractBaseEntity abstractBaseEntity, int reviewer_id, int rating) {
         this.abstractBaseEntity = abstractBaseEntity;
         this.reviewer_id = reviewer_id;
         this.rating = rating;
@@ -70,8 +70,8 @@ public class Rating {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Rating rating1 = (Rating) o;
-        return id == rating1.id && reviewer_id == rating1.reviewer_id && rating == rating1.rating && Objects.equals(abstractBaseEntity, rating1.abstractBaseEntity);
+        RatingEntity ratingEntity1 = (RatingEntity) o;
+        return id == ratingEntity1.id && reviewer_id == ratingEntity1.reviewer_id && rating == ratingEntity1.rating && Objects.equals(abstractBaseEntity, ratingEntity1.abstractBaseEntity);
     }
 
     @Override

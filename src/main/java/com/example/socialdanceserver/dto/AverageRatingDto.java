@@ -1,10 +1,10 @@
 package com.example.socialdanceserver.dto;
 
-public class AverageRatingTo {
+public class AverageRatingDto {
     private float averageRating;
     private int numberOfRatings;
 
-    public AverageRatingTo(float averageRating, int numberOfRatings) {
+    public AverageRatingDto(float averageRating, int numberOfRatings) {
         this.averageRating = averageRating;
         this.numberOfRatings = numberOfRatings;
     }

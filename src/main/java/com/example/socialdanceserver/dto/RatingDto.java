@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.dto;
 
 
-public class RatingTo {
+public class RatingDto {
 
     private int id;
 

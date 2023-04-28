@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.RatingTo;
-import com.example.socialdanceserver.dto.ReviewTo;
+import com.example.socialdanceserver.dto.RatingDto;
+import com.example.socialdanceserver.dto.ReviewDto;
 import com.example.socialdanceserver.model.*;
 import com.example.socialdanceserver.repository.SchoolRepository;
 import com.example.socialdanceserver.service.SchoolService;
@@ -63,41 +63,41 @@ public class SchoolServiceImpl implements SchoolService {
     }
 
     @Override
-    public void createRating(RatingTo ratingTo) {
-        schoolRepository.createRating(ratingTo.getEntityId(),
-                ratingTo.getReviewerId(), ratingTo.getRating());
+    public void createRating(RatingDto ratingDto) {
+        schoolRepository.createRating(ratingDto.getEntityId(),
+                ratingDto.getReviewerId(), ratingDto.getRating());
     }
 
     @Override
-    public void createReview(ReviewTo reviewTo) {
-        schoolRepository.createReview(reviewTo.getAbstractBaseEntityId(),
-                reviewTo.getSchoolId(), reviewTo.getReview(),
-                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()),
-                reviewTo.getIncognito());
+    public void createReview(ReviewDto reviewDto) {
+        schoolRepository.createReview(reviewDto.getAbstractBaseEntityId(),
+                reviewDto.getSchoolId(), reviewDto.getReview(),
+                DateTimeUtils.fromDateToLocalDateTime(reviewDto.getDateTime()),
+                reviewDto.getIncognito());
     }
 
     @Override
-    public void saveRating(RatingTo ratingTo) {
-        SchoolEntity schoolEntity = getById(ratingTo.getEntityId());
+    public void saveRating(RatingDto ratingDto) {
+        SchoolEntity schoolEntity = getById(ratingDto.getEntityId());
         boolean isExist = false;
         for (RatingEntity ratingEntity : schoolEntity.getRatings()){
-            if (ratingEntity.getReviewer_id() == ratingTo.getReviewerId()){
+            if (ratingEntity.getReviewer_id() == ratingDto.getReviewerId()){
                 isExist = true;
                 break;
             }
         }
         if (isExist) {
-            schoolRepository.saveRating(ratingTo.getReviewerId(), ratingTo.getRating());
+            schoolRepository.saveRating(ratingDto.getReviewerId(), ratingDto.getRating());
         } else {
-            System.out.println(ratingTo);
-            schoolRepository.createRating(ratingTo.getEntityId(), ratingTo.getReviewerId(), ratingTo.getRating());
+            System.out.println(ratingDto);
+            schoolRepository.createRating(ratingDto.getEntityId(), ratingDto.getReviewerId(), ratingDto.getRating());
         }
     }
 
     @Override
-    public void saveReview(ReviewTo reviewTo) {
-        schoolRepository.saveReview(reviewTo.getId(), reviewTo.getReview(),
-                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()));
+    public void saveReview(ReviewDto reviewDto) {
+        schoolRepository.saveReview(reviewDto.getId(), reviewDto.getReview(),
+                DateTimeUtils.fromDateToLocalDateTime(reviewDto.getDateTime()));
     }
 
     @Override

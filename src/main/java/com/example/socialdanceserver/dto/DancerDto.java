@@ -8,7 +8,7 @@ import com.example.socialdanceserver.model.enums.Role;
 import java.util.Date;
 import java.util.List;
 
-public class DancerTo {
+public class DancerDto {
 
     private Integer id;
     private String image;
@@ -24,12 +24,12 @@ public class DancerTo {
     private LoginPasswordEntity loginPasswordEntity;
     private String description;
 
-    public DancerTo() {
+    public DancerDto() {
     }
 
-    public DancerTo(Integer id, String image, String name, String surname, String sex,
-                    Date birthday, EntityInfo entityInfo, Role role,
-                    List<Dance> dances, String description) {
+    public DancerDto(Integer id, String image, String name, String surname, String sex,
+                     Date birthday, EntityInfo entityInfo, Role role,
+                     List<Dance> dances, String description) {
         this.id = id;
         this.image = image;
         this.name = name;

@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.DancerTo;
+import com.example.socialdanceserver.dto.DancerDto;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.repository.DancerRepository;
@@ -54,12 +54,12 @@ public class DancerServiceImpl implements DancerService {
     }
 
     @Override
-    public DancerTo save(DancerTo dancerTo) {
+    public DancerDto save(DancerDto dancerDto) {
         DancerEntity oldDancerEntity = new DancerEntity();
-        if (dancerTo.getId() != null){
-            oldDancerEntity = getById(dancerTo.getId());
+        if (dancerDto.getId() != null){
+            oldDancerEntity = getById(dancerDto.getId());
         }
-        DancerEntity dancerEntity = DancerMapper.populateDancerEntity(dancerTo, oldDancerEntity);
+        DancerEntity dancerEntity = DancerMapper.populateDancerEntity(dancerDto, oldDancerEntity);
         return DancerMapper.mapDancerEntity(dancerRepository.save(dancerEntity));
     }
 

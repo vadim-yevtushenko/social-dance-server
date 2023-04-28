@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.controller;
 
-
-import com.example.socialdanceserver.dto.DancerTo;
+import com.example.socialdanceserver.dto.DancerDto;
 import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
@@ -28,18 +27,18 @@ public class DancerRestController {
     private DancerService dancerService;
 
     @GetMapping
-    public List<DancerTo> dancers (){
+    public List<DancerDto> dancers (){
         return DancerMapper.mapDancerTos(dancerService.getAllByType());
     }
 
     @GetMapping("/search/{city}")
-    public List<DancerTo> dancersByNameAndSurname(@PathVariable String city){
+    public List<DancerDto> dancersByNameAndSurname(@PathVariable String city){
         return DancerMapper.mapDancerTos(dancerService.getAllByCity(city));
     }
 
     @GetMapping("/search")
-    public List<DancerTo> dancersByNameAndSurname(@RequestParam(value = "name", required = false) String name,
-                                                  @RequestParam(value = "surname", required = false) String surname){
+    public List<DancerDto> dancersByNameAndSurname(@RequestParam(value = "name", required = false) String name,
+                                                   @RequestParam(value = "surname", required = false) String surname){
         if (name.isEmpty()){
             return DancerMapper.mapDancerTos(dancerService.getAllBySurname(surname));
         }else if (surname.isEmpty()){
@@ -49,14 +48,14 @@ public class DancerRestController {
     }
 
     @GetMapping("/{id}")
-    public DancerTo get(@PathVariable int id){
+    public DancerDto get(@PathVariable int id){
         DancerEntity dancerEntity = dancerService.getById(id);
-        return  dancerEntity != null ? DancerMapper.mapDancerEntity(dancerEntity) : new DancerTo();
+        return  dancerEntity != null ? DancerMapper.mapDancerEntity(dancerEntity) : new DancerDto();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public DancerTo save(@RequestBody DancerTo dancerTo){
-        return dancerService.save(dancerTo);
+    public DancerDto save(@RequestBody DancerDto dancerDto){
+        return dancerService.save(dancerDto);
     }
 
     @ResponseBody
@@ -66,12 +65,12 @@ public class DancerRestController {
                              @RequestPart(value = "file", required = false) MultipartFile file) {
 
         if (file != null) {
-            DancerTo dancerTo = get(id);
-            if (dancerTo.getImage() != null) {
-                imageStorageService.deleteImage(dancerTo.getImage());
+            DancerDto dancerDto = get(id);
+            if (dancerDto.getImage() != null) {
+                imageStorageService.deleteImage(dancerDto.getImage());
             }
-            dancerTo.setImage(imageStorageService.uploadImage(file));
-            save(dancerTo);
+            dancerDto.setImage(imageStorageService.uploadImage(file));
+            save(dancerDto);
             return "uploaded";
         }
         return "not uploaded";
@@ -79,21 +78,21 @@ public class DancerRestController {
 
     @DeleteMapping("/delete-image")
     public void deleteFile(@RequestParam(value = "id", required = false) int id){
-        DancerTo dancerTo = get(id);
-        imageStorageService.deleteImage(dancerTo.getImage());
-        dancerTo.setImage(null);
-        save(dancerTo);
+        DancerDto dancerDto = get(id);
+        imageStorageService.deleteImage(dancerDto.getImage());
+        dancerDto.setImage(null);
+        save(dancerDto);
     }
 
     @GetMapping("/download-image")
     public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) int id) {
-        DancerTo dancerTo = get(id);
+        DancerDto dancerDto = get(id);
         Resource resource = null;
-        if (dancerTo.getImage() != null) {
-            resource = imageStorageService.downloadImage(dancerTo.getImage());
+        if (dancerDto.getImage() != null) {
+            resource = imageStorageService.downloadImage(dancerDto.getImage());
             if (resource == null){
-                dancerTo.setImage(null);
-                save(dancerTo);
+                dancerDto.setImage(null);
+                save(dancerDto);
             }
         }
         return ResponseEntity.ok()

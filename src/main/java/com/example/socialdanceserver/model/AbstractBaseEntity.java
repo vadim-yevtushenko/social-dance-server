@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.model;
 
-import com.example.socialdanceserver.dto.AverageRatingTo;
+import com.example.socialdanceserver.dto.AverageRatingDto;
 import com.example.socialdanceserver.model.enums.Dance;
 import com.example.socialdanceserver.model.enums.TypeEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -64,7 +64,7 @@ public abstract class AbstractBaseEntity {
         this.description = description;
     }
 
-    public AverageRatingTo createAverageRating() {
+    public AverageRatingDto createAverageRating() {
         if (ratingEntities == null || ratingEntities.size() == 0) {
             return null;
         }
@@ -72,7 +72,7 @@ public abstract class AbstractBaseEntity {
         for (RatingEntity ratingEntity : ratingEntities) {
             sum += ratingEntity.getRating();
         }
-        return new AverageRatingTo((float)sum / ratingEntities.size(), ratingEntities.size());
+        return new AverageRatingDto((float)sum / ratingEntities.size(), ratingEntities.size());
     }
 
     public Integer getId() {

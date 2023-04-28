@@ -5,21 +5,21 @@ import com.example.socialdanceserver.model.enums.Dance;
 
 import java.util.List;
 
-public class SchoolTo {
+public class SchoolDto {
 
     private Integer id;
     private String image;
     private String name;
     private String description;
     private EntityInfo entityInfo;
-    private AverageRatingTo rating;
+    private AverageRatingDto rating;
     private int ownerId;
     private List<Dance> dances;
 
-    public SchoolTo() {
+    public SchoolDto() {
     }
 
-    public SchoolTo(Integer id, String image, String name, String description, EntityInfo entityInfo, AverageRatingTo rating, int ownerId, List<Dance> dances) {
+    public SchoolDto(Integer id, String image, String name, String description, EntityInfo entityInfo, AverageRatingDto rating, int ownerId, List<Dance> dances) {
         this.id = id;
         this.image = image;
         this.name = name;
@@ -70,11 +70,11 @@ public class SchoolTo {
         this.entityInfo = entityInfo;
     }
 
-    public AverageRatingTo getRating() {
+    public AverageRatingDto getRating() {
         return rating;
     }
 
-    public void setRating(AverageRatingTo rating) {
+    public void setRating(AverageRatingDto rating) {
         this.rating = rating;
     }
 

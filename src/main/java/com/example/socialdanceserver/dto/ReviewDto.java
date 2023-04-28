@@ -2,7 +2,7 @@ package com.example.socialdanceserver.dto;
 
 import java.util.Date;
 
-public class ReviewTo {
+public class ReviewDto {
 
     private int id;
 
@@ -16,10 +16,10 @@ public class ReviewTo {
 
     private Date dateTime;
 
-    public ReviewTo() {
+    public ReviewDto() {
     }
 
-    public ReviewTo(int id, Boolean incognito, int abstractBaseEntityId, int schoolId, String review, Date dateTime) {
+    public ReviewDto(int id, Boolean incognito, int abstractBaseEntityId, int schoolId, String review, Date dateTime) {
         this.id = id;
         this.incognito = incognito;
         this.abstractBaseEntityId = abstractBaseEntityId;

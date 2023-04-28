@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.service;
 
 
-import com.example.socialdanceserver.dto.EventTo;
+import com.example.socialdanceserver.dto.EventDto;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.EventEntity;
 
@@ -19,7 +19,7 @@ public interface EventService {
 
     EventEntity getById(int id);
 
-    EventTo save(EventTo eventTo);
+    EventDto save(EventDto eventDto);
 
 //    void update(Event event);
 

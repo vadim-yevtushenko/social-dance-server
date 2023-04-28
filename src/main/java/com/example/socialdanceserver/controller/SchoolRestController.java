@@ -1,8 +1,8 @@
 package com.example.socialdanceserver.controller;
 
-import com.example.socialdanceserver.dto.RatingTo;
-import com.example.socialdanceserver.dto.ReviewTo;
-import com.example.socialdanceserver.dto.SchoolTo;
+import com.example.socialdanceserver.dto.RatingDto;
+import com.example.socialdanceserver.dto.ReviewDto;
+import com.example.socialdanceserver.dto.SchoolDto;
 import com.example.socialdanceserver.model.RatingEntity;
 import com.example.socialdanceserver.model.SchoolEntity;
 import com.example.socialdanceserver.service.ImageStorageService;
@@ -30,22 +30,22 @@ public class SchoolRestController {
     private SchoolService schoolService;
 
     @GetMapping
-    public List<SchoolTo> schools() {
+    public List<SchoolDto> schools() {
         return SchoolMapper.mapSchoolTos(schoolService.getAllByType());
     }
 
     @GetMapping("/owner/{id}")
-    public List<SchoolTo> schoolsByOwner(@PathVariable int id) {
+    public List<SchoolDto> schoolsByOwner(@PathVariable int id) {
         return SchoolMapper.mapSchoolTos(schoolService.getAllByOwnerId(id));
     }
 
     @GetMapping("/search/{city}")
-    public List<SchoolTo> schoolsByCity(@PathVariable String city) {
+    public List<SchoolDto> schoolsByCity(@PathVariable String city) {
         return SchoolMapper.mapSchoolTos(schoolService.getAllByCity(city));
     }
 
     @GetMapping("/{id}")
-    public SchoolTo get(@PathVariable int id) {
+    public SchoolDto get(@PathVariable int id) {
         return SchoolMapper.mapSchoolTo(schoolService.getById(id));
     }
 
@@ -115,17 +115,17 @@ public class SchoolRestController {
     }
 
     @GetMapping("/reviews/{id}")
-    public List<ReviewTo> findReviewsBySchool(@PathVariable int id) {
+    public List<ReviewDto> findReviewsBySchool(@PathVariable int id) {
         return SchoolMapper.mapReviewTos(schoolService.getReviewsBySchoolId(id));
     }
 
     @PostMapping("/ratings")
-    public void saveRating(@RequestBody RatingTo ratingTo) {
-        schoolService.saveRating(ratingTo);
+    public void saveRating(@RequestBody RatingDto ratingDto) {
+        schoolService.saveRating(ratingDto);
     }
 
     @PostMapping("/reviews")
-    public void saveReview(@RequestBody ReviewTo reviewTo) {
-        schoolService.createReview(reviewTo);
+    public void saveReview(@RequestBody ReviewDto reviewDto) {
+        schoolService.createReview(reviewDto);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.EventTo;
+import com.example.socialdanceserver.dto.EventDto;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.EventEntity;
 import com.example.socialdanceserver.repository.EventRepository;
@@ -49,12 +49,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventTo save(EventTo eventTo) {
+    public EventDto save(EventDto eventDto) {
         EventEntity oldEventEntity = new EventEntity();
-        if (eventTo.getId() != null){
-            oldEventEntity = getById(eventTo.getId());
+        if (eventDto.getId() != null){
+            oldEventEntity = getById(eventDto.getId());
         }
-        EventEntity eventEntity = EventMapper.populateEventTo(eventTo, oldEventEntity);
+        EventEntity eventEntity = EventMapper.populateEventTo(eventDto, oldEventEntity);
         return EventMapper.mapEventTo(eventRepository.save(eventEntity));
     }
 

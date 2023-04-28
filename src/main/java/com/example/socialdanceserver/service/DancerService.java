@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.dto.DancerTo;
+import com.example.socialdanceserver.dto.DancerDto;
 import com.example.socialdanceserver.model.DancerEntity;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public interface DancerService {
 
     DancerEntity getById(int id);
 
-    DancerTo save(DancerTo dancerTo);
+    DancerDto save(DancerDto dancerDto);
 
     void deleteById(int id);
 

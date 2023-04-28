@@ -6,7 +6,7 @@ import com.example.socialdanceserver.model.enums.Dance;
 import java.util.Date;
 import java.util.List;
 
-public class EventTo {
+public class EventDto {
 
     private Integer id;
     private String image;
@@ -19,10 +19,10 @@ public class EventTo {
     private List<Dance> dances;
     private int ownerId;
 
-    public EventTo() {
+    public EventDto() {
     }
 
-    public EventTo(Integer id, String image, String name, String description, EntityInfo entityInfo, Date dateEvent, Date dateFinishEvent, Date datePublication, List<Dance> dances, int ownerId) {
+    public EventDto(Integer id, String image, String name, String description, EntityInfo entityInfo, Date dateEvent, Date dateFinishEvent, Date datePublication, List<Dance> dances, int ownerId) {
         this.id = id;
         this.image = image;
         this.name = name;

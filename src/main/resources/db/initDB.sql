@@ -71,7 +71,7 @@ CREATE table dancers
 (
     id                  INTEGER PRIMARY KEY DEFAULT nextval('dancers_seq'),
     surname             VARCHAR,
-    sex                 VARCHAR,
+    gender              VARCHAR,
     birthday            TIMESTAMP,
     role                VARCHAR,
     login_password_id   INTEGER,
@@ -99,8 +99,8 @@ CREATE table dances
 
 CREATE table abstract_base_entity_dances
 (
-    entity_id integer not null,
-    dance     varchar,
+    entity_id INTEGER NOT NULL,
+    dance     VARCHAR,
     FOREIGN KEY (entity_id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
 );
 

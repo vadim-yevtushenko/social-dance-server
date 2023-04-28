@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.controller;
 
-import com.example.socialdanceserver.dto.EventTo;
+import com.example.socialdanceserver.dto.EventDto;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import com.example.socialdanceserver.mapper.EventMapper;
@@ -26,28 +26,28 @@ public class EventRestController {
     private EventService eventService;
 
     @GetMapping
-    public List<EventTo> events(){
+    public List<EventDto> events(){
         return EventMapper.mapEventTos(eventService.getAllByType());
     }
 
     @GetMapping("/owner/{id}")
-    public List<EventTo> eventsByOwner(@PathVariable int id){
+    public List<EventDto> eventsByOwner(@PathVariable int id){
         return EventMapper.mapEventTos(eventService.getAllByOwnerId(id));
     }
 
     @GetMapping("/search/{city}")
-    public List<EventTo> eventsByCity(@PathVariable String city){
+    public List<EventDto> eventsByCity(@PathVariable String city){
         return EventMapper.mapEventTos(eventService.getAllByCity(city));
     }
 
     @GetMapping("/{id}")
-    public EventTo get(@PathVariable int id){
+    public EventDto get(@PathVariable int id){
         return EventMapper.mapEventTo(eventService.getById(id));
     }
 
     @PostMapping
-    public EventTo save(@RequestBody EventTo eventTo){
-        return eventService.save(eventTo);
+    public EventDto save(@RequestBody EventDto eventDto){
+        return eventService.save(eventDto);
     }
 
     @ResponseBody
@@ -56,12 +56,12 @@ public class EventRestController {
     public String uploadImage(@RequestParam(value = "id", required = false) int id,
                               @RequestPart(value = "file", required = false)MultipartFile file){
         if (file != null){
-            EventTo eventTo = get(id);
-            if (eventTo.getImage() != null){
-                imageStorageService.deleteImage(eventTo.getImage());
+            EventDto eventDto = get(id);
+            if (eventDto.getImage() != null){
+                imageStorageService.deleteImage(eventDto.getImage());
             }
-            eventTo.setImage(imageStorageService.uploadImage(file));
-            save(eventTo);
+            eventDto.setImage(imageStorageService.uploadImage(file));
+            save(eventDto);
             return "uploaded";
         }
         return "not uploaded";
@@ -69,21 +69,21 @@ public class EventRestController {
 
     @DeleteMapping("/delete-image")
     public void deleteImage(@RequestParam(value = "id",required = false) int id){
-        EventTo eventTo = get(id);
-        imageStorageService.deleteImage(eventTo.getImage());
-        eventTo.setImage(null);
-        save(eventTo);
+        EventDto eventDto = get(id);
+        imageStorageService.deleteImage(eventDto.getImage());
+        eventDto.setImage(null);
+        save(eventDto);
     }
 
     @GetMapping("/download-image")
     public ResponseEntity<Resource> downloadImage(@RequestParam(value = "id", required = false) int id){
-        EventTo eventTo = get(id);
+        EventDto eventDto = get(id);
         Resource resource = null;
-        if (eventTo.getImage() != null){
-            resource = imageStorageService.downloadImage(eventTo.getImage());
+        if (eventDto.getImage() != null){
+            resource = imageStorageService.downloadImage(eventDto.getImage());
             if (resource == null){
-                eventTo.setImage(null);
-                save(eventTo);
+                eventDto.setImage(null);
+                save(eventDto);
             }
         }
         return ResponseEntity.ok().body(resource);

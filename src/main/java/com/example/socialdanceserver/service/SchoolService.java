@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.dto.RatingTo;
-import com.example.socialdanceserver.dto.ReviewTo;
+import com.example.socialdanceserver.dto.RatingDto;
+import com.example.socialdanceserver.dto.ReviewDto;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.ReviewEntity;
 import com.example.socialdanceserver.model.SchoolEntity;
@@ -24,13 +24,13 @@ public interface SchoolService {
 
     SchoolEntity save(SchoolEntity schoolEntity);
 
-    void createRating(RatingTo ratingTo);
+    void createRating(RatingDto ratingDto);
 
-    void createReview(ReviewTo reviewTo);
+    void createReview(ReviewDto reviewDto);
 
-    void saveRating(RatingTo ratingTo);
+    void saveRating(RatingDto ratingDto);
 
-    void saveReview(ReviewTo reviewTo);
+    void saveReview(ReviewDto reviewDto);
 
     void update(SchoolEntity schoolEntity);
 

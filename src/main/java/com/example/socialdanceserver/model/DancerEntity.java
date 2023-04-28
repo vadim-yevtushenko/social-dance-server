@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class DancerEntity extends AbstractBaseEntity{
 
     private String surname;
-    private String sex;
+    private String gender;
     private LocalDate birthday;
 
     @Enumerated(EnumType.STRING)
@@ -30,20 +30,20 @@ public class DancerEntity extends AbstractBaseEntity{
     }
 
     public DancerEntity(String image, String name, String description, EntityInfo entityInfo,
-                        String surname, String sex, LocalDate birthday, Role role) {
+                        String surname, String gender, LocalDate birthday, Role role) {
         super(image, name, description, entityInfo);
         this.surname = surname;
-        this.sex = sex;
+        this.gender = gender;
         this.birthday = birthday;
         this.role = role;
         this.setTypeEntity(TypeEntity.DANCER);
     }
 
     public DancerEntity(Integer id, String image, String name, String description, String surname,
-                        String sex, LocalDate birthday, Role role) {
+                        String gender, LocalDate birthday, Role role) {
         super(id, image, name, description);
         this.surname = surname;
-        this.sex = sex;
+        this.gender = gender;
         this.birthday = birthday;
         this.role = role;
         this.setTypeEntity(TypeEntity.DANCER);
@@ -65,12 +65,12 @@ public class DancerEntity extends AbstractBaseEntity{
         this.birthday = birthDay;
     }
 
-    public String getSex() {
-        return sex;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setGender(String sex) {
+        this.gender = sex;
     }
 
     public Role getRole() {
@@ -93,7 +93,7 @@ public class DancerEntity extends AbstractBaseEntity{
     public String toString() {
         return "Dancer{" +
                 "surname='" + surname + '\'' +
-                ", sex='" + sex + '\'' +
+                ", sex='" + gender + '\'' +
                 ", birthday=" + birthday +
                 ", role=" + role +
                 "} " + super.toString();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = DancerRestController.REST_URL)
@@ -28,7 +29,7 @@ public class DancerRestController {
 
     @GetMapping
     public List<DancerDto> dancers (){
-        return DancerMapper.mapDancerTos(dancerService.getAllByType());
+        return dancerService.getAll();
     }
 
     @GetMapping("/search/{city}")
@@ -48,7 +49,7 @@ public class DancerRestController {
     }
 
     @GetMapping("/{id}")
-    public DancerDto get(@PathVariable int id){
+    public DancerDto get(@PathVariable UUID id){
         DancerEntity dancerEntity = dancerService.getById(id);
         return  dancerEntity != null ? DancerMapper.mapDancerEntity(dancerEntity) : new DancerDto();
     }
@@ -61,7 +62,7 @@ public class DancerRestController {
     @ResponseBody
     @PostMapping(value = "/upload-image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadFile(@RequestParam(value = "id", required = false) int id,
+    public String uploadFile(@RequestParam(value = "id", required = false) UUID id,
                              @RequestPart(value = "file", required = false) MultipartFile file) {
 
         if (file != null) {
@@ -77,7 +78,7 @@ public class DancerRestController {
     }
 
     @DeleteMapping("/delete-image")
-    public void deleteFile(@RequestParam(value = "id", required = false) int id){
+    public void deleteFile(@RequestParam(value = "id", required = false) UUID id){
         DancerDto dancerDto = get(id);
         imageStorageService.deleteImage(dancerDto.getImage());
         dancerDto.setImage(null);
@@ -85,7 +86,7 @@ public class DancerRestController {
     }
 
     @GetMapping("/download-image")
-    public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) int id) {
+    public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) UUID id) {
         DancerDto dancerDto = get(id);
         Resource resource = null;
         if (dancerDto.getImage() != null) {
@@ -101,8 +102,8 @@ public class DancerRestController {
 
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id){
-        deleteFile(id);
+    public void delete(@PathVariable UUID id){
+//        deleteFile(id);
         dancerService.deleteById(id);
     }
 

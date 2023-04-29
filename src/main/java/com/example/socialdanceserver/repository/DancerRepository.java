@@ -1,6 +1,8 @@
 package com.example.socialdanceserver.repository;
 
+import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.DancerEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -8,17 +10,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface DancerRepository extends AbstractBaseEntityRepository {
-
-    @Query(value = "select * from abstract_base_entity abe " +
-            "left join dancers d on abe.id = d.id " +
-            "left join entity_info ei on abe.entity_info_id = ei.id " +
-            "where type_entity = 'DANCER' " +
-            "order by name, surname",
-            nativeQuery = true)
-    List<DancerEntity> findAllByType();
+public interface DancerRepository extends JpaRepository<DancerEntity, UUID> {
 
     @Query(value = "select * from abstract_base_entity abe " +
             "left join dancers d on abe.id = d.id " +

@@ -1,133 +1,157 @@
-drop table if exists dances;
-drop table if exists abstract_base_entity_dances;
-drop table if exists reviewEntities;
-drop table if exists schools;
-drop table if exists dancers;
-drop table if exists events;
-drop table if exists ratingEntities;
-drop table if exists abstract_base_entity;
+drop table if exists dance;
+drop table if exists dancer_has_dances;
+drop table if exists school_has_dances;
+drop table if exists event_has_dances;
+drop table if exists review;
+drop table if exists school;
+drop table if exists dancer;
+drop table if exists event;
+drop table if exists rating;
 drop table if exists entity_info;
-drop table if exists login_password;
+drop table if exists credential;
 
 
-drop sequence if exists schools_seq;
-drop sequence if exists dancers_seq;
-drop sequence if exists events_seq;
-drop sequence if exists dances_seq;
+drop sequence if exists school_seq;
+drop sequence if exists dancer_seq;
+drop sequence if exists event_seq;
+drop sequence if exists dance_seq;
 drop sequence if exists entity_info_seq;
-drop sequence if exists ratings_seq;
-drop sequence if exists reviews_seq;
-drop sequence if exists base_seq;
+drop sequence if exists rating_seq;
+drop sequence if exists review_seq;
 drop sequence if exists hibernate_sequence;
-drop sequence if exists login_password_seq;
+drop sequence if exists credential_seq;
 
 CREATE SEQUENCE hibernate_sequence ;
 
-CREATE SEQUENCE login_password_seq START WITH 1;
-CREATE table login_password
+CREATE SEQUENCE credential_seq;
+CREATE table credential
 (
-    id                      INTEGER PRIMARY KEY DEFAULT nextval('login_password_seq'),
+    id               uuid                              NOT NULL,
+    created          TIMESTAMP                         NOT NULL,
+    updated          TIMESTAMP                         NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
+    CONSTRAINT credential_pkey PRIMARY KEY (id),
     CONSTRAINT email_password UNIQUE (email)
 );
 
-CREATE SEQUENCE entity_info_seq ;
+CREATE SEQUENCE entity_info_seq;
 CREATE table entity_info
 (
-    id               INTEGER PRIMARY KEY DEFAULT nextval('entity_info_seq'),
+    id               uuid                              NOT NULL,
+    created          TIMESTAMP                         NOT NULL,
+    updated          TIMESTAMP                         NOT NULL,
     country          VARCHAR,
     city             VARCHAR,
     street           VARCHAR,
     building         VARCHAR,
     suites           VARCHAR,
     phone_number     VARCHAR,
-    email            VARCHAR
+    email            VARCHAR,
+    CONSTRAINT entity_info_pkey PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE base_seq ;
-create table abstract_base_entity
+CREATE SEQUENCE school_seq;
+CREATE table school
 (
-    id                           INTEGER PRIMARY KEY DEFAULT nextval('base_seq'),
+    id                           uuid                              NOT NULL,
+    created                      TIMESTAMP                         NOT NULL,
+    updated                      TIMESTAMP                         NOT NULL,
     name                         VARCHAR                           NOT NULL,
     description                  VARCHAR,
-    type_entity                  VARCHAR,
-    entity_info_id               INTEGER,
-    CONSTRAINT id_constr UNIQUE (id),
+    entity_info_id               uuid,
+    image                        VARCHAR,
+    CONSTRAINT school_pkey PRIMARY KEY (id),
     FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE
 );
 
-CREATE SEQUENCE schools_seq ;
-CREATE table schools
-(
-    id               INTEGER PRIMARY KEY DEFAULT nextval('schools_seq'),
-    owner_id         INTEGER,
-    FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
-);
 
-
-CREATE SEQUENCE dancers_seq ;
-CREATE table dancers
+CREATE SEQUENCE dancer_seq;
+CREATE table dancer
 (
-    id                  INTEGER PRIMARY KEY DEFAULT nextval('dancers_seq'),
-    surname             VARCHAR,
+    id                  uuid                              NOT NULL,
+    created             TIMESTAMP                         NOT NULL,
+    updated             TIMESTAMP                         NOT NULL,
+    name                VARCHAR                           NOT NULL,
+    description         VARCHAR,
+    entity_info_id      uuid,
+    last_name           VARCHAR,
     gender              VARCHAR,
     birthday            TIMESTAMP,
     role                VARCHAR,
-    login_password_id   INTEGER,
-    FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE,
-    FOREIGN KEY (login_password_id) REFERENCES login_password (id) ON DELETE CASCADE
+    credential_id       uuid,
+    image               VARCHAR,
+    CONSTRAINT dancer_pkey PRIMARY KEY (id),
+    FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE,
+    FOREIGN KEY (credential_id) REFERENCES credential (id) ON DELETE CASCADE
 );
 
-CREATE SEQUENCE events_seq ;
-CREATE table events
+CREATE SEQUENCE event_seq;
+CREATE table event
 (
-    id                 INTEGER PRIMARY KEY DEFAULT nextval('events_seq'),
-    owner_id           INTEGER,
-    date_event         TIMESTAMP                           NOT NULL,
-    date_finish_event  TIMESTAMP                           NOT NULL,
-    date_publication   TIMESTAMP             DEFAULT now() NOT NULL,
-    FOREIGN KEY (id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
+    id                  uuid                              NOT NULL,
+    created             TIMESTAMP                         NOT NULL,
+    updated             TIMESTAMP                         NOT NULL,
+    name                VARCHAR                           NOT NULL,
+    description         VARCHAR,
+    entity_info_id      uuid,
+    date_event          TIMESTAMP                         NOT NULL,
+    date_finish_event   TIMESTAMP                         NOT NULL,
+    image               VARCHAR,
+    CONSTRAINT event_pkey PRIMARY KEY (id),
+    FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE
 );
 
-CREATE SEQUENCE dances_seq START WITH 1;
-CREATE table dances
+CREATE SEQUENCE dance_seq START WITH 1;
+CREATE table dance
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('dances_seq'),
+    id   INTEGER PRIMARY KEY DEFAULT nextval('dance_seq'),
     name VARCHAR  NOT NULL
 );
 
-CREATE table abstract_base_entity_dances
+CREATE table dancer_has_dances
 (
-    entity_id INTEGER NOT NULL,
+    dancer_id uuid NOT NULL,
     dance     VARCHAR,
-    FOREIGN KEY (entity_id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id) ON DELETE CASCADE
 );
 
-CREATE SEQUENCE ratings_seq START WITH 1;
-CREATE table ratingEntities
+CREATE table event_has_dances
 (
-    id                      INTEGER PRIMARY KEY DEFAULT nextval('ratings_seq'),
-    abstract_base_entity_id INTEGER  NOT NULL,
-    reviewer_id             INTEGER  NOT NULL,
-    ratingEntity                  INTEGER  NOT NULL,
-    CONSTRAINT id_con UNIQUE (id),
-    FOREIGN KEY (abstract_base_entity_id) REFERENCES abstract_base_entity (id) ON DELETE CASCADE
+    event_id  uuid NOT NULL,
+    dance     VARCHAR,
+    FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE
 );
 
-CREATE SEQUENCE reviews_seq START WITH 1;
-CREATE table reviewEntities
+CREATE table school_has_dances
 (
-    id                      INTEGER PRIMARY KEY DEFAULT nextval('reviews_seq'),
-    abstract_base_entity_id INTEGER    NOT NULL,
-    school_id               INTEGER    NOT NULL,
-    reviewEntity                  varchar    NOT NULL,
-    date_time               TIMESTAMP  NOT NULL,
-    FOREIGN KEY (school_id) REFERENCES schools (id) ON DELETE CASCADE
+    school_id uuid NOT NULL,
+    dance     VARCHAR,
+    FOREIGN KEY (school_id) REFERENCES school (id) ON DELETE CASCADE
 );
 
-ALTER TABLE abstract_base_entity
-    ADD COLUMN image varchar;
+CREATE SEQUENCE rating_seq;
+CREATE table rating
+(
+    id                      uuid                              NOT NULL,
+    created                 TIMESTAMP                         NOT NULL,
+    updated                 TIMESTAMP                         NOT NULL,
+    base_dance_entity_id    VARCHAR                           NOT NULL,
+    rating_owner_id         VARCHAR                           NOT NULL,
+    rating                  INTEGER                           NOT NULL,
+    CONSTRAINT rating_pkey PRIMARY KEY (id)
+);
 
-ALTER TABLE reviewEntities
-    ADD COLUMN incognito boolean;
+CREATE SEQUENCE review_seq;
+CREATE table review
+(
+    id                      uuid                              NOT NULL,
+    created                 TIMESTAMP                         NOT NULL,
+    updated                 TIMESTAMP                         NOT NULL,
+    review_owner            uuid                              NOT NULL,
+    incognito               BOOLEAN,
+    base_dance_entity_id    VARCHAR                           NOT NULL,
+    review                  VARCHAR                           NOT NULL,
+    CONSTRAINT review_pkey PRIMARY KEY (id),
+    FOREIGN KEY (review_owner) REFERENCES dancer (id) ON DELETE CASCADE
+);

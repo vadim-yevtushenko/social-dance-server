@@ -23,29 +23,29 @@ public class DancerMapper {
             dances = new ArrayList<>(dancerEntity.getDances());
         }
         return new DancerDto(dancerEntity.getId(), dancerEntity.getImage(), dancerEntity.getName(),
-                dancerEntity.getSurname(), dancerEntity.getGender(),
-                DateTimeUtils.fromLocalDateToDate(dancerEntity.getBirthday()),
+                dancerEntity.getLastName(), dancerEntity.getGender(),
+                dancerEntity.getBirthday(),
                 dancerEntity.getEntityInfo(), dancerEntity.getRole(),
-                dances, dancerEntity.getDescription());
+                dances, dancerEntity.getDescription(), dancerEntity.getCredential());
     }
 
     public static DancerEntity populateDancerEntity(DancerDto dancerDto, DancerEntity dancerEntity) {
-        if (dancerEntity.getId() == null) {
-            DancerEntity transformDancerEntity = new DancerEntity();
-            transformDancerEntity.setName(dancerDto.getName());
-            transformDancerEntity.setEntityInfo(dancerDto.getEntityInfo());
-            transformDancerEntity.setLoginPassword(dancerDto.getLoginPassword());
-            return transformDancerEntity;
-        }
-        dancerEntity.setImage(dancerDto.getImage());
-        dancerEntity.setName(dancerDto.getName());
-        dancerEntity.setSurname(dancerDto.getSurname());
-        dancerEntity.setGender(dancerDto.getSex());
-        dancerEntity.setDescription(dancerDto.getDescription());
-        dancerEntity.setEntityInfo(dancerDto.getEntityInfo());
-        dancerEntity.setDances(new HashSet<>(dancerDto.getDances()));
-        dancerEntity.setRole(dancerDto.getRole());
-        dancerEntity.setBirthday(DateTimeUtils.fromDateToLocalDate(dancerDto.getBirthday()));
+//        if (dancerEntity.getId() == null) {
+//            DancerEntity transformDancerEntity = new DancerEntity();
+//            transformDancerEntity.setName(dancerDto.getName());
+//            transformDancerEntity.setEntityInfo(dancerDto.getEntityInfo());
+//            transformDancerEntity.setLoginPassword(dancerDto.getLoginPassword());
+//            return transformDancerEntity;
+//        }
+//        dancerEntity.setImage(dancerDto.getImage());
+//        dancerEntity.setName(dancerDto.getName());
+//        dancerEntity.setSurname(dancerDto.getSurname());
+//        dancerEntity.setGender(dancerDto.getSex());
+//        dancerEntity.setDescription(dancerDto.getDescription());
+//        dancerEntity.setEntityInfo(dancerDto.getEntityInfo());
+//        dancerEntity.setDances(new HashSet<>(dancerDto.getDances()));
+//        dancerEntity.setRole(dancerDto.getRole());
+//        dancerEntity.setBirthday(DateTimeUtils.fromDateToLocalDate(dancerDto.getBirthday()));
         return dancerEntity;
     }
 }

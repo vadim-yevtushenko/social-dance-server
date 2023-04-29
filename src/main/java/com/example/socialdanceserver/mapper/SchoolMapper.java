@@ -18,10 +18,7 @@ public class SchoolMapper {
     }
 
     public static SchoolDto mapSchoolTo(SchoolEntity schoolEntity){
-        return new SchoolDto(schoolEntity.getId(), schoolEntity.getImage(), schoolEntity.getName(),
-                schoolEntity.getDescription(), schoolEntity.getEntityInfo(),
-                schoolEntity.createAverageRating(), schoolEntity.getOwnerId(),
-                new ArrayList<>(schoolEntity.getDances()));
+        return null;
     }
 
     public static List<ReviewDto> mapReviewTos(List<ReviewEntity> reviewEntityList){
@@ -30,8 +27,6 @@ public class SchoolMapper {
     }
 
     private static ReviewDto mapReviewTo(ReviewEntity reviewEntity) {
-        return new ReviewDto(reviewEntity.getId(), reviewEntity.getIncognito(), reviewEntity.getAbstractBaseEntityId(),
-                reviewEntity.getSchool().getId(), reviewEntity.getReview(),
-                DateTimeUtils.fromLocalDateTimeToDate(reviewEntity.getDateTime()));
+        return null;
     }
 }

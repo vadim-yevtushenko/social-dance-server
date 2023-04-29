@@ -42,9 +42,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     @Override
     public List<ReviewEntity> getReviewsBySchoolId(int id) {
-        return new HashSet<>(getById(id).getReviews())
-                .stream().sorted(Comparator.comparing(ReviewEntity::getDateTime))
-                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
@@ -80,12 +78,12 @@ public class SchoolServiceImpl implements SchoolService {
     public void saveRating(RatingDto ratingDto) {
         SchoolEntity schoolEntity = getById(ratingDto.getEntityId());
         boolean isExist = false;
-        for (RatingEntity ratingEntity : schoolEntity.getRatings()){
-            if (ratingEntity.getReviewer_id() == ratingDto.getReviewerId()){
-                isExist = true;
-                break;
-            }
-        }
+//        for (RatingEntity ratingEntity : schoolEntity.getRatings()){
+//            if (ratingEntity.getReviewer_id() == ratingDto.getReviewerId()){
+//                isExist = true;
+//                break;
+//            }
+//        }
         if (isExist) {
             schoolRepository.saveRating(ratingDto.getReviewerId(), ratingDto.getRating());
         } else {

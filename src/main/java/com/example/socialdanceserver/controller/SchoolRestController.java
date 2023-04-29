@@ -51,15 +51,15 @@ public class SchoolRestController {
 
     @GetMapping("/{id}/{dancerId}")
     public Integer getRatingByDancerId(@PathVariable int id, @PathVariable int dancerId) {
-        SchoolEntity schoolEntity = schoolService.getById(id);
-        if (schoolEntity.getRatings() == null) {
-            return 0;
-        }
-        for (RatingEntity schoolRatingEntity : schoolEntity.getRatings()) {
-            if (schoolRatingEntity.getReviewer_id() == dancerId) {
-                return schoolRatingEntity.getRating();
-            }
-        }
+//        SchoolEntity schoolEntity = schoolService.getById(id);
+//        if (schoolEntity.getRatings() == null) {
+//            return 0;
+//        }
+//        for (RatingEntity schoolRatingEntity : schoolEntity.getRatings()) {
+//            if (schoolRatingEntity.getReviewer_id() == dancerId) {
+//                return schoolRatingEntity.getRating();
+//            }
+//        }
         return 0;
     }
 

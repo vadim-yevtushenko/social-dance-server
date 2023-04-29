@@ -5,20 +5,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
-@Table(name = "rating")
+@Table(name = "credential")
 @Getter
 @Setter
 @NoArgsConstructor
-public class RatingEntity extends AbstractBaseEntity{
+public class CredentialEntity extends AbstractBaseEntity{
 
+    private String email;
 
-    private UUID ratingOwnerID;
-
-    private UUID  baseDanceEntityId;
-
-    private int rating;
+    private String password;
 
 }

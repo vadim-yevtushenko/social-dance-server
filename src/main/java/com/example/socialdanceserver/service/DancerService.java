@@ -4,10 +4,11 @@ import com.example.socialdanceserver.dto.DancerDto;
 import com.example.socialdanceserver.model.DancerEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface DancerService {
 
-    List<DancerEntity> getAllByType();
+    List<DancerDto> getAll();
 
     List<DancerEntity> getAllByCity(String city);
 
@@ -17,11 +18,11 @@ public interface DancerService {
 
     List<DancerEntity> getAllByNameAndSurname(String name, String surname);
 
-    DancerEntity getById(int id);
+    DancerEntity getById(UUID id);
 
     DancerDto save(DancerDto dancerDto);
 
-    void deleteById(int id);
+    void deleteById(UUID id);
 
     Integer checkSignUpByEmail(String email);
 

@@ -17,23 +17,19 @@ public class EventMapper {
     }
 
     public static EventDto mapEventTo(EventEntity eventEntity){
-        return new EventDto(eventEntity.getId(), eventEntity.getImage(), eventEntity.getName(), eventEntity.getDescription(),
-                eventEntity.getEntityInfo(), DateTimeUtils.fromLocalDateTimeToDate(eventEntity.getDateEvent()),
-                DateTimeUtils.fromLocalDateTimeToDate(eventEntity.getDateFinishEvent()),
-                DateTimeUtils.fromLocalDateTimeToDate(eventEntity.getDatePublication()),
-                new ArrayList<>(eventEntity.getDances()), eventEntity.getOwnerId());
+        return null;
     }
 
     public static EventEntity populateEventTo(EventDto eventDto, EventEntity eventEntity) {
-        eventEntity.setImage(eventDto.getImage());
-        eventEntity.setName(eventDto.getName());
-        eventEntity.setOwnerId(eventDto.getOwnerId());
-        eventEntity.setDescription(eventDto.getDescription());
-        eventEntity.setEntityInfo(eventDto.getEntityInfo());
-        eventEntity.setDances(new HashSet<>(eventDto.getDances()));
-        eventEntity.setDatePublication(DateTimeUtils.fromDateToLocalDateTime(eventDto.getDatePublication()));
-        eventEntity.setDateEvent(DateTimeUtils.fromDateToLocalDateTime(eventDto.getDateEvent()));
-        eventEntity.setDateFinishEvent(DateTimeUtils.fromDateToLocalDateTime(eventDto.getDateFinishEvent()));
+//        eventEntity.setImage(eventDto.getImage());
+//        eventEntity.setName(eventDto.getName());
+//        eventEntity.setOwnerId(eventDto.getOwnerId());
+//        eventEntity.setDescription(eventDto.getDescription());
+//        eventEntity.setEntityInfo(eventDto.getEntityInfo());
+//        eventEntity.setDances(new HashSet<>(eventDto.getDances()));
+//        eventEntity.setDatePublication(DateTimeUtils.fromDateToLocalDateTime(eventDto.getDatePublication()));
+//        eventEntity.setDateEvent(DateTimeUtils.fromDateToLocalDateTime(eventDto.getDateEvent()));
+//        eventEntity.setDateFinishEvent(DateTimeUtils.fromDateToLocalDateTime(eventDto.getDateFinishEvent()));
         return eventEntity;
     }
 }

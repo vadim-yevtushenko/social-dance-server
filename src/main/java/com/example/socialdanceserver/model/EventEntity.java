@@ -1,81 +1,54 @@
 package com.example.socialdanceserver.model;
 
-import com.example.socialdanceserver.model.enums.TypeEntity;
+import com.example.socialdanceserver.model.enums.Dance;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.ZonedDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "events")
-public class EventEntity extends AbstractBaseEntity{
+@Table(name = "event")
+@Getter
+@Setter
+@NoArgsConstructor
+public class EventEntity extends AbstractBaseEntity {
 
-    private int ownerId;
-    private LocalDateTime dateEvent;
-    private LocalDateTime dateFinishEvent;
-    private LocalDateTime datePublication;
+    private String name;
 
-    public EventEntity() {
-        this.setTypeEntity(TypeEntity.EVENT);
-    }
+    private String description;
 
-    public EventEntity(String image, String name, String description, EntityInfo entityInfo, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
-        super(image, name, description, entityInfo);
-        this.ownerId = ownerId;
-        this.dateEvent = dateEvent;
-        this.dateFinishEvent = dateFinishEvent;
-        this.datePublication = datePublication;
-        this.setTypeEntity(TypeEntity.EVENT);
-    }
+    private String image;
 
-    public EventEntity(Integer id, String image, String name, String description, int ownerId, LocalDateTime dateEvent, LocalDateTime dateFinishEvent, LocalDateTime datePublication) {
-        super(id, image, name, description);
-        this.ownerId = ownerId;
-        this.dateEvent = dateEvent;
-        this.dateFinishEvent = dateFinishEvent;
-        this.datePublication = datePublication;
-        this.setTypeEntity(TypeEntity.EVENT);
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "entity_info_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private EntityInfo entityInfo;
 
-    public int getOwnerId() {
-        return ownerId;
-    }
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "event_has_dances",
+            joinColumns = @JoinColumn(name = "event_id"))
+    @Column(name = "dance")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Dance> dances;
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private Set<DancerEntity> owners;
 
-    public LocalDateTime getDateEvent() {
-        return dateEvent;
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private SchoolEntity eventOwner;
 
-    public void setDateEvent(LocalDateTime dateEvent) {
-        this.dateEvent = dateEvent;
-    }
+    private ZonedDateTime dateEvent;
 
-    public LocalDateTime getDatePublication() {
-        return datePublication;
-    }
+    private ZonedDateTime dateFinishEvent;
 
-    public void setDatePublication(LocalDateTime datePublication) {
-        this.datePublication = datePublication;
-    }
-
-    public LocalDateTime getDateFinishEvent() {
-        return dateFinishEvent;
-    }
-
-    public void setDateFinishEvent(LocalDateTime dateFinishEvent) {
-        this.dateFinishEvent = dateFinishEvent;
-    }
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "ownerId=" + ownerId +
-                ", dateEvent=" + dateEvent +
-                ", dateFinishEvent=" + dateFinishEvent +
-                ", datePublication=" + datePublication +
-                "} " + super.toString();
-    }
 }

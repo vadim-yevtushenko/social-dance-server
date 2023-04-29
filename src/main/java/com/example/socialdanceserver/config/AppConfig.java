@@ -1,4 +1,4 @@
-package com.example.socialdanceserver;
+package com.example.socialdanceserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

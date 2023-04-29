@@ -2,25 +2,36 @@ package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.dto.DancerDto;
 import com.example.socialdanceserver.model.AbstractBaseEntity;
+import com.example.socialdanceserver.model.CredentialEntity;
 import com.example.socialdanceserver.model.DancerEntity;
+import com.example.socialdanceserver.model.EntityInfo;
+import com.example.socialdanceserver.model.enums.Dance;
+import com.example.socialdanceserver.model.enums.Role;
 import com.example.socialdanceserver.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.mapper.DancerMapper;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
-public class DancerServiceImpl implements DancerService {
+public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Autowired
     private DancerRepository dancerRepository;
 
     @Override
-    public List<DancerEntity> getAllByType() {
-        return dancerRepository.findAllByType();
+    public List<DancerDto> getAll() {
+        return mapper.mapAsList(dancerRepository.findAll(Sort.by("name")), DancerDto.class);
     }
 
     @Override
@@ -44,9 +55,9 @@ public class DancerServiceImpl implements DancerService {
     }
 
     @Override
-    public DancerEntity getById(int id) {
+    public DancerEntity getById(UUID id) {
         DancerEntity dancerEntity = null;
-        Optional<AbstractBaseEntity> dancerOptional = dancerRepository.findById(id);
+        Optional<DancerEntity> dancerOptional = dancerRepository.findById(id);
         if (dancerOptional.isPresent()){
             dancerEntity = (DancerEntity) dancerOptional.get();
         }
@@ -56,15 +67,31 @@ public class DancerServiceImpl implements DancerService {
     @Override
     public DancerDto save(DancerDto dancerDto) {
         DancerEntity oldDancerEntity = new DancerEntity();
-        if (dancerDto.getId() != null){
-            oldDancerEntity = getById(dancerDto.getId());
-        }
-        DancerEntity dancerEntity = DancerMapper.populateDancerEntity(dancerDto, oldDancerEntity);
-        return DancerMapper.mapDancerEntity(dancerRepository.save(dancerEntity));
+//        if (dancerDto.getId() != null){
+//            oldDancerEntity = getById(dancerDto.getId());
+//        }
+//        DancerEntity dancerEntity = DancerMapper.populateDancerEntity(dancerDto, oldDancerEntity);
+        EntityInfo entityInfo = new EntityInfo();
+        entityInfo.setCountry("Ukraine");
+        entityInfo.setCity("Zp");
+        CredentialEntity credentialEntity = new CredentialEntity();
+        credentialEntity.setEmail("mail@gmail.com");
+        credentialEntity.setPassword("1234");
+        DancerEntity dancerEntity = new DancerEntity();
+        dancerEntity.setBirthday(LocalDate.now());
+        dancerEntity.setName("Vadim");
+        dancerEntity.setLastName("Yevt");
+        dancerEntity.setDances(Set.of(Dance.SALSA,Dance.BACHATA));
+        dancerEntity.setGender("male");
+        dancerEntity.setRole(Role.DANCER);
+        dancerEntity.setEntityInfo(entityInfo);
+        dancerEntity.setCredential(credentialEntity);
+//        return DancerMapper.mapDancerEntity(dancerRepository.save(dancerEntity));
+        return mapper.map(dancerRepository.save(dancerEntity), DancerDto.class);
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         dancerRepository.deleteById(id);
     }
 

@@ -31,7 +31,7 @@ public class DancerRestController {
     }
 
     @GetMapping("/search/{city}")
-    public List<DancerDto> dancersByNameAndSurname(@PathVariable String city){
+    public List<DancerDto> dancersByCity(@PathVariable String city){
         return dancerService.getAllByCity(city);
     }
 
@@ -39,11 +39,11 @@ public class DancerRestController {
     public List<DancerDto> dancersByNameAndLastName(@RequestParam(value = "name", required = false) String name,
                                                    @RequestParam(value = "lastName", required = false) String lastName){
         if (name.isEmpty()){
-            return dancerService.getAllBySurname(lastName);
+            return dancerService.getAllByLastName(lastName);
         }else if (lastName.isEmpty()){
             return dancerService.getAllByName(name);
         }
-        return dancerService.getAllByNameAndSurname(name, lastName);
+        return dancerService.getAllByNameAndLastName(name, lastName);
     }
 
     @GetMapping("/{id}")
@@ -108,27 +108,27 @@ public class DancerRestController {
         dancerService.deleteById(id);
     }
 
-    @GetMapping("/registration")
-    public Integer checkSignUp(@RequestParam(value = "email", required = false) String email){
-
-        return dancerService.checkSignUpByEmail(email);
-    }
-
-    @GetMapping("/identification")
-    public Integer checkSignIn(@RequestParam(value = "email", required = false) String email,
-                               @RequestParam(value = "password", required = false) String password){
-        return dancerService.checkSignInByEmailAndPassword(email, password);
-    }
-
-    @PostMapping("/change-password")
-    public Boolean changePassword(@RequestParam(value = "email", required = false) String email,
-                                  @RequestParam(value = "password", required = false) String password){
-        return dancerService.changePassword(email, password);
-    }
-
-    @PostMapping("/change-email")
-    public Boolean changeEmail(@RequestParam(value = "oldEmail", required = false) String oldEmail,
-                               @RequestParam(value = "newEmail", required = false) String newEmail){
-        return dancerService.changeEmail(oldEmail, newEmail);
-    }
+//    @GetMapping("/registration")
+//    public Integer checkSignUp(@RequestParam(value = "email", required = false) String email){
+//
+//        return dancerService.checkSignUpByEmail(email);
+//    }
+//
+//    @GetMapping("/identification")
+//    public Integer checkSignIn(@RequestParam(value = "email", required = false) String email,
+//                               @RequestParam(value = "password", required = false) String password){
+//        return dancerService.checkSignInByEmailAndPassword(email, password);
+//    }
+//
+//    @PostMapping("/change-password")
+//    public Boolean changePassword(@RequestParam(value = "email", required = false) String email,
+//                                  @RequestParam(value = "password", required = false) String password){
+//        return dancerService.changePassword(email, password);
+//    }
+//
+//    @PostMapping("/change-email")
+//    public Boolean changeEmail(@RequestParam(value = "oldEmail", required = false) String oldEmail,
+//                               @RequestParam(value = "newEmail", required = false) String newEmail){
+//        return dancerService.changeEmail(oldEmail, newEmail);
+//    }
 }

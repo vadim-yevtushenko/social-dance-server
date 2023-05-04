@@ -12,9 +12,9 @@ public interface DancerService {
 
     List<DancerDto> getAllByName(String name);
 
-    List<DancerDto> getAllBySurname(String surname);
+    List<DancerDto> getAllByLastName(String lastName);
 
-    List<DancerDto> getAllByNameAndSurname(String name, String surname);
+    List<DancerDto> getAllByNameAndLastName(String name, String lastName);
 
     DancerDto getById(UUID id);
 
@@ -22,11 +22,11 @@ public interface DancerService {
 
     void deleteById(UUID id);
 
-    Integer checkSignUpByEmail(String email);
-
-    Integer checkSignInByEmailAndPassword(String email, String password);
-
-    Boolean changePassword(String email, String password);
-
-    Boolean changeEmail(String oldEmail, String newEmail);
+//    Integer checkSignUpByEmail(String email);
+//
+//    Integer checkSignInByEmailAndPassword(String email, String password);
+//
+//    Boolean changePassword(String email, String password);
+//
+//    Boolean changeEmail(String oldEmail, String newEmail);
 }

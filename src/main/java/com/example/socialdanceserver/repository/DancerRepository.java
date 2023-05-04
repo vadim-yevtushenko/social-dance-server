@@ -1,13 +1,8 @@
 package com.example.socialdanceserver.repository;
 
-import com.example.socialdanceserver.model.AbstractBaseEntity;
 import com.example.socialdanceserver.model.DancerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,62 +10,13 @@ import java.util.UUID;
 @Repository
 public interface DancerRepository extends JpaRepository<DancerEntity, UUID> {
 
-    @Query(value = "select * from dancer d " +
-            "left join entity_info ei on d.entity_info_id = ei.id " +
-            "where lower(ei.city) = lower(:city) " +
-            "order by name, last_name",
-            nativeQuery = true)
-    List<DancerEntity> findAllByCity(@Param("city") String city);
+    List<DancerEntity> findByNameStartingWithIgnoreCaseOrderByLastName(String name);
 
-    @Query(value = "select * from dancer d " +
-            "left join entity_info ei on d.entity_info_id = ei.id " +
-            "where lower(d.name) = lower(:name) " +
-            "order by last_name",
-            nativeQuery = true)
-    List<DancerEntity> findAllByName(@Param("name") String name);
+    List<DancerEntity> findByLastNameStartingWithIgnoreCaseOrderByName(String lastName);
 
-    List<DancerEntity> findByName(String name);
+    List<DancerEntity> findByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(String name, String lastName);
 
-    @Query(value = "select * from dancer d " +
-            "left join entity_info ei on d.entity_info_id = ei.id " +
-            "where lower(d.last_name) = lower(:lastName) " +
-            "order by name",
-            nativeQuery = true)
-    List<DancerEntity> findAllBySurname(@Param("lastName") String lastName);
+    List<DancerEntity> findByContactInfo_CityContainsIgnoreCaseOrderByNameAscLastNameAsc(String city);
 
-    @Query(value = "select * from dancer d " +
-            "left join entity_info ei on d.entity_info_id = ei.id " +
-            "where lower(d.name) = lower(:name) and lower(d.last_name) = lower(:lastName) ",
-            nativeQuery = true)
-    List<DancerEntity> findAllByNameAndSurname(@Param("name") String name, @Param("lastName") String lastName);
-
-    @Query(value = "select d.id from dancer d " +
-            "left join credential c on d.credential_id = c.id " +
-            "where c.email = :email",
-            nativeQuery = true)
-    Integer checkSignUpByEmail(@Param("email") String email);
-
-    @Query(value = "select d.id from dancer d " +
-            "left join credential c on d.credential_id = c.id " +
-            "where c.email = :email and c.password = :password",
-            nativeQuery = true)
-    Integer checkSignInByEmailAndPassword(@Param("email") String email,
-                                          @Param("password") String password);
-
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "update credential set password = :password " +
-            "where email = :email"
-            , nativeQuery = true)
-    Integer changePassword(@Param("email") String email,
-                           @Param("password") String password);
-
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "update credential set email = :newEmail " +
-            "where email = :oldEmail"
-    , nativeQuery = true)
-    Integer changeEmail(@Param("oldEmail") String oldEmail,
-                        @Param("newEmail") String newEmail);
 }
 

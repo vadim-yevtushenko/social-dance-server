@@ -1,18 +1,17 @@
-package com.example.socialdanceserver.model;
+package com.example.socialdanceserver.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
+import java.util.UUID;
 
-@Entity
-@Table(name = "entity_info")
 @Getter
 @Setter
 @NoArgsConstructor
-public class EntityInfo extends AbstractBaseEntity{
+public class ContactInfoDto {
+
+    private UUID id;
 
     private String country;
 
@@ -27,5 +26,4 @@ public class EntityInfo extends AbstractBaseEntity{
     private String phoneNumber;
 
     private String email;
-
 }

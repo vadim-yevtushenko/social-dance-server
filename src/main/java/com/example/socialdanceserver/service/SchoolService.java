@@ -2,38 +2,34 @@ package com.example.socialdanceserver.service;
 
 import com.example.socialdanceserver.dto.RatingDto;
 import com.example.socialdanceserver.dto.ReviewDto;
-import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.ReviewEntity;
-import com.example.socialdanceserver.model.SchoolEntity;
-
+import com.example.socialdanceserver.dto.SchoolDto;
 import java.util.List;
+import java.util.UUID;
 
 public interface SchoolService {
 
-    List<AbstractBaseEntity> getAll();
+    List<SchoolDto> getAll();
 
-    List<SchoolEntity> getAllByType();
+    List<SchoolDto> getAllByOwnerId(UUID id);
 
-    List<SchoolEntity> getAllByOwnerId(int id);
+    List<SchoolDto> getAllByCity(String city);
 
-    List<SchoolEntity> getAllByCity(String city);
+    List<ReviewDto> getReviewsBySchoolId(UUID id);
 
-    List<ReviewEntity> getReviewsBySchoolId(int id);
+    SchoolDto getById(UUID id);
 
-    SchoolEntity getById(int id);
+    SchoolDto save(SchoolDto school);
 
-    SchoolEntity save(SchoolEntity schoolEntity);
+    void createRating(RatingDto rating);
 
-    void createRating(RatingDto ratingDto);
+    void createReview(ReviewDto review);
 
-    void createReview(ReviewDto reviewDto);
+    void saveRating(RatingDto rating);
 
-    void saveRating(RatingDto ratingDto);
+    void saveReview(ReviewDto review);
 
-    void saveReview(ReviewDto reviewDto);
+    void update(SchoolDto school);
 
-    void update(SchoolEntity schoolEntity);
-
-    void deleteById(int id);
+    void deleteById(UUID id);
 
 }

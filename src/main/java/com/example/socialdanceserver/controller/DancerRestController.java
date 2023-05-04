@@ -1,10 +1,8 @@
 package com.example.socialdanceserver.controller;
 
 import com.example.socialdanceserver.dto.DancerDto;
-import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
-import com.example.socialdanceserver.mapper.DancerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -34,24 +32,27 @@ public class DancerRestController {
 
     @GetMapping("/search/{city}")
     public List<DancerDto> dancersByNameAndSurname(@PathVariable String city){
-        return DancerMapper.mapDancerTos(dancerService.getAllByCity(city));
+        return dancerService.getAllByCity(city);
     }
 
     @GetMapping("/search")
-    public List<DancerDto> dancersByNameAndSurname(@RequestParam(value = "name", required = false) String name,
-                                                   @RequestParam(value = "surname", required = false) String surname){
+    public List<DancerDto> dancersByNameAndLastName(@RequestParam(value = "name", required = false) String name,
+                                                   @RequestParam(value = "lastName", required = false) String lastName){
         if (name.isEmpty()){
-            return DancerMapper.mapDancerTos(dancerService.getAllBySurname(surname));
-        }else if (surname.isEmpty()){
-            return DancerMapper.mapDancerTos(dancerService.getAllByName(name));
+            return dancerService.getAllBySurname(lastName);
+        }else if (lastName.isEmpty()){
+            return dancerService.getAllByName(name);
         }
-        return DancerMapper.mapDancerTos(dancerService.getAllByNameAndSurname(name, surname));
+        return dancerService.getAllByNameAndSurname(name, lastName);
     }
 
     @GetMapping("/{id}")
     public DancerDto get(@PathVariable UUID id){
-        DancerEntity dancerEntity = dancerService.getById(id);
-        return  dancerEntity != null ? DancerMapper.mapDancerEntity(dancerEntity) : new DancerDto();
+        DancerDto dancer = dancerService.getById(id);
+//        if (dancer == null) {
+//            throw new NotFoundException("Thee is no dancer with id: " + id.toString());
+//        }
+        return dancer;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

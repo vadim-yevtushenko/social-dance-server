@@ -1,7 +1,15 @@
 package com.example.socialdanceserver.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class AverageRatingDto {
     private float averageRating;
+
     private int numberOfRatings;
 
     public AverageRatingDto(float averageRating, int numberOfRatings) {
@@ -9,19 +17,4 @@ public class AverageRatingDto {
         this.numberOfRatings = numberOfRatings;
     }
 
-    public float getAverageRating() {
-        return averageRating;
-    }
-
-    public void setAverageRating(float averageRating) {
-        this.averageRating = averageRating;
-    }
-
-    public int getNumberOfRatings() {
-        return numberOfRatings;
-    }
-
-    public void setNumberOfRatings(int numberOfRatings) {
-        this.numberOfRatings = numberOfRatings;
-    }
 }

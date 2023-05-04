@@ -1,96 +1,38 @@
 package com.example.socialdanceserver.dto;
 
-import com.example.socialdanceserver.model.EntityInfo;
-import com.example.socialdanceserver.model.enums.Dance;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.List;
+import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class SchoolDto {
 
-    private Integer id;
-    private String image;
+    private UUID id;
+
     private String name;
+
     private String description;
-    private EntityInfo entityInfo;
-    private AverageRatingDto rating;
-    private int ownerId;
-    private List<Dance> dances;
 
-    public SchoolDto() {
-    }
+    private String image;
 
-    public SchoolDto(Integer id, String image, String name, String description, EntityInfo entityInfo, AverageRatingDto rating, int ownerId, List<Dance> dances) {
-        this.id = id;
-        this.image = image;
-        this.name = name;
-        this.description = description;
-        this.entityInfo = entityInfo;
-        this.rating = rating;
-        this.ownerId = ownerId;
-        this.dances = dances;
-    }
+    private ContactInfoDto contactInfo;
 
-    public Integer getId() {
-        return id;
-    }
+    private List<DanceDto> dances;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private List<DancerDto> administrators;
 
-    public String getImage() {
-        return image;
-    }
+    private List<DancerDto> teachers;
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+    private List<DancerDto> students;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    private AverageRatingDto rating;
 
-    public String getDescription() {
-        return description;
-    }
+//    @JsonManagedReference
+//    private List<DancerDto> owners;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public EntityInfo getEntityInfo() {
-        return entityInfo;
-    }
-
-    public void setEntityInfo(EntityInfo entityInfo) {
-        this.entityInfo = entityInfo;
-    }
-
-    public AverageRatingDto getRating() {
-        return rating;
-    }
-
-    public void setRating(AverageRatingDto rating) {
-        this.rating = rating;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public List<Dance> getDances() {
-        return dances;
-    }
-
-    public void setDances(List<Dance> dances) {
-        this.dances = dances;
-    }
 }

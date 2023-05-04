@@ -1,17 +1,14 @@
 package com.example.socialdanceserver.model;
 
-import com.example.socialdanceserver.model.enums.Dance;
 import com.example.socialdanceserver.model.enums.Role;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "dancer")
@@ -35,23 +32,21 @@ public class DancerEntity extends AbstractBaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "entity_info_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private EntityInfo entityInfo;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "contact_info_id")
+    private ContactInfoEntity contactInfo;
 
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "dancer_has_dances",
-            joinColumns = @JoinColumn(name = "dancer_id"))
-    @Column(name = "dance")
-    @ElementCollection(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Dance> dances;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "dancers_has_dances",
+            joinColumns = {@JoinColumn(name = "dancer_id")},
+            inverseJoinColumns = {@JoinColumn(name = "dance_id")}
+    )
+    private List<DanceEntity> dances;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credential_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private CredentialEntity credential;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "credential_id")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private CredentialEntity credential;
 
 }

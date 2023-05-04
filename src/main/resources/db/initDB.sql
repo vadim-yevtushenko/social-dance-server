@@ -1,21 +1,25 @@
-drop table if exists dance;
-drop table if exists dancer_has_dances;
-drop table if exists school_has_dances;
-drop table if exists event_has_dances;
+drop table if exists dancers_has_dances;
+drop table if exists schools_has_dances;
+drop table if exists events_has_dances;
+drop table if exists school_has_administrators;
+drop table if exists school_has_teachers;
+drop table if exists schools_has_students;
+drop table if exists events_has_organizers;
+drop table if exists events_has_dancers;
 drop table if exists review;
-drop table if exists school;
-drop table if exists dancer;
-drop table if exists event;
-drop table if exists rating;
-drop table if exists entity_info;
 drop table if exists credential;
-
+drop table if exists dancer;
+drop table if exists school;
+drop table if exists event;
+drop table if exists dance;
+drop table if exists rating;
+drop table if exists contact_info;
 
 drop sequence if exists school_seq;
 drop sequence if exists dancer_seq;
 drop sequence if exists event_seq;
 drop sequence if exists dance_seq;
-drop sequence if exists entity_info_seq;
+drop sequence if exists contact_info_seq;
 drop sequence if exists rating_seq;
 drop sequence if exists review_seq;
 drop sequence if exists hibernate_sequence;
@@ -23,20 +27,8 @@ drop sequence if exists credential_seq;
 
 CREATE SEQUENCE hibernate_sequence ;
 
-CREATE SEQUENCE credential_seq;
-CREATE table credential
-(
-    id               uuid                              NOT NULL,
-    created          TIMESTAMP                         NOT NULL,
-    updated          TIMESTAMP                         NOT NULL,
-    email            VARCHAR                           NOT NULL,
-    password         VARCHAR                           NOT NULL,
-    CONSTRAINT credential_pkey PRIMARY KEY (id),
-    CONSTRAINT email_password UNIQUE (email)
-);
-
-CREATE SEQUENCE entity_info_seq;
-CREATE table entity_info
+CREATE SEQUENCE contact_info_seq;
+CREATE table contact_info
 (
     id               uuid                              NOT NULL,
     created          TIMESTAMP                         NOT NULL,
@@ -48,7 +40,14 @@ CREATE table entity_info
     suites           VARCHAR,
     phone_number     VARCHAR,
     email            VARCHAR,
-    CONSTRAINT entity_info_pkey PRIMARY KEY (id)
+    CONSTRAINT contact_info_pkey PRIMARY KEY (id)
+);
+
+CREATE SEQUENCE dance_seq START WITH 1;
+CREATE table dance
+(
+    id   INTEGER PRIMARY KEY DEFAULT nextval('dance_seq'),
+    name VARCHAR  NOT NULL
 );
 
 CREATE SEQUENCE school_seq;
@@ -59,12 +58,20 @@ CREATE table school
     updated                      TIMESTAMP                         NOT NULL,
     name                         VARCHAR                           NOT NULL,
     description                  VARCHAR,
-    entity_info_id               uuid,
+    contact_info_id              uuid,
     image                        VARCHAR,
     CONSTRAINT school_pkey PRIMARY KEY (id),
-    FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE
+    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id) ON DELETE CASCADE
 );
 
+CREATE table schools_has_dances
+(
+    school_id    uuid NOT NULL,
+    dance_id     int NOT NULL,
+    CONSTRAINT schools_has_dances_pkey PRIMARY KEY (school_id, dance_id),
+    FOREIGN KEY (school_id) REFERENCES school (id),
+    FOREIGN KEY (dance_id) REFERENCES dance (id)
+);
 
 CREATE SEQUENCE dancer_seq;
 CREATE table dancer
@@ -73,61 +80,109 @@ CREATE table dancer
     created             TIMESTAMP                         NOT NULL,
     updated             TIMESTAMP                         NOT NULL,
     name                VARCHAR                           NOT NULL,
-    description         VARCHAR,
-    entity_info_id      uuid,
     last_name           VARCHAR,
     gender              VARCHAR,
     birthday            TIMESTAMP,
+    description         VARCHAR,
+    contact_info_id     uuid                                  NULL,
     role                VARCHAR,
-    credential_id       uuid,
     image               VARCHAR,
     CONSTRAINT dancer_pkey PRIMARY KEY (id),
-    FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE,
-    FOREIGN KEY (credential_id) REFERENCES credential (id) ON DELETE CASCADE
+    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
+);
+
+CREATE table dancers_has_dances
+(
+    dancer_id    uuid NOT NULL,
+    dance_id     int NOT NULL,
+    CONSTRAINT dancers_has_dances_pkey PRIMARY KEY (dancer_id, dance_id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id),
+    FOREIGN KEY (dance_id) REFERENCES dance (id)
 );
 
 CREATE SEQUENCE event_seq;
 CREATE table event
 (
-    id                  uuid                              NOT NULL,
-    created             TIMESTAMP                         NOT NULL,
-    updated             TIMESTAMP                         NOT NULL,
-    name                VARCHAR                           NOT NULL,
-    description         VARCHAR,
-    entity_info_id      uuid,
-    date_event          TIMESTAMP                         NOT NULL,
-    date_finish_event   TIMESTAMP                         NOT NULL,
-    image               VARCHAR,
+    id                      uuid                              NOT NULL,
+    created                 TIMESTAMP                         NOT NULL,
+    updated                 TIMESTAMP                         NOT NULL,
+    name                    VARCHAR                           NOT NULL,
+    description             VARCHAR,
+    contact_info_id         uuid,
+    school_organizer_id     uuid,
+    date_event              TIMESTAMP                         NOT NULL,
+    date_finish_event       TIMESTAMP                         NOT NULL,
+    image                   VARCHAR,
     CONSTRAINT event_pkey PRIMARY KEY (id),
-    FOREIGN KEY (entity_info_id) REFERENCES entity_info (id) ON DELETE CASCADE
+    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 
-CREATE SEQUENCE dance_seq START WITH 1;
-CREATE table dance
+CREATE table events_has_dances
 (
-    id   INTEGER PRIMARY KEY DEFAULT nextval('dance_seq'),
-    name VARCHAR  NOT NULL
+    event_id     uuid NOT NULL,
+    dance_id     int NOT NULL,
+    CONSTRAINT events_has_dances_pkey PRIMARY KEY (event_id, dance_id),
+    FOREIGN KEY (event_id) REFERENCES event (id),
+    FOREIGN KEY (dance_id) REFERENCES dance (id)
 );
 
-CREATE table dancer_has_dances
+CREATE table school_has_administrators
 (
-    dancer_id uuid NOT NULL,
-    dance     VARCHAR,
-    FOREIGN KEY (dancer_id) REFERENCES dancer (id) ON DELETE CASCADE
+    school_id     uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT school_has_administrators_pkey PRIMARY KEY (school_id, dancer_id),
+    FOREIGN KEY (school_id) REFERENCES school (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
 );
 
-CREATE table event_has_dances
+CREATE table school_has_teachers
 (
-    event_id  uuid NOT NULL,
-    dance     VARCHAR,
-    FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE
+    school_id     uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT school_has_teachers_pkey PRIMARY KEY (school_id, dancer_id),
+    FOREIGN KEY (school_id) REFERENCES school (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
 );
 
-CREATE table school_has_dances
+CREATE table schools_has_students
 (
-    school_id uuid NOT NULL,
-    dance     VARCHAR,
-    FOREIGN KEY (school_id) REFERENCES school (id) ON DELETE CASCADE
+    school_id     uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT schools_has_students_pkey PRIMARY KEY (school_id, dancer_id),
+    FOREIGN KEY (school_id) REFERENCES school (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
+);
+
+CREATE table events_has_organizers
+(
+    event_id     uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT events_has_organizers_pkey PRIMARY KEY (event_id, dancer_id),
+    FOREIGN KEY (event_id) REFERENCES school (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
+);
+
+CREATE table events_has_dancers
+(
+    event_id     uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT events_has_dancers_pkey PRIMARY KEY (event_id, dancer_id),
+    FOREIGN KEY (event_id) REFERENCES school (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
+);
+
+CREATE SEQUENCE credential_seq;
+CREATE table credential
+(
+    id               uuid                              NOT NULL,
+    created          TIMESTAMP                         NOT NULL,
+    updated          TIMESTAMP                         NOT NULL,
+    dancer_id        uuid,
+    email            VARCHAR                           NOT NULL,
+    password         VARCHAR                           NOT NULL,
+    CONSTRAINT credential_pkey PRIMARY KEY (id),
+    CONSTRAINT credential_email UNIQUE (email),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
 );
 
 CREATE SEQUENCE rating_seq;
@@ -155,3 +210,11 @@ CREATE table review
     CONSTRAINT review_pkey PRIMARY KEY (id),
     FOREIGN KEY (review_owner) REFERENCES dancer (id) ON DELETE CASCADE
 );
+
+INSERT INTO dance values (1, 'Salsa'),
+                         (2, 'Bachata'),
+                         (3, 'Kizomba'),
+                         (4, 'Zouk'),
+                         (5, 'Merenge'),
+                         (6, 'Reggaeton'),
+                         (7, 'Argentine Tango');

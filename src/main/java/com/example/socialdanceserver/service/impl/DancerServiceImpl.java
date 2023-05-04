@@ -1,26 +1,14 @@
 package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.dto.DancerDto;
-import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.CredentialEntity;
 import com.example.socialdanceserver.model.DancerEntity;
-import com.example.socialdanceserver.model.EntityInfo;
-import com.example.socialdanceserver.model.enums.Dance;
-import com.example.socialdanceserver.model.enums.Role;
 import com.example.socialdanceserver.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
-import com.example.socialdanceserver.mapper.DancerMapper;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -35,58 +23,43 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     }
 
     @Override
-    public List<DancerEntity> getAllByCity(String city) {
-        return dancerRepository.findAllByCity(city);
+    public List<DancerDto> getAllByCity(String city) {
+        return mapper.mapAsList(dancerRepository.findAllByCity(city), DancerDto.class);
     }
 
     @Override
-    public List<DancerEntity> getAllByName(String name) {
-        return dancerRepository.findAllByName(name);
+    public List<DancerDto> getAllByName(String name) {
+        return mapper.mapAsList(dancerRepository.findByName(name), DancerDto.class);
     }
 
     @Override
-    public List<DancerEntity> getAllBySurname(String surname) {
-        return dancerRepository.findAllBySurname(surname);
+    public List<DancerDto> getAllBySurname(String surname) {
+        return mapper.mapAsList(dancerRepository.findAllBySurname(surname), DancerDto.class);
     }
 
     @Override
-    public List<DancerEntity> getAllByNameAndSurname(String name, String surname) {
-        return dancerRepository.findAllByNameAndSurname(name, surname);
+    public List<DancerDto> getAllByNameAndSurname(String name, String surname) {
+        return mapper.mapAsList(dancerRepository.findAllByNameAndSurname(name, surname), DancerDto.class);
     }
 
     @Override
-    public DancerEntity getById(UUID id) {
+    public DancerDto getById(UUID id) {
         DancerEntity dancerEntity = null;
         Optional<DancerEntity> dancerOptional = dancerRepository.findById(id);
         if (dancerOptional.isPresent()){
-            dancerEntity = (DancerEntity) dancerOptional.get();
+            dancerEntity = dancerOptional.get();
         }
-        return dancerEntity;
+        return mapper.map(dancerEntity, DancerDto.class);
     }
 
     @Override
     public DancerDto save(DancerDto dancerDto) {
         DancerEntity oldDancerEntity = new DancerEntity();
+        DancerEntity dancerEntity = mapper.map(dancerDto, DancerEntity.class);
 //        if (dancerDto.getId() != null){
 //            oldDancerEntity = getById(dancerDto.getId());
 //        }
-//        DancerEntity dancerEntity = DancerMapper.populateDancerEntity(dancerDto, oldDancerEntity);
-        EntityInfo entityInfo = new EntityInfo();
-        entityInfo.setCountry("Ukraine");
-        entityInfo.setCity("Zp");
-        CredentialEntity credentialEntity = new CredentialEntity();
-        credentialEntity.setEmail("mail@gmail.com");
-        credentialEntity.setPassword("1234");
-        DancerEntity dancerEntity = new DancerEntity();
-        dancerEntity.setBirthday(LocalDate.now());
-        dancerEntity.setName("Vadim");
-        dancerEntity.setLastName("Yevt");
-        dancerEntity.setDances(Set.of(Dance.SALSA,Dance.BACHATA));
-        dancerEntity.setGender("male");
-        dancerEntity.setRole(Role.DANCER);
-        dancerEntity.setEntityInfo(entityInfo);
-        dancerEntity.setCredential(credentialEntity);
-//        return DancerMapper.mapDancerEntity(dancerRepository.save(dancerEntity));
+
         return mapper.map(dancerRepository.save(dancerEntity), DancerDto.class);
     }
 

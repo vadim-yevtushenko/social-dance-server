@@ -5,19 +5,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
-@Table(name = "rating")
+@Table(name = "dance")
 @Getter
 @Setter
 @NoArgsConstructor
-public class RatingEntity extends AbstractBaseEntity{
+public class DanceEntity {
 
-    private UUID ratingOwnerID;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    int id;
 
-    private UUID  baseDanceEntityId;
-
-    private int rating;
+    String name;
 
 }

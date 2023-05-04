@@ -1,90 +1,36 @@
 package com.example.socialdanceserver.dto;
 
-import java.util.Date;
+import com.example.socialdanceserver.model.DancerEntity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReviewDto {
 
-    private int id;
+    private UUID id;
 
-    private Boolean incognito;
+    private boolean incognito;
 
-    private int abstractBaseEntityId;
+    private DancerEntity reviewOwner;
 
-    private int schoolId;
+    private UUID baseDanceEntityId;
 
     private String review;
 
-    private Date dateTime;
+    private ZonedDateTime created;
 
-    public ReviewDto() {
-    }
-
-    public ReviewDto(int id, Boolean incognito, int abstractBaseEntityId, int schoolId, String review, Date dateTime) {
+    public ReviewDto(UUID id, Boolean incognito, DancerEntity reviewOwner, UUID baseDanceEntityId, String review, ZonedDateTime created) {
         this.id = id;
         this.incognito = incognito;
-        this.abstractBaseEntityId = abstractBaseEntityId;
-        this.schoolId = schoolId;
+        this.reviewOwner = reviewOwner;
+        this.baseDanceEntityId = baseDanceEntityId;
         this.review = review;
-        this.dateTime = dateTime;
+        this.created = created;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Boolean getIncognito() {
-        return incognito;
-    }
-
-    public void setIncognito(Boolean incognito) {
-        this.incognito = incognito;
-    }
-
-    public int getAbstractBaseEntityId() {
-        return abstractBaseEntityId;
-    }
-
-    public void setAbstractBaseEntityId(int abstractBaseEntityId) {
-        this.abstractBaseEntityId = abstractBaseEntityId;
-    }
-
-    public int getSchoolId() {
-        return schoolId;
-    }
-
-    public void setSchoolId(int schoolId) {
-        this.schoolId = schoolId;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
-    }
-
-    public Date getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    @Override
-    public String toString() {
-        return "ReviewTo{" +
-                "id=" + id +
-                ", incognito=" + incognito +
-                ", abstractBaseEntityId=" + abstractBaseEntityId +
-                ", schoolId=" + schoolId +
-                ", review='" + review + '\'' +
-                ", dateTime=" + dateTime +
-                '}';
-    }
 }

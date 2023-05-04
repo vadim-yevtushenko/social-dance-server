@@ -1,28 +1,31 @@
 package com.example.socialdanceserver.model.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Dance {
 
-    SALSA("Salsa"),
+    SALSA(1, "Salsa"),
 
-    BACHATA("Bachata"),
+    BACHATA(2, "Bachata"),
 
-    KIZOMBA("Kizomba"),
+    KIZOMBA(3, "Kizomba"),
 
-    ZOUK("Zouk"),
+    ZOUK(4, "Zouk"),
 
-    MERENGE("Merenge"),
+    MERENGE(5, "Merenge"),
 
-    REGGAETON("Reggaeton"),
+    REGGAETON(6, "Reggaeton"),
 
-    TANGO("Argentine Tango");
+    TANGO(7, "Argentine Tango");
+
+    private int id;
 
     private String name;
 
-    Dance(String name) {
+    Dance(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
 }

@@ -1,132 +1,37 @@
 package com.example.socialdanceserver.dto;
 
-import com.example.socialdanceserver.model.EntityInfo;
-import com.example.socialdanceserver.model.enums.Dance;
-
-import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class EventDto {
 
-    private Integer id;
-    private String image;
+    private UUID id;
+
     private String name;
+
     private String description;
-    private EntityInfo entityInfo;
-    private Date dateEvent;
-    private Date dateFinishEvent;
-    private Date datePublication;
-    private List<Dance> dances;
-    private int ownerId;
 
-    public EventDto() {
-    }
+    private String image;
 
-    public EventDto(Integer id, String image, String name, String description, EntityInfo entityInfo, Date dateEvent, Date dateFinishEvent, Date datePublication, List<Dance> dances, int ownerId) {
-        this.id = id;
-        this.image = image;
-        this.name = name;
-        this.description = description;
-        this.entityInfo = entityInfo;
-        this.dateEvent = dateEvent;
-        this.dateFinishEvent = dateFinishEvent;
-        this.datePublication = datePublication;
-        this.dances = dances;
-        this.ownerId = ownerId;
-    }
+    private ContactInfoDto contactInfo;
 
-    public Integer getId() {
-        return id;
-    }
+    private ZonedDateTime dateEvent;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private ZonedDateTime dateFinishEvent;
 
-    public String getImage() {
-        return image;
-    }
+    private ZonedDateTime created;
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+    private List<DanceDto> dances;
 
-    public String getName() {
-        return name;
-    }
+    private List<DancerDto> owners;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private List<SchoolDto> eventOwner;
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getDateEvent() {
-        return dateEvent;
-    }
-
-    public void setDateEvent(Date dateEvent) {
-        this.dateEvent = dateEvent;
-    }
-
-    public Date getDateFinishEvent() {
-        return dateFinishEvent;
-    }
-
-    public void setDateFinishEvent(Date dateFinishEvent) {
-        this.dateFinishEvent = dateFinishEvent;
-    }
-
-    public Date getDatePublication() {
-        return datePublication;
-    }
-
-    public void setDatePublication(Date datePublication) {
-        this.datePublication = datePublication;
-    }
-
-    public EntityInfo getEntityInfo() {
-        return entityInfo;
-    }
-
-    public void setEntityInfo(EntityInfo entityInfo) {
-        this.entityInfo = entityInfo;
-    }
-
-    public List<Dance> getDances() {
-        return dances;
-    }
-
-    public void setDances(List<Dance> dances) {
-        this.dances = dances;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    @Override
-    public String toString() {
-        return "EventTo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", entityInfo=" + entityInfo +
-                ", dateEvent=" + dateEvent +
-                ", dateFinishEvent=" + dateFinishEvent +
-                ", datePublication=" + datePublication +
-                ", dances=" + dances +
-                ", ownerId=" + ownerId +
-                '}';
-    }
 }

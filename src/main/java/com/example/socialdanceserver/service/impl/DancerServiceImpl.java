@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.dto.DancerDto;
 import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
@@ -24,7 +24,7 @@ public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Override
     public List<DancerDto> getAllByCity(String city) {
-        return mapper.mapAsList(dancerRepository.findByContactInfo_CityContainsIgnoreCaseOrderByNameAscLastNameAsc(city), DancerDto.class);
+        return mapper.mapAsList(dancerRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(city), DancerDto.class);
     }
 
     @Override

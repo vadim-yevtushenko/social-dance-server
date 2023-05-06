@@ -1,8 +1,11 @@
 package com.example.socialdanceserver.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,7 +28,7 @@ public class SchoolEntity extends AbstractBaseEntity {
     @JoinColumn(name = "contact_info_id")
     private ContactInfoEntity contactInfo;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "schools_has_dances",
             joinColumns = {@JoinColumn(name = "school_id")},
@@ -33,15 +36,16 @@ public class SchoolEntity extends AbstractBaseEntity {
     )
     private List<DanceEntity> dances;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "school_has_administrators",
             joinColumns = {@JoinColumn(name = "school_id")},
             inverseJoinColumns = {@JoinColumn(name = "dancer_id")}
     )
+    @JsonManagedReference
     private List<DancerEntity> administrators;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "school_has_teachers",
             joinColumns = {@JoinColumn(name = "school_id")},
@@ -49,15 +53,13 @@ public class SchoolEntity extends AbstractBaseEntity {
     )
     private List<DancerEntity> teachers;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "schools_has_students",
             joinColumns = {@JoinColumn(name = "school_id")},
             inverseJoinColumns = {@JoinColumn(name = "dancer_id")}
     )
-//    @ElementCollection
-//    @CollectionTable(name = "schools_has_students", joinColumns = @JoinColumn(name = "school_id"))
-//    @Column(name = "dancer_id")
+    @LazyCollection(LazyCollectionOption.EXTRA)
     private List<DancerEntity> students;
 
 //    @OneToMany(mappedBy = "baseDanceEntityId", fetch = FetchType.EAGER,

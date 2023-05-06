@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.dto.DancerDto;
 import java.util.List;
 import java.util.UUID;
 

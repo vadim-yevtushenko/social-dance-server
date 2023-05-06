@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.dto;
+package com.example.socialdanceserver.api.dto.dto;
 
 import com.example.socialdanceserver.model.enums.Role;
 import lombok.*;

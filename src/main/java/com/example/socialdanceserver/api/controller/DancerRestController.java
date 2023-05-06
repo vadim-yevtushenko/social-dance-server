@@ -1,6 +1,6 @@
-package com.example.socialdanceserver.controller;
+package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.dto.DancerDto;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = DancerRestController.REST_URL)
-public class DancerRestController {
+public class DancerRestController extends BaseController{
 
     static final String REST_URL = "/dancers";
 

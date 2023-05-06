@@ -16,7 +16,7 @@ public interface DancerRepository extends JpaRepository<DancerEntity, UUID> {
 
     List<DancerEntity> findByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(String name, String lastName);
 
-    List<DancerEntity> findByContactInfo_CityContainsIgnoreCaseOrderByNameAscLastNameAsc(String city);
+    List<DancerEntity> findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(String city);
 
 }
 

@@ -1,8 +1,7 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.RatingDto;
-import com.example.socialdanceserver.dto.ReviewDto;
-import com.example.socialdanceserver.dto.SchoolDto;
+import com.example.socialdanceserver.api.dto.dto.ReviewDto;
+import com.example.socialdanceserver.api.dto.dto.SchoolDto;
 import com.example.socialdanceserver.model.*;
 import com.example.socialdanceserver.repository.SchoolRepository;
 import com.example.socialdanceserver.service.SchoolService;
@@ -22,21 +21,14 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         return mapper.mapAsList(schoolRepository.findAll(Sort.by("name")), SchoolDto.class);
     }
 
-//    @Override
-//    public List<SchoolDto> getAll() {
-//        List<SchoolEntity> schoolEntityList = new ArrayList<>(new HashSet<>(schoolRepository.findAll()));
-//        schoolEntityList.sort(Comparator.comparing(s -> s.getEntityInfo().getCity().toLowerCase(Locale.ROOT)));
-//        return schoolEntityList;
-//    }
-
     @Override
     public List<SchoolDto> getAllByOwnerId(UUID id) {
-        return mapper.mapAsList(schoolRepository.findAllByOwnerId(id), SchoolDto.class);
+        return null;
     }
 
     @Override
     public List<SchoolDto> getAllByCity(String city) {
-        return mapper.mapAsList(schoolRepository.findAllByCity(city), SchoolDto.class);
+        return mapper.mapAsList(schoolRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), SchoolDto.class);
     }
 
     @Override
@@ -58,49 +50,6 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     public SchoolDto save(SchoolDto school) {
         SchoolEntity schoolEntity = mapper.map(school, SchoolEntity.class);
         return mapper.map(schoolRepository.save(schoolEntity), SchoolDto.class);
-    }
-
-    @Override
-    public void createRating(RatingDto ratingDto) {
-        schoolRepository.createRating(ratingDto.getBaseDanceEntityId(),
-                ratingDto.getRatingOwnerID(), ratingDto.getRating());
-    }
-
-    @Override
-    public void createReview(ReviewDto reviewDto) {
-        schoolRepository.createReview(reviewDto.getBaseDanceEntityId(),
-                reviewDto.getBaseDanceEntityId(), reviewDto.getReview(),
-                reviewDto.getCreated(),
-                reviewDto.isIncognito());
-    }
-
-    @Override
-    public void saveRating(RatingDto ratingDto) {
-//        SchoolEntity schoolEntity = getById(ratingDto.getEntityId());
-        boolean isExist = false;
-//        for (RatingEntity ratingEntity : schoolEntity.getRatings()){
-//            if (ratingEntity.getReviewer_id() == ratingDto.getReviewerId()){
-//                isExist = true;
-//                break;
-//            }
-//        }
-        if (isExist) {
-            schoolRepository.saveRating(ratingDto.getRatingOwnerID(), ratingDto.getRating());
-        } else {
-            schoolRepository.createRating(ratingDto.getRatingOwnerID(), ratingDto.getRatingOwnerID(), ratingDto.getRating());
-        }
-    }
-
-    @Override
-    public void saveReview(ReviewDto reviewDto) {
-        schoolRepository.saveReview(reviewDto.getId(), reviewDto.getReview(),
-                reviewDto.getCreated());
-    }
-
-    @Override
-    public void update(SchoolDto school) {
-        SchoolEntity schoolEntity = mapper.map(school, SchoolEntity.class);
-        schoolRepository.save(schoolEntity);
     }
 
     @Override

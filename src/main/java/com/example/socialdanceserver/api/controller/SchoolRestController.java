@@ -1,8 +1,8 @@
-package com.example.socialdanceserver.controller;
+package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.dto.RatingDto;
-import com.example.socialdanceserver.dto.ReviewDto;
-import com.example.socialdanceserver.dto.SchoolDto;
+import com.example.socialdanceserver.api.dto.dto.RatingDto;
+import com.example.socialdanceserver.api.dto.dto.ReviewDto;
+import com.example.socialdanceserver.api.dto.dto.SchoolDto;
 import com.example.socialdanceserver.service.ImageStorageService;
 import com.example.socialdanceserver.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = SchoolRestController.REST_URL)
-public class SchoolRestController {
+public class SchoolRestController extends BaseController {
 
     static final String REST_URL = "/schools";
 
@@ -118,11 +118,9 @@ public class SchoolRestController {
 
     @PostMapping("/ratings")
     public void saveRating(@RequestBody RatingDto ratingDto) {
-        schoolService.saveRating(ratingDto);
     }
 
     @PostMapping("/reviews")
     public void saveReview(@RequestBody ReviewDto reviewDto) {
-        schoolService.createReview(reviewDto);
     }
 }

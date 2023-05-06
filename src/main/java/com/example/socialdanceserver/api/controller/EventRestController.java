@@ -1,6 +1,6 @@
-package com.example.socialdanceserver.controller;
+package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.dto.EventDto;
+import com.example.socialdanceserver.api.dto.dto.EventDto;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = EventRestController.REST_URL)
-public class EventRestController {
+public class EventRestController extends BaseController {
 
     static final String REST_URL = "/events";
 

@@ -1,8 +1,7 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.dto.RatingDto;
-import com.example.socialdanceserver.dto.ReviewDto;
-import com.example.socialdanceserver.dto.SchoolDto;
+import com.example.socialdanceserver.api.dto.dto.ReviewDto;
+import com.example.socialdanceserver.api.dto.dto.SchoolDto;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,16 +19,16 @@ public interface SchoolService {
 
     SchoolDto save(SchoolDto school);
 
-    void createRating(RatingDto rating);
-
-    void createReview(ReviewDto review);
-
-    void saveRating(RatingDto rating);
-
-    void saveReview(ReviewDto review);
-
-    void update(SchoolDto school);
-
     void deleteById(UUID id);
+
+//    void createRating(RatingDto rating);
+//
+//    void createReview(ReviewDto review);
+//
+//    void saveRating(RatingDto rating);
+//
+//    void saveReview(ReviewDto review);
+
+//    void update(SchoolDto school);
 
 }

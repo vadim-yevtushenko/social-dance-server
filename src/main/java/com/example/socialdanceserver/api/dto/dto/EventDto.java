@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.dto;
+package com.example.socialdanceserver.api.dto.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +30,10 @@ public class EventDto {
 
     private List<DanceDto> dances;
 
-    private List<DancerDto> owners;
+    private UUID schoolOrganizerId;
 
-    private List<SchoolDto> eventOwner;
+    private List<DancerDto> organizers;
+
+    private List<DancerDto> dancers;
 
 }

@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.EventDto;
+import com.example.socialdanceserver.api.dto.dto.EventDto;
 import com.example.socialdanceserver.model.EventEntity;
 import com.example.socialdanceserver.repository.EventRepository;
 import com.example.socialdanceserver.service.EventService;
@@ -23,12 +23,12 @@ public class EventServiceImpl extends BaseService implements EventService {
 
     @Override
     public List<EventDto> getAllByOwnerId(UUID id) {
-        return mapper.mapAsList(eventRepository.findAllByOwnerId(id), EventDto.class);
+        return mapper.mapAsList(eventRepository.findBySchoolOrganizerId(id), EventDto.class);
     }
 
     @Override
     public List<EventDto> getAllByCity(String city) {
-        return mapper.mapAsList(eventRepository.findAllByCity(city), EventDto.class);
+        return mapper.mapAsList(eventRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), EventDto.class);
     }
 
     @Override
@@ -53,13 +53,9 @@ public class EventServiceImpl extends BaseService implements EventService {
         return mapper.map(eventRepository.save(eventEntity), EventDto.class);
     }
 
-//    @Override
-//    public void update(Event event) {
-//        eventRepository.save(event);
-//    }
-
     @Override
     public void deleteById(UUID id) {
         eventRepository.deleteById(id);
     }
+
 }

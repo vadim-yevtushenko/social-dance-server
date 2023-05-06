@@ -50,6 +50,8 @@ CREATE table dance
     name VARCHAR  NOT NULL
 );
 
+
+
 CREATE SEQUENCE school_seq;
 CREATE table school
 (
@@ -72,6 +74,8 @@ CREATE table schools_has_dances
     FOREIGN KEY (school_id) REFERENCES school (id),
     FOREIGN KEY (dance_id) REFERENCES dance (id)
 );
+
+
 
 CREATE SEQUENCE dancer_seq;
 CREATE table dancer
@@ -100,6 +104,8 @@ CREATE table dancers_has_dances
     FOREIGN KEY (dance_id) REFERENCES dance (id)
 );
 
+
+
 CREATE SEQUENCE event_seq;
 CREATE table event
 (
@@ -114,7 +120,8 @@ CREATE table event
     date_finish_event       TIMESTAMP                         NOT NULL,
     image                   VARCHAR,
     CONSTRAINT event_pkey PRIMARY KEY (id),
-    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
+    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id),
+    FOREIGN KEY (school_organizer_id) REFERENCES school (id)
 );
 
 CREATE table events_has_dances
@@ -125,6 +132,26 @@ CREATE table events_has_dances
     FOREIGN KEY (event_id) REFERENCES event (id),
     FOREIGN KEY (dance_id) REFERENCES dance (id)
 );
+
+CREATE table events_has_organizers
+(
+    event_id      uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT events_has_organizers_pkey PRIMARY KEY (event_id, dancer_id),
+    FOREIGN KEY (event_id) REFERENCES event (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
+);
+
+CREATE table events_has_dancers
+(
+    event_id      uuid NOT NULL,
+    dancer_id     uuid NOT NULL,
+    CONSTRAINT events_has_dancers_pkey PRIMARY KEY (event_id, dancer_id),
+    FOREIGN KEY (event_id) REFERENCES event (id),
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
+);
+
+
 
 CREATE table school_has_administrators
 (
@@ -153,23 +180,7 @@ CREATE table schools_has_students
     FOREIGN KEY (dancer_id) REFERENCES dancer (id)
 );
 
-CREATE table events_has_organizers
-(
-    event_id     uuid NOT NULL,
-    dancer_id     uuid NOT NULL,
-    CONSTRAINT events_has_organizers_pkey PRIMARY KEY (event_id, dancer_id),
-    FOREIGN KEY (event_id) REFERENCES school (id),
-    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
-);
 
-CREATE table events_has_dancers
-(
-    event_id     uuid NOT NULL,
-    dancer_id     uuid NOT NULL,
-    CONSTRAINT events_has_dancers_pkey PRIMARY KEY (event_id, dancer_id),
-    FOREIGN KEY (event_id) REFERENCES school (id),
-    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
-);
 
 CREATE SEQUENCE credential_seq;
 CREATE table credential
@@ -184,6 +195,8 @@ CREATE table credential
     CONSTRAINT credential_email UNIQUE (email),
     FOREIGN KEY (dancer_id) REFERENCES dancer (id)
 );
+
+
 
 CREATE SEQUENCE rating_seq;
 CREATE table rating
@@ -210,6 +223,8 @@ CREATE table review
     CONSTRAINT review_pkey PRIMARY KEY (id),
     FOREIGN KEY (review_owner) REFERENCES dancer (id) ON DELETE CASCADE
 );
+
+
 
 INSERT INTO dance values (1, 'Salsa'),
                          (2, 'Bachata'),

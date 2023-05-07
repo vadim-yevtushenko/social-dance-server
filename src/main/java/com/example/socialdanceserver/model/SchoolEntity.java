@@ -18,10 +18,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SchoolEntity extends AbstractBaseEntity {
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
     private String image;
 
     @OneToOne(cascade = CascadeType.ALL)

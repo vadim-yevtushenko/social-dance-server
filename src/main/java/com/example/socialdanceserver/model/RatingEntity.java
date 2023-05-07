@@ -14,10 +14,13 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RatingEntity extends AbstractBaseEntity{
 
+//    @Column(name = "ratingOwnerID")
     private UUID ratingOwnerID;
 
+//    @Column(name = "baseDanceEntityId")
     private UUID  baseDanceEntityId;
 
+    @Column(name = "rating")
     private int rating;
 
 }

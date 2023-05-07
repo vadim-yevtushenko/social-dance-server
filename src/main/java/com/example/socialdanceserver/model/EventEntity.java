@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -19,11 +18,23 @@ import java.util.UUID;
 @AllArgsConstructor
 public class EventEntity extends AbstractBaseEntity {
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
     private String image;
+
+    @Column(name = "school_organizer_id")
+    private UUID schoolOrganizerId;
+
+    @Column(name = "date_event")
+    private ZonedDateTime dateEvent;
+
+    @Column(name = "date_finish_event")
+    private ZonedDateTime dateFinishEvent;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_info_id")
@@ -37,7 +48,6 @@ public class EventEntity extends AbstractBaseEntity {
     )
     private List<DanceEntity> dances;
 
-    private UUID schoolOrganizerId;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
@@ -57,8 +67,5 @@ public class EventEntity extends AbstractBaseEntity {
     @LazyCollection(LazyCollectionOption.EXTRA)
     private List<DancerEntity> dancers;
 
-    private ZonedDateTime dateEvent;
-
-    private ZonedDateTime dateFinishEvent;
 
 }

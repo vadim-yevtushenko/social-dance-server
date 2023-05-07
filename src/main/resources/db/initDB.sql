@@ -37,7 +37,7 @@ CREATE table contact_info
     city             VARCHAR,
     street           VARCHAR,
     building         VARCHAR,
-    suites           VARCHAR,
+    flat             VARCHAR,
     phone_number     VARCHAR,
     email            VARCHAR,
     CONSTRAINT contact_info_pkey PRIMARY KEY (id)

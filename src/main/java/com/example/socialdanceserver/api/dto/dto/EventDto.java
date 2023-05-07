@@ -28,11 +28,11 @@ public class EventDto {
 
     private ZonedDateTime created;
 
-    private List<DanceDto> dances;
-
     private UUID schoolOrganizerId;
 
     private List<DancerDto> organizers;
+
+    private List<DanceDto> dances;
 
     private List<DancerDto> dancers;
 

@@ -17,19 +17,26 @@ import java.util.List;
 @AllArgsConstructor
 public class DancerEntity extends AbstractBaseEntity {
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "gender")
     private String gender;
 
+    @Column(name = "birthday")
     private LocalDate birthday;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "image")
     private String image;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

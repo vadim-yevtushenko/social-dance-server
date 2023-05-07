@@ -15,8 +15,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class CredentialEntity extends AbstractBaseEntity{
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
     private String password;
 
     @OneToOne(cascade = CascadeType.ALL)

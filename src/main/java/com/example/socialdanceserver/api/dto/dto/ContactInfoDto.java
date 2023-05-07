@@ -21,7 +21,7 @@ public class ContactInfoDto {
 
     private String building;
 
-    private String suites;
+    private String flat;
 
     private String phoneNumber;
 

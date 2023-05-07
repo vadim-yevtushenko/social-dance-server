@@ -17,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ReviewEntity extends AbstractBaseEntity{
 
+    @Column(name = "incognito")
     private boolean incognito;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,8 +26,10 @@ public class ReviewEntity extends AbstractBaseEntity{
     @JsonBackReference
     private DancerEntity reviewOwner;
 
+//    @Column(name = "baseDanceEntityId")
     private UUID baseDanceEntityId;
 
+    @Column(name = "review")
     private String review;
 
 }

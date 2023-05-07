@@ -13,8 +13,6 @@ public class DancerDto {
 
     private UUID id;
 
-    private String image;
-
     private String name;
 
     private String lastName;
@@ -23,6 +21,10 @@ public class DancerDto {
 
     private LocalDate birthday;
 
+    private String description;
+
+    private String image;
+
     private ContactInfoDto contactInfo;
 
     private Role role;
@@ -30,7 +32,5 @@ public class DancerDto {
     private List<DanceDto> dances;
 
 //    private CredentialEntity credential;
-
-    private String description;
 
 }

@@ -2,9 +2,7 @@ package com.example.socialdanceserver.model;
 
 import com.example.socialdanceserver.model.enums.Role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -15,6 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class DancerEntity extends AbstractBaseEntity {
 
     private String name;

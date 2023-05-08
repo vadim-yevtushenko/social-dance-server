@@ -3,16 +3,17 @@ package com.example.socialdanceserver.api.controller;
 import com.example.socialdanceserver.api.dto.dto.DancerDto;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping(value = DancerRestController.REST_URL)
 public class DancerRestController extends BaseController{
@@ -26,18 +27,21 @@ public class DancerRestController extends BaseController{
     private DancerService dancerService;
 
     @GetMapping
-    public List<DancerDto> dancers (){
+    public List<DancerDto> getAllDancers (){
+        log.info("Get all dancers");
         return dancerService.getAll();
     }
 
     @GetMapping("/search/{city}")
-    public List<DancerDto> dancersByCity(@PathVariable String city){
+    public List<DancerDto> getDancersByCity(@PathVariable String city){
+        log.info("Get all dancers by city: {}", city);
         return dancerService.getAllByCity(city);
     }
 
     @GetMapping("/search")
-    public List<DancerDto> dancersByNameAndLastName(@RequestParam(value = "name", required = false) String name,
+    public List<DancerDto> getDancersByNameAndLastName(@RequestParam(value = "name", required = false) String name,
                                                    @RequestParam(value = "lastName", required = false) String lastName){
+        log.info("Get all dancers by name: {} and lastName: {}", name, lastName);
         if (name.isEmpty()){
             return dancerService.getAllByLastName(lastName);
         }else if (lastName.isEmpty()){
@@ -47,17 +51,30 @@ public class DancerRestController extends BaseController{
     }
 
     @GetMapping("/{id}")
-    public DancerDto get(@PathVariable UUID id){
+    public DancerDto getById(@PathVariable UUID id){
+        log.info("Get dancer by uuid: {}", id);
         DancerDto dancer = dancerService.getById(id);
-//        if (dancer == null) {
-//            throw new NotFoundException("Thee is no dancer with id: " + id.toString());
-//        }
+        validateFound(dancer, DancerDto.class, id);
+
         return dancer;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public DancerDto save(@RequestBody DancerDto dancerDto){
+        if (dancerDto.getId() != null){
+            log.info("Update dancer with uuid: {}", dancerDto.getId());
+        } else {
+            log.info("Create new dancer");
+        }
+
         return dancerService.save(dancerDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id){
+        log.info("Delete dancer with uuid: {}", id);
+//        deleteFile(id);
+        dancerService.deleteById(id);
     }
 
     @ResponseBody
@@ -67,7 +84,7 @@ public class DancerRestController extends BaseController{
                              @RequestPart(value = "file", required = false) MultipartFile file) {
 
         if (file != null) {
-            DancerDto dancerDto = get(id);
+            DancerDto dancerDto = getById(id);
             if (dancerDto.getImage() != null) {
                 imageStorageService.deleteImage(dancerDto.getImage());
             }
@@ -80,7 +97,7 @@ public class DancerRestController extends BaseController{
 
     @DeleteMapping("/delete-image")
     public void deleteFile(@RequestParam(value = "id", required = false) UUID id){
-        DancerDto dancerDto = get(id);
+        DancerDto dancerDto = getById(id);
         imageStorageService.deleteImage(dancerDto.getImage());
         dancerDto.setImage(null);
         save(dancerDto);
@@ -88,7 +105,7 @@ public class DancerRestController extends BaseController{
 
     @GetMapping("/download-image")
     public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) UUID id) {
-        DancerDto dancerDto = get(id);
+        DancerDto dancerDto = getById(id);
         Resource resource = null;
         if (dancerDto.getImage() != null) {
             resource = imageStorageService.downloadImage(dancerDto.getImage());
@@ -101,12 +118,6 @@ public class DancerRestController extends BaseController{
                 .body(resource);
     }
 
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
-//        deleteFile(id);
-        dancerService.deleteById(id);
-    }
 
 //    @GetMapping("/registration")
 //    public Integer checkSignUp(@RequestParam(value = "email", required = false) String email){

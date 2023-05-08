@@ -9,6 +9,8 @@ import java.util.UUID;
 @Repository
 public interface SchoolRepository extends JpaRepository<SchoolEntity, UUID> {
 
+    List<SchoolEntity> findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(String name);
+
     List<SchoolEntity> findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(String city);
 
 //    @Query(value = "select * from abstract_base_entity abe " +

@@ -9,6 +9,8 @@ import java.util.UUID;
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, UUID> {
 
+    List<EventEntity> findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(String name);
+
     List<EventEntity> findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(String city);
 
     List<EventEntity> findBySchoolOrganizerId(UUID id);

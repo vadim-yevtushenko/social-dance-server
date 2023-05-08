@@ -5,16 +5,17 @@ import com.example.socialdanceserver.api.dto.dto.ReviewDto;
 import com.example.socialdanceserver.api.dto.dto.SchoolDto;
 import com.example.socialdanceserver.service.ImageStorageService;
 import com.example.socialdanceserver.service.SchoolService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping(value = SchoolRestController.REST_URL)
 public class SchoolRestController extends BaseController {
@@ -29,41 +30,44 @@ public class SchoolRestController extends BaseController {
 
     @GetMapping
     public List<SchoolDto> schools() {
+        log.info("Get all schools");
         return schoolService.getAll();
     }
 
-    @GetMapping("/owner/{id}")
-    public List<SchoolDto> schoolsByOwner(@PathVariable UUID id) {
-        return schoolService.getAllByOwnerId(id);
+    @GetMapping("/search/{name}")
+    public List<SchoolDto> schoolsByName(@PathVariable String name) {
+        log.info("Get all schools by name: {}", name);
+        return schoolService.getAllByName(name);
     }
 
     @GetMapping("/search/{city}")
     public List<SchoolDto> schoolsByCity(@PathVariable String city) {
+        log.info("Get all schools by city: {}", city);
         return schoolService.getAllByCity(city);
     }
 
     @GetMapping("/{id}")
-    public SchoolDto get(@PathVariable UUID id) {
+    public SchoolDto getById(@PathVariable UUID id) {
+        log.info("Get school by uuid: {}", id);
         return schoolService.getById(id);
-    }
-
-    @GetMapping("/{id}/{dancerId}")
-    public Integer getRatingByDancerId(@PathVariable UUID id, @PathVariable UUID dancerId) {
-//        SchoolEntity schoolEntity = schoolService.getById(id);
-//        if (schoolEntity.getRatings() == null) {
-//            return 0;
-//        }
-//        for (RatingEntity schoolRatingEntity : schoolEntity.getRatings()) {
-//            if (schoolRatingEntity.getReviewer_id() == dancerId) {
-//                return schoolRatingEntity.getRating();
-//            }
-//        }
-        return 0;
     }
 
     @PostMapping
     public SchoolDto save(@RequestBody SchoolDto school) {
+        if (school.getId() != null){
+            log.info("Update school with uuid: {}", school.getId());
+        } else {
+            log.info("Create new school");
+        }
+
         return schoolService.save(school);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        log.info("Delete school with uuid: {}", id);
+//        deleteImage(id);
+        schoolService.deleteById(id);
     }
 
     @ResponseBody
@@ -105,10 +109,18 @@ public class SchoolRestController extends BaseController {
         return ResponseEntity.ok().body(resource);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
-//        deleteImage(id);
-        schoolService.deleteById(id);
+    @GetMapping("/{id}/{dancerId}")
+    public Integer getRatingByDancerId(@PathVariable UUID id, @PathVariable UUID dancerId) {
+//        SchoolEntity schoolEntity = schoolService.getById(id);
+//        if (schoolEntity.getRatings() == null) {
+//            return 0;
+//        }
+//        for (RatingEntity schoolRatingEntity : schoolEntity.getRatings()) {
+//            if (schoolRatingEntity.getReviewer_id() == dancerId) {
+//                return schoolRatingEntity.getRating();
+//            }
+//        }
+        return 0;
     }
 
     @GetMapping("/reviews/{id}")

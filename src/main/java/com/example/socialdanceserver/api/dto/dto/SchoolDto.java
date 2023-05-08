@@ -29,10 +29,6 @@ public class SchoolDto {
 
     private List<DancerDto> students;
 
-
 //    private AverageRatingDto rating;
-
-//    @JsonManagedReference
-//    private List<DancerDto> owners;
 
 }

@@ -22,18 +22,13 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     }
 
     @Override
-    public List<SchoolDto> getAllByOwnerId(UUID id) {
-        return null;
+    public List<SchoolDto> getAllByName(String name) {
+        return mapper.mapAsList(schoolRepository.findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(name), SchoolDto.class);
     }
 
     @Override
     public List<SchoolDto> getAllByCity(String city) {
         return mapper.mapAsList(schoolRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), SchoolDto.class);
-    }
-
-    @Override
-    public List<ReviewDto> getReviewsBySchoolId(UUID id) {
-        return null;
     }
 
     @Override
@@ -56,4 +51,10 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     public void deleteById(UUID id) {
         schoolRepository.deleteById(id);
     }
+
+    @Override
+    public List<ReviewDto> getReviewsBySchoolId(UUID id) {
+        return null;
+    }
+
 }

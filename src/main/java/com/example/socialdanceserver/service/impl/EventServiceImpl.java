@@ -22,8 +22,13 @@ public class EventServiceImpl extends BaseService implements EventService {
     }
 
     @Override
-    public List<EventDto> getAllByOwnerId(UUID id) {
+    public List<EventDto> getAllBySchoolOrganizerId(UUID id) {
         return mapper.mapAsList(eventRepository.findBySchoolOrganizerId(id), EventDto.class);
+    }
+
+    @Override
+    public List<EventDto> getAllByName(String name) {
+        return mapper.mapAsList(eventRepository.findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(name), EventDto.class);
     }
 
     @Override

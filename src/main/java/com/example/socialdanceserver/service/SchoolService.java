@@ -9,7 +9,7 @@ public interface SchoolService {
 
     List<SchoolDto> getAll();
 
-    List<SchoolDto> getAllByOwnerId(UUID id);
+    List<SchoolDto> getAllByName(String name);
 
     List<SchoolDto> getAllByCity(String city);
 

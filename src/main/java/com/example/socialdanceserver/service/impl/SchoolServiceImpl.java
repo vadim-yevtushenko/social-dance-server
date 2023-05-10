@@ -6,7 +6,6 @@ import com.example.socialdanceserver.model.*;
 import com.example.socialdanceserver.repository.SchoolRepository;
 import com.example.socialdanceserver.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -18,7 +17,7 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     public List<SchoolDto> getAll() {
-        return mapper.mapAsList(schoolRepository.findAll(Sort.by("name")), SchoolDto.class);
+        return mapper.mapAsList(schoolRepository.findDistinctAllSchools(), SchoolDto.class);
     }
 
     @Override
@@ -28,17 +27,12 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     public List<SchoolDto> getAllByCity(String city) {
-        return mapper.mapAsList(schoolRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), SchoolDto.class);
+        return mapper.mapAsList(schoolRepository.findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), SchoolDto.class);
     }
 
     @Override
     public SchoolDto getById(UUID id) {
-        SchoolEntity schoolEntity = null;
-        Optional<SchoolEntity> optionalSchool = schoolRepository.findById(id);
-        if (optionalSchool.isPresent()){
-            schoolEntity = optionalSchool.get();
-        }
-        return mapper.map(schoolEntity, SchoolDto.class);
+        return mapper.map(schoolRepository.findDistinctSchoolEntityById(id), SchoolDto.class);
     }
 
     @Override

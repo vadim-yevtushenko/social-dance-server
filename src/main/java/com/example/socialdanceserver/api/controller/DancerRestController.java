@@ -26,18 +26,21 @@ public class DancerRestController extends BaseController{
     @Autowired
     private DancerService dancerService;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public List<DancerDto> getAllDancers (){
         log.info("Get all dancers");
         return dancerService.getAll();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/search/{city}")
     public List<DancerDto> getDancersByCity(@PathVariable String city){
         log.info("Get all dancers by city: {}", city);
         return dancerService.getAllByCity(city);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/search")
     public List<DancerDto> getDancersByNameAndLastName(@RequestParam(value = "name", required = false) String name,
                                                    @RequestParam(value = "lastName", required = false) String lastName){
@@ -50,6 +53,7 @@ public class DancerRestController extends BaseController{
         return dancerService.getAllByNameAndLastName(name, lastName);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
     public DancerDto getById(@PathVariable UUID id){
         log.info("Get dancer by uuid: {}", id);
@@ -59,6 +63,7 @@ public class DancerRestController extends BaseController{
         return dancer;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public DancerDto save(@RequestBody DancerDto dancerDto){
         if (dancerDto.getId() != null){
@@ -70,6 +75,7 @@ public class DancerRestController extends BaseController{
         return dancerService.save(dancerDto);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
         log.info("Delete dancer with uuid: {}", id);

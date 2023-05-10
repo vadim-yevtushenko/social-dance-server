@@ -2,16 +2,22 @@ package com.example.socialdanceserver.repository;
 
 import com.example.socialdanceserver.model.SchoolEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public interface SchoolRepository extends JpaRepository<SchoolEntity, UUID> {
 
-    List<SchoolEntity> findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(String name);
+    SchoolEntity findDistinctSchoolEntityById(UUID id);
 
-    List<SchoolEntity> findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(String city);
+    @Query("select distinct school from SchoolEntity school order by school.name")
+    Set<SchoolEntity> findDistinctAllSchools();
+
+    Set<SchoolEntity> findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(String name);
+
+    Set<SchoolEntity> findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(String city);
 
 //    @Query(value = "select * from abstract_base_entity abe " +
 //            "left join schools s on abe.id = s.id " +

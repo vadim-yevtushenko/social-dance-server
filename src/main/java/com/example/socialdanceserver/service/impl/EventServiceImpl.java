@@ -7,7 +7,6 @@ import com.example.socialdanceserver.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,32 +17,27 @@ public class EventServiceImpl extends BaseService implements EventService {
 
     @Override
     public List<EventDto> getAll() {
-        return mapper.mapAsList(eventRepository.findAll(), EventDto.class);
+        return mapper.mapAsList(eventRepository.findDistinctAllEvents(), EventDto.class);
     }
 
     @Override
     public List<EventDto> getAllBySchoolOrganizerId(UUID id) {
-        return mapper.mapAsList(eventRepository.findBySchoolOrganizerId(id), EventDto.class);
+        return mapper.mapAsList(eventRepository.findDistinctBySchoolOrganizerId(id), EventDto.class);
     }
 
     @Override
     public List<EventDto> getAllByName(String name) {
-        return mapper.mapAsList(eventRepository.findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(name), EventDto.class);
+        return mapper.mapAsList(eventRepository.findDistinctByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(name), EventDto.class);
     }
 
     @Override
     public List<EventDto> getAllByCity(String city) {
-        return mapper.mapAsList(eventRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), EventDto.class);
+        return mapper.mapAsList(eventRepository.findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), EventDto.class);
     }
 
     @Override
     public EventDto getById(UUID id) {
-        EventEntity eventEntity = null;
-        Optional<EventEntity> eventOptional = eventRepository.findById(id);
-        if (eventOptional.isPresent()){
-            eventEntity = eventOptional.get();
-        }
-        return mapper.map(eventEntity, EventDto.class);
+        return mapper.map(eventRepository.findDistinctEventEntityById(id), EventDto.class);
     }
 
     @Override

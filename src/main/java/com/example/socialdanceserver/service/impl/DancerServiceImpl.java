@@ -5,10 +5,8 @@ import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,37 +17,32 @@ public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Override
     public List<DancerDto> getAll() {
-        return mapper.mapAsList(dancerRepository.findAll(Sort.by("name")), DancerDto.class);
+        return mapper.mapAsList(dancerRepository.findDistinctAllDancers(), DancerDto.class);
     }
 
     @Override
     public List<DancerDto> getAllByCity(String city) {
-        return mapper.mapAsList(dancerRepository.findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(city), DancerDto.class);
+        return mapper.mapAsList(dancerRepository.findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(city), DancerDto.class);
     }
 
     @Override
     public List<DancerDto> getAllByName(String name) {
-        return mapper.mapAsList(dancerRepository.findByNameStartingWithIgnoreCaseOrderByLastName(name), DancerDto.class);
+        return mapper.mapAsList(dancerRepository.findDistinctByNameStartingWithIgnoreCaseOrderByLastName(name), DancerDto.class);
     }
 
     @Override
     public List<DancerDto> getAllByLastName(String lastName) {
-        return mapper.mapAsList(dancerRepository.findByLastNameStartingWithIgnoreCaseOrderByName(lastName), DancerDto.class);
+        return mapper.mapAsList(dancerRepository.findDistinctByLastNameStartingWithIgnoreCaseOrderByName(lastName), DancerDto.class);
     }
 
     @Override
     public List<DancerDto> getAllByNameAndLastName(String name, String lastName) {
-        return mapper.mapAsList(dancerRepository.findByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(name, lastName), DancerDto.class);
+        return mapper.mapAsList(dancerRepository.findDistinctByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(name, lastName), DancerDto.class);
     }
 
     @Override
     public DancerDto getById(UUID id) {
-        DancerEntity dancerEntity = null;
-        Optional<DancerEntity> dancerOptional = dancerRepository.findById(id);
-        if (dancerOptional.isPresent()){
-            dancerEntity = dancerOptional.get();
-        }
-        return mapper.map(dancerEntity, DancerDto.class);
+        return mapper.map(dancerRepository.findDistinctDancerEntityById(id), DancerDto.class);
     }
 
     @Override

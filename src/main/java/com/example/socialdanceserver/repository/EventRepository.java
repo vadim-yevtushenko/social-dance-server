@@ -2,16 +2,22 @@ package com.example.socialdanceserver.repository;
 
 import com.example.socialdanceserver.model.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, UUID> {
 
-    List<EventEntity> findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(String name);
+    EventEntity findDistinctEventEntityById(UUID id);
 
-    List<EventEntity> findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(String city);
+    @Query("select distinct event from EventEntity event order by event.name")
+    Set<EventEntity> findDistinctAllEvents();
 
-    List<EventEntity> findBySchoolOrganizerId(UUID id);
+    Set<EventEntity> findDistinctByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(String name);
+
+    Set<EventEntity> findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(String city);
+
+    Set<EventEntity> findDistinctBySchoolOrganizerId(UUID id);
 }

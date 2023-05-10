@@ -2,21 +2,26 @@ package com.example.socialdanceserver.repository;
 
 import com.example.socialdanceserver.model.DancerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
 public interface DancerRepository extends JpaRepository<DancerEntity, UUID> {
 
-    List<DancerEntity> findByNameStartingWithIgnoreCaseOrderByLastName(String name);
+    DancerEntity findDistinctDancerEntityById(UUID id);
 
-    List<DancerEntity> findByLastNameStartingWithIgnoreCaseOrderByName(String lastName);
+    @Query("select distinct dancer from DancerEntity dancer order by dancer.name, dancer.lastName")
+    Set<DancerEntity> findDistinctAllDancers();
 
-    List<DancerEntity> findByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(String name, String lastName);
+    Set<DancerEntity> findDistinctByNameStartingWithIgnoreCaseOrderByLastName(String name);
 
-    List<DancerEntity> findByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(String city);
+    Set<DancerEntity> findDistinctByLastNameStartingWithIgnoreCaseOrderByName(String lastName);
+
+    Set<DancerEntity> findDistinctByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(String name, String lastName);
+
+    Set<DancerEntity> findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(String city);
 
 }
 

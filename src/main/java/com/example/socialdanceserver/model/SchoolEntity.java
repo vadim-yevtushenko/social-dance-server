@@ -1,13 +1,14 @@
 package com.example.socialdanceserver.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "school")
@@ -63,6 +64,7 @@ public class SchoolEntity extends AbstractBaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "dancer_id")}
     )
     @LazyCollection(LazyCollectionOption.EXTRA)
+    @JsonManagedReference
     private List<DancerEntity> students;
 
 //    @OneToMany(mappedBy = "baseDanceEntityId", fetch = FetchType.EAGER,

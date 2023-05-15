@@ -89,7 +89,7 @@ CREATE table dancer
     birthday            TIMESTAMP,
     description         VARCHAR,
     contact_info_id     uuid                                  NULL,
-    role                VARCHAR,
+    level               VARCHAR,
     image               VARCHAR,
     CONSTRAINT dancer_pkey PRIMARY KEY (id),
     FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)

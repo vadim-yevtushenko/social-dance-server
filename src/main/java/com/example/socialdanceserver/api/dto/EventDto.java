@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.api.dto.dto;
+package com.example.socialdanceserver.api.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class EventDto {
+public class EventDto extends BaseDto{
 
     private UUID id;
 

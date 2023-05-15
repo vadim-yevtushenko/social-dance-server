@@ -1,12 +1,16 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.api.dto.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.PageDto;
+
 import java.util.List;
 import java.util.UUID;
 
 public interface DancerService {
 
-    List<DancerDto> getAll();
+    PageDto<DancerDto> getAll();
+
+    PageDto<DancerDto> getDancers(int offset, int size);
 
     List<DancerDto> getAllByCity(String city);
 

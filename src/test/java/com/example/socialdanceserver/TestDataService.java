@@ -3,7 +3,7 @@ package com.example.socialdanceserver;
 import com.example.socialdanceserver.model.ContactInfoEntity;
 import com.example.socialdanceserver.model.DanceEntity;
 import com.example.socialdanceserver.model.DancerEntity;
-import com.example.socialdanceserver.model.enums.Role;
+import com.example.socialdanceserver.model.enums.Level;
 import com.example.socialdanceserver.repository.DancerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class TestDataService {
         dancer.setName("Testname");
         dancer.setLastName("Testlastname");
         dancer.setContactInfo(createTestContactInfo());
-        dancer.setRole(Role.DANCER);
+        dancer.setLevel(Level.JUNIOR);
         dancer.setGender("male");
         dancer.setBirthday(LocalDate.now());
         dancer.setDances(List.of(new DanceEntity(1, "Salsa")));

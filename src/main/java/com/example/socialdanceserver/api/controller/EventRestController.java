@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.api.dto.dto.EventDto;
+import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;

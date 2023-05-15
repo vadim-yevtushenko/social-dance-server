@@ -1,8 +1,10 @@
 package com.example.socialdanceserver.model.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public enum Dance {
 
     SALSA(1, "Salsa"),
@@ -22,10 +24,5 @@ public enum Dance {
     private int id;
 
     private String name;
-
-    Dance(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 
 }

@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.api.dto.dto;
+package com.example.socialdanceserver.api.dto;
 
 import com.example.socialdanceserver.model.DancerEntity;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReviewDto {
+public class ReviewDto extends BaseDto{
 
     private UUID id;
 

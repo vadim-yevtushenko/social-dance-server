@@ -1,6 +1,7 @@
 package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.api.dto.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,11 +29,19 @@ public class DancerRestController extends BaseController{
     @Autowired
     private DancerService dancerService;
 
+//    @CrossOrigin(origins = "http://localhost:3000")
+//    @GetMapping
+//    public List<DancerDto> getAllDancers (){
+//        log.info("Get all dancers");
+//        return dancerService.getAll();
+//    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
-    public List<DancerDto> getAllDancers (){
+    public PageDto<DancerDto> getDancers (@RequestParam(value = "offset", defaultValue = "0") int offset,
+                                          @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
         log.info("Get all dancers");
-        return dancerService.getAll();
+        return dancerService.getDancers(offset, size);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")

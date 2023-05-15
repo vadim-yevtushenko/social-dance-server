@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.api.dto.dto.ReviewDto;
-import com.example.socialdanceserver.api.dto.dto.SchoolDto;
+import com.example.socialdanceserver.api.dto.ReviewDto;
+import com.example.socialdanceserver.api.dto.SchoolDto;
 import com.example.socialdanceserver.model.*;
 import com.example.socialdanceserver.repository.SchoolRepository;
 import com.example.socialdanceserver.service.SchoolService;

@@ -1,13 +1,17 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.api.dto.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.IdNameContainerDto;
+import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.model.DancerEntity;
 import com.example.socialdanceserver.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class DancerServiceImpl extends BaseService implements DancerService {
@@ -16,8 +20,13 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     private DancerRepository dancerRepository;
 
     @Override
-    public List<DancerDto> getAll() {
-        return mapper.mapAsList(dancerRepository.findDistinctAllDancers(), DancerDto.class);
+    public PageDto<DancerDto> getAll() {
+        return getDancerDtosFromEntities(dancerRepository.findDistinctAllDancers(), 0, 0);
+    }
+
+    @Override
+    public PageDto<DancerDto> getDancers(int offset, int size) {
+        return getDancerDtosFromEntities(dancerRepository.findDistinctAllDancers(),offset, size);
     }
 
     @Override
@@ -59,6 +68,42 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     @Override
     public void deleteById(UUID id) {
         dancerRepository.deleteById(id);
+    }
+
+    private PageDto<DancerDto> getDancerDtosFromEntities(Set<DancerEntity> dancerEntities, int offset, int size) {
+
+        int endIndex = offset + size;
+        if (offset >= dancerEntities.size()){
+            offset = dancerEntities.size() - 10;
+        }
+        if ((endIndex) > dancerEntities.size()){
+            endIndex = dancerEntities.size();
+        }
+        List<DancerDto> dancers = mapper.mapAsList(dancerEntities, DancerDto.class)
+                .subList(offset, endIndex)
+                .stream()
+                .peek(dancerDto -> {
+                    DancerEntity dancerEntity = dancerEntities.stream()
+                            .filter(dancer -> dancer.getId().equals(dancerDto.getId()))
+                            .findAny()
+                            .orElse(null);
+                    dancerDto.setAdministrator(mapper.map(dancerEntity.getSchoolAdministrator(), IdNameContainerDto.class));
+                    dancerDto.setTeacher(mapper.map(dancerEntity.getSchoolTeacher(), IdNameContainerDto.class));
+                    dancerDto.setSchool(mapper.map(dancerEntity.getSchoolStudent(), IdNameContainerDto.class));
+                })
+                .collect(Collectors.toList());
+
+        return new PageDto<>(dancerEntities.size(), dancers);
+    }
+
+    private DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity) {
+
+        DancerDto dancerDto = mapper.map(dancerEntity, DancerDto.class);
+        dancerDto.setAdministrator(mapper.map(dancerEntity.getSchoolAdministrator(), IdNameContainerDto.class));
+        dancerDto.setTeacher(mapper.map(dancerEntity.getSchoolTeacher(), IdNameContainerDto.class));
+        dancerDto.setSchool(mapper.map(dancerEntity.getSchoolStudent(), IdNameContainerDto.class));
+
+        return dancerDto;
     }
 
 //    @Override

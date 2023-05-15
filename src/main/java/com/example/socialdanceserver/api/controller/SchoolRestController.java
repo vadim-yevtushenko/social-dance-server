@@ -1,8 +1,8 @@
 package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.api.dto.dto.RatingDto;
-import com.example.socialdanceserver.api.dto.dto.ReviewDto;
-import com.example.socialdanceserver.api.dto.dto.SchoolDto;
+import com.example.socialdanceserver.api.dto.RatingDto;
+import com.example.socialdanceserver.api.dto.ReviewDto;
+import com.example.socialdanceserver.api.dto.SchoolDto;
 import com.example.socialdanceserver.service.ImageStorageService;
 import com.example.socialdanceserver.service.SchoolService;
 import lombok.extern.slf4j.Slf4j;

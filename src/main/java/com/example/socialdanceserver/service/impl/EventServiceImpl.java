@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.api.dto.dto.EventDto;
+import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.model.EventEntity;
 import com.example.socialdanceserver.repository.EventRepository;
 import com.example.socialdanceserver.service.EventService;

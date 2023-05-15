@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.model;
 
-import com.example.socialdanceserver.model.enums.Role;
+import com.example.socialdanceserver.model.enums.Level;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
@@ -36,8 +36,8 @@ public class DancerEntity extends AbstractBaseEntity {
     private String image;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private Role role;
+    @Column(name = "level")
+    private Level level;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "contact_info_id")
@@ -57,7 +57,7 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "school_id")}
     )
-    @JsonBackReference
+//    @JsonBackReference
     private SchoolEntity schoolAdministrator;
 
     @ManyToOne
@@ -66,26 +66,26 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "school_id")}
     )
-    @JsonBackReference
+//    @JsonBackReference
     private SchoolEntity schoolTeacher;
 
-    @ManyToMany
+    @ManyToOne
     @JoinTable(
             name = "schools_has_students",
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "school_id")}
     )
-    @JsonBackReference
-    private List<SchoolEntity> schoolStudent;
+//    @JsonBackReference
+    private SchoolEntity schoolStudent;
 
-    @ManyToOne
+    @ManyToMany
     @JoinTable(
             name = "events_has_organizers",
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
     @JsonBackReference
-    private EventEntity eventOrganizer;
+    private List<EventEntity> eventOrganizer;
 
     @ManyToMany
     @JoinTable(
@@ -94,7 +94,7 @@ public class DancerEntity extends AbstractBaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
     @JsonBackReference
-    private List<SchoolEntity> eventParticipant;
+    private List<EventEntity> eventParticipant;
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "credential_id")

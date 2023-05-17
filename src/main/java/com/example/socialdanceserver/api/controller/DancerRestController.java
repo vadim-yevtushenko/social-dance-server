@@ -11,9 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.constraints.Max;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -38,30 +36,14 @@ public class DancerRestController extends BaseController{
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
-    public PageDto<DancerDto> getDancers (@RequestParam(value = "offset", defaultValue = "0") int offset,
+    public PageDto<DancerDto> getDancers (@RequestParam(value = "name", required = false) String name,
+                                          @RequestParam(value = "lastName", required = false) String lastName,
+                                          @RequestParam(value = "city", required = false) String city,
+                                          @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
                                           @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
-        log.info("Get all dancers");
-        return dancerService.getDancers(offset, size);
-    }
+        log.info("Get dancers name: {}, lastName: {}, city: {}, pageNumber: {}, size: {}", name, lastName, city, pageNumber, size);
 
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/search/{city}")
-    public List<DancerDto> getDancersByCity(@PathVariable String city){
-        log.info("Get all dancers by city: {}", city);
-        return dancerService.getAllByCity(city);
-    }
-
-    @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/search")
-    public List<DancerDto> getDancersByNameAndLastName(@RequestParam(value = "name", required = false) String name,
-                                                   @RequestParam(value = "lastName", required = false) String lastName){
-        log.info("Get all dancers by name: {} and lastName: {}", name, lastName);
-        if (name.isEmpty()){
-            return dancerService.getAllByLastName(lastName);
-        }else if (lastName.isEmpty()){
-            return dancerService.getAllByName(name);
-        }
-        return dancerService.getAllByNameAndLastName(name, lastName);
+        return dancerService.getPageDancers(name, lastName, city, pageNumber, size);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")

@@ -1,7 +1,7 @@
-package com.example.socialdanceserver.repository;
+package com.example.socialdanceserver.persistence.repository;
 
-import com.example.socialdanceserver.model.CredentialEntity;
-import com.example.socialdanceserver.model.DancerEntity;
+import com.example.socialdanceserver.persistence.entity.CredentialEntity;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

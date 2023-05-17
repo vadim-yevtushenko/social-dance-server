@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.model.enums;
+package com.example.socialdanceserver.persistence.entity.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

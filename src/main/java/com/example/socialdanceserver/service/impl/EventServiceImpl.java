@@ -1,8 +1,8 @@
 package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.api.dto.EventDto;
-import com.example.socialdanceserver.model.EventEntity;
-import com.example.socialdanceserver.repository.EventRepository;
+import com.example.socialdanceserver.persistence.entity.EventEntity;
+import com.example.socialdanceserver.persistence.repository.EventRepository;
 import com.example.socialdanceserver.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

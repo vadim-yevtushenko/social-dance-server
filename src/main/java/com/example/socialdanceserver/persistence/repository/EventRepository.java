@@ -1,6 +1,6 @@
-package com.example.socialdanceserver.repository;
+package com.example.socialdanceserver.persistence.repository;
 
-import com.example.socialdanceserver.model.EventEntity;
+import com.example.socialdanceserver.persistence.entity.EventEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

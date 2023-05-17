@@ -1,10 +1,10 @@
 package com.example.socialdanceserver;
 
-import com.example.socialdanceserver.model.ContactInfoEntity;
-import com.example.socialdanceserver.model.DanceEntity;
-import com.example.socialdanceserver.model.DancerEntity;
-import com.example.socialdanceserver.model.enums.Level;
-import com.example.socialdanceserver.repository.DancerRepository;
+import com.example.socialdanceserver.persistence.entity.ContactInfoEntity;
+import com.example.socialdanceserver.persistence.entity.DanceEntity;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
+import com.example.socialdanceserver.persistence.entity.enums.Level;
+import com.example.socialdanceserver.persistence.repository.DancerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.api.dto;
 
-import com.example.socialdanceserver.model.DancerEntity;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -3,15 +3,16 @@ package com.example.socialdanceserver.service.impl;
 import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.IdNameContainerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
-import com.example.socialdanceserver.model.DancerEntity;
-import com.example.socialdanceserver.repository.DancerRepository;
+import com.example.socialdanceserver.persistence.dao.DancerDao;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
+import com.example.socialdanceserver.persistence.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
+import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import static com.example.socialdanceserver.persistence.dao.DancerDao.*;
 
 @Service
 public class DancerServiceImpl extends BaseService implements DancerService {
@@ -19,34 +20,25 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     @Autowired
     private DancerRepository dancerRepository;
 
+    @Autowired
+    private DancerDao dancerDao;
+
     @Override
     public PageDto<DancerDto> getAll() {
-        return getDancerDtosFromEntities(dancerRepository.findDistinctAllDancers(), 0, 0);
+        return null;
     }
 
     @Override
-    public PageDto<DancerDto> getDancers(int offset, int size) {
-        return getDancerDtosFromEntities(dancerRepository.findDistinctAllDancers(),offset, size);
-    }
+    public PageDto<DancerDto> getPageDancers(String name, String lastName, String city, int pageNumber, int size) {
 
-    @Override
-    public List<DancerDto> getAllByCity(String city) {
-        return mapper.mapAsList(dancerRepository.findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAscLastNameAsc(city), DancerDto.class);
-    }
+        Map<String, String> mapPredicates = getMapPredicates(name, lastName, city);
+        int total = dancerDao.getTotal(mapPredicates);
 
-    @Override
-    public List<DancerDto> getAllByName(String name) {
-        return mapper.mapAsList(dancerRepository.findDistinctByNameStartingWithIgnoreCaseOrderByLastName(name), DancerDto.class);
-    }
+        PaginationRequest paginationRequest = buildPaginationRequest(mapPredicates, pageNumber, size, total);
 
-    @Override
-    public List<DancerDto> getAllByLastName(String lastName) {
-        return mapper.mapAsList(dancerRepository.findDistinctByLastNameStartingWithIgnoreCaseOrderByName(lastName), DancerDto.class);
-    }
+        List<DancerEntity> dancerEntities = dancerDao.load(paginationRequest);
 
-    @Override
-    public List<DancerDto> getAllByNameAndLastName(String name, String lastName) {
-        return mapper.mapAsList(dancerRepository.findDistinctByNameStartingWithIgnoreCaseAndLastNameStartingWithIgnoreCase(name, lastName), DancerDto.class);
+        return new PageDto<>(total, getDancerDtosFromEntities(dancerEntities));
     }
 
     @Override
@@ -70,17 +62,29 @@ public class DancerServiceImpl extends BaseService implements DancerService {
         dancerRepository.deleteById(id);
     }
 
-    private PageDto<DancerDto> getDancerDtosFromEntities(Set<DancerEntity> dancerEntities, int offset, int size) {
+    private Map<String, String> getMapPredicates(String name, String lastName, String city) {
+        Map<String, String> mapPredicates = new HashMap<>();
+        mapPredicates.put(DANCER_NAME, name);
+        mapPredicates.put(DANCER_LAST_NAME, lastName);
+        mapPredicates.put(DANCER_CONTACT_INFO_CITY, city);
+        return mapPredicates;
+    }
 
-        int endIndex = offset + size;
-        if (offset >= dancerEntities.size()){
-            offset = dancerEntities.size() - 10;
-        }
-        if ((endIndex) > dancerEntities.size()){
-            endIndex = dancerEntities.size();
-        }
+    private PaginationRequest buildPaginationRequest(Map<String, String> mapPredicates, int pageNumber, int size, int total) {
+
+        PaginationRequest paginationRequest = PaginationRequest.builder()
+                .pageNumber(pageNumber)
+                .pageSize(size)
+                .total(total)
+                .orders(List.of("name", "lastName"))
+                .predicates(mapPredicates)
+                .build();
+        return paginationRequest;
+    }
+
+    private List<DancerDto> getDancerDtosFromEntities(List<DancerEntity> dancerEntities) {
+
         List<DancerDto> dancers = mapper.mapAsList(dancerEntities, DancerDto.class)
-                .subList(offset, endIndex)
                 .stream()
                 .peek(dancerDto -> {
                     DancerEntity dancerEntity = dancerEntities.stream()
@@ -93,7 +97,7 @@ public class DancerServiceImpl extends BaseService implements DancerService {
                 })
                 .collect(Collectors.toList());
 
-        return new PageDto<>(dancerEntities.size(), dancers);
+        return dancers;
     }
 
     private DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity) {

@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.api.dto;
 
-import com.example.socialdanceserver.model.enums.Level;
+import com.example.socialdanceserver.persistence.entity.enums.Level;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;

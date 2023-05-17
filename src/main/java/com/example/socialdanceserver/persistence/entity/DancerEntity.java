@@ -1,6 +1,6 @@
-package com.example.socialdanceserver.model;
+package com.example.socialdanceserver.persistence.entity;
 
-import com.example.socialdanceserver.model.enums.Level;
+import com.example.socialdanceserver.persistence.entity.enums.Level;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 

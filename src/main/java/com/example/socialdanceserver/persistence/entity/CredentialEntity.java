@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.model;
+package com.example.socialdanceserver.persistence.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

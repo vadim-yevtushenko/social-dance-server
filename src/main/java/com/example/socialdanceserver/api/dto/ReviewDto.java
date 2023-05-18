@@ -12,8 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ReviewDto extends BaseDto{
 
-    private UUID id;
-
     private boolean incognito;
 
     private DancerEntity reviewOwner;
@@ -23,14 +21,5 @@ public class ReviewDto extends BaseDto{
     private String review;
 
     private ZonedDateTime created;
-
-    public ReviewDto(UUID id, Boolean incognito, DancerEntity reviewOwner, UUID baseDanceEntityId, String review, ZonedDateTime created) {
-        this.id = id;
-        this.incognito = incognito;
-        this.reviewOwner = reviewOwner;
-        this.baseDanceEntityId = baseDanceEntityId;
-        this.review = review;
-        this.created = created;
-    }
 
 }

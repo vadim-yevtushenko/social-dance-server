@@ -1,38 +1,43 @@
 package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.api.dto.EventDto;
+import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.persistence.dao.EventDao;
 import com.example.socialdanceserver.persistence.entity.EventEntity;
 import com.example.socialdanceserver.persistence.repository.EventRepository;
 import com.example.socialdanceserver.service.EventService;
+import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class EventServiceImpl extends BaseService implements EventService {
+public class EventServiceImpl extends BaseService<EventEntity, EventDto> implements EventService {
 
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private EventDao eventDao;
+
     @Override
-    public List<EventDto> getAll() {
-        return mapper.mapAsList(eventRepository.findDistinctAllEvents(), EventDto.class);
+    public PageDto<EventDto> getPageEvents(String name, String city, int pageNumber, int size) {
+
+        Map<String, String> mapPredicates = eventDao.getMapPredicates(name, city);
+        int total = eventDao.getTotal(mapPredicates);
+
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("name"), mapPredicates, pageNumber, size, total);
+
+        List<EventEntity> eventEntities = eventDao.load(paginationRequest);
+
+        return new PageDto<>(total, mapper.mapAsList(eventEntities, EventDto.class));
     }
 
     @Override
     public List<EventDto> getAllBySchoolOrganizerId(UUID id) {
         return mapper.mapAsList(eventRepository.findDistinctBySchoolOrganizerId(id), EventDto.class);
-    }
-
-    @Override
-    public List<EventDto> getAllByName(String name) {
-        return mapper.mapAsList(eventRepository.findDistinctByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(name), EventDto.class);
-    }
-
-    @Override
-    public List<EventDto> getAllByCity(String city) {
-        return mapper.mapAsList(eventRepository.findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), EventDto.class);
     }
 
     @Override

@@ -1,33 +1,37 @@
 package com.example.socialdanceserver.service.impl;
 
+import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.api.dto.ReviewDto;
 import com.example.socialdanceserver.api.dto.SchoolDto;
+import com.example.socialdanceserver.persistence.dao.SchoolDao;
 import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.persistence.entity.SchoolEntity;
 import com.example.socialdanceserver.service.SchoolService;
+import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class SchoolServiceImpl extends BaseService implements SchoolService {
+public class SchoolServiceImpl extends BaseService<SchoolEntity, SchoolDto> implements SchoolService {
 
     @Autowired
     private SchoolRepository schoolRepository;
 
-    @Override
-    public List<SchoolDto> getAll() {
-        return mapper.mapAsList(schoolRepository.findDistinctAllSchools(), SchoolDto.class);
-    }
+    @Autowired
+    private SchoolDao schoolDao;
 
     @Override
-    public List<SchoolDto> getAllByName(String name) {
-        return mapper.mapAsList(schoolRepository.findByNameContainsIgnoreCaseOrderByContactInfo_CityAsc(name), SchoolDto.class);
-    }
+    public PageDto<SchoolDto> getPageSchools(String name, String city, int pageNumber, int size) {
 
-    @Override
-    public List<SchoolDto> getAllByCity(String city) {
-        return mapper.mapAsList(schoolRepository.findDistinctByContactInfo_CityStartingWithIgnoreCaseOrderByNameAsc(city), SchoolDto.class);
+        Map<String, String> mapPredicates = schoolDao.getMapPredicates(name, city);
+        int total = schoolDao.getTotal(mapPredicates);
+
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("name"), mapPredicates, pageNumber, size, total);
+
+        List<SchoolEntity> schoolEntities = schoolDao.load(paginationRequest);
+
+        return new PageDto<>(total, mapper.mapAsList(schoolEntities, SchoolDto.class));
     }
 
     @Override

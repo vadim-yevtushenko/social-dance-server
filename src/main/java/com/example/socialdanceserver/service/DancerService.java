@@ -6,8 +6,6 @@ import java.util.UUID;
 
 public interface DancerService {
 
-    PageDto<DancerDto> getAll();
-
     PageDto<DancerDto> getPageDancers(String name, String lastName, String city, int pageNumber, int size);
 
     DancerDto getById(UUID id);

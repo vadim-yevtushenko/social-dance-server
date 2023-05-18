@@ -1,6 +1,7 @@
 package com.example.socialdanceserver.api.controller;
 
 import com.example.socialdanceserver.api.dto.EventDto;
+import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,21 +29,19 @@ public class EventRestController extends BaseController {
     private EventService eventService;
 
     @GetMapping
-    public List<EventDto> events(){
-        log.info("Get all events");
-        return eventService.getAll();
+    public PageDto<EventDto> getEvents(@RequestParam(value = "name", required = false) String name,
+                                       @RequestParam(value = "city", required = false) String city,
+                                       @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                       @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
+        log.info("Get events name: {}, city: {}, pageNumber: {}, size: {}", name, city, pageNumber, size);
+
+        return eventService.getPageEvents(name, city, pageNumber, size);
     }
 
     @GetMapping("/organizer/{id}")
     public List<EventDto> eventsSchoolOrganizerId(@PathVariable UUID id){
         log.info("Get event by organizer uuid: {}", id);
         return eventService.getAllBySchoolOrganizerId(id);
-    }
-
-    @GetMapping("/search/{city}")
-    public List<EventDto> eventsByCity(@PathVariable String city){
-        log.info("Get all events by city: {}", city);
-        return eventService.getAllByCity(city);
     }
 
     @GetMapping("/{id}")

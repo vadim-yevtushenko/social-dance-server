@@ -27,12 +27,6 @@ public class DancerRestController extends BaseController{
     @Autowired
     private DancerService dancerService;
 
-//    @CrossOrigin(origins = "http://localhost:3000")
-//    @GetMapping
-//    public List<DancerDto> getAllDancers (){
-//        log.info("Get all dancers");
-//        return dancerService.getAll();
-//    }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping

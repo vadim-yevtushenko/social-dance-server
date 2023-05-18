@@ -1,7 +1,7 @@
 package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.api.dto.DancerDto;
-import com.example.socialdanceserver.api.dto.IdNameContainerDto;
+import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.DancerDao;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
@@ -12,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
-import static com.example.socialdanceserver.persistence.dao.DancerDao.*;
 
 @Service
-public class DancerServiceImpl extends BaseService implements DancerService {
+public class DancerServiceImpl extends BaseService<DancerEntity, DancerDto> implements DancerService {
 
     @Autowired
     private DancerRepository dancerRepository;
@@ -24,17 +23,12 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     private DancerDao dancerDao;
 
     @Override
-    public PageDto<DancerDto> getAll() {
-        return null;
-    }
-
-    @Override
     public PageDto<DancerDto> getPageDancers(String name, String lastName, String city, int pageNumber, int size) {
 
-        Map<String, String> mapPredicates = getMapPredicates(name, lastName, city);
+        Map<String, String> mapPredicates = dancerDao.getMapPredicates(name, lastName, city);
         int total = dancerDao.getTotal(mapPredicates);
 
-        PaginationRequest paginationRequest = buildPaginationRequest(mapPredicates, pageNumber, size, total);
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("name", "lastName"), mapPredicates, pageNumber, size, total);
 
         List<DancerEntity> dancerEntities = dancerDao.load(paginationRequest);
 
@@ -60,26 +54,6 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     @Override
     public void deleteById(UUID id) {
         dancerRepository.deleteById(id);
-    }
-
-    private Map<String, String> getMapPredicates(String name, String lastName, String city) {
-        Map<String, String> mapPredicates = new HashMap<>();
-        mapPredicates.put(DANCER_NAME, name);
-        mapPredicates.put(DANCER_LAST_NAME, lastName);
-        mapPredicates.put(DANCER_CONTACT_INFO_CITY, city);
-        return mapPredicates;
-    }
-
-    private PaginationRequest buildPaginationRequest(Map<String, String> mapPredicates, int pageNumber, int size, int total) {
-
-        PaginationRequest paginationRequest = PaginationRequest.builder()
-                .pageNumber(pageNumber)
-                .pageSize(size)
-                .total(total)
-                .orders(List.of("name", "lastName"))
-                .predicates(mapPredicates)
-                .build();
-        return paginationRequest;
     }
 
     private List<DancerDto> getDancerDtosFromEntities(List<DancerEntity> dancerEntities) {

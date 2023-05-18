@@ -12,8 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EventDto extends BaseDto{
 
-    private UUID id;
-
     private String name;
 
     private String description;

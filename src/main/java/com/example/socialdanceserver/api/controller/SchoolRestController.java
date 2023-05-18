@@ -1,5 +1,6 @@
 package com.example.socialdanceserver.api.controller;
 
+import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.api.dto.RatingDto;
 import com.example.socialdanceserver.api.dto.ReviewDto;
 import com.example.socialdanceserver.api.dto.SchoolDto;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,21 +31,13 @@ public class SchoolRestController extends BaseController {
     private SchoolService schoolService;
 
     @GetMapping
-    public List<SchoolDto> schools() {
-        log.info("Get all schools");
-        return schoolService.getAll();
-    }
+    public PageDto<SchoolDto> getSchools(@RequestParam(value = "name", required = false) String name,
+                                      @RequestParam(value = "city", required = false) String city,
+                                      @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
+                                      @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
+        log.info("Get schools name: {}, city: {}, pageNumber: {}, size: {}", name, city, pageNumber, size);
 
-    @GetMapping("/search/{name}")
-    public List<SchoolDto> schoolsByName(@PathVariable String name) {
-        log.info("Get all schools by name: {}", name);
-        return schoolService.getAllByName(name);
-    }
-
-    @GetMapping("/search/{city}")
-    public List<SchoolDto> schoolsByCity(@PathVariable String city) {
-        log.info("Get all schools by city: {}", city);
-        return schoolService.getAllByCity(city);
+        return schoolService.getPageSchools(name, city, pageNumber, size);
     }
 
     @GetMapping("/{id}")

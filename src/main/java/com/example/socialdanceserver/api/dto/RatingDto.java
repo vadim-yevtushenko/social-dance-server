@@ -11,8 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RatingDto {
 
-    private UUID id;
-
     private UUID ratingOwnerID;
 
     private UUID baseDanceEntityId;

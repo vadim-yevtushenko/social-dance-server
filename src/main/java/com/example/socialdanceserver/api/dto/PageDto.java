@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PageDto<T extends BaseDto> extends BaseDto {
+public class PageDto<T extends BaseDto> {
 
     private long total;
 

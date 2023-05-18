@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.api.dto;
+package com.example.socialdanceserver.api.dto.dtocontainer;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

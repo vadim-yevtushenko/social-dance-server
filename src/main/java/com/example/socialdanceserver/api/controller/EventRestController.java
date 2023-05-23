@@ -18,6 +18,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = EventRestController.REST_URL)
+@CrossOrigin(origins = "http://localhost:3000")
 public class EventRestController extends BaseController {
 
     static final String REST_URL = "/events";

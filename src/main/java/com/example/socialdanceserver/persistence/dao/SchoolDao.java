@@ -32,11 +32,11 @@ public class SchoolDao extends EntityDao<SchoolEntity>{
     protected List<Predicate> buildPredicates(Map<String, String> mapPredicates, CriteriaBuilder builder, Root<SchoolEntity> root) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (!mapPredicates.get(SCHOOL_NAME).isBlank()){
+        if (mapPredicates.get(SCHOOL_NAME) != null && !mapPredicates.get(SCHOOL_NAME).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("name"), mapPredicates.get(SCHOOL_NAME)));
         }
 
-        if (!mapPredicates.get(SCHOOL_CONTACT_INFO_CITY).isBlank()){
+        if (mapPredicates.get(SCHOOL_CONTACT_INFO_CITY) != null && !mapPredicates.get(SCHOOL_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(SCHOOL_CONTACT_INFO_CITY)));
         }
 

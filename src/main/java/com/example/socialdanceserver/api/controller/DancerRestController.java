@@ -17,6 +17,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = DancerRestController.REST_URL)
+@CrossOrigin(origins = "http://localhost:3000")
 public class DancerRestController extends BaseController{
 
     static final String REST_URL = "/dancers";
@@ -28,7 +29,6 @@ public class DancerRestController extends BaseController{
     private DancerService dancerService;
 
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public PageDto<DancerDto> getDancers (@RequestParam(value = "name", required = false) String name,
                                           @RequestParam(value = "lastName", required = false) String lastName,
@@ -40,7 +40,6 @@ public class DancerRestController extends BaseController{
         return dancerService.getPageDancers(name, lastName, city, pageNumber, size);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/{id}")
     public DancerDto getById(@PathVariable UUID id){
         log.info("Get dancer by uuid: {}", id);
@@ -50,7 +49,6 @@ public class DancerRestController extends BaseController{
         return dancer;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public DancerDto save(@RequestBody DancerDto dancerDto){
         if (dancerDto.getId() != null){
@@ -62,7 +60,6 @@ public class DancerRestController extends BaseController{
         return dancerService.save(dancerDto);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
         log.info("Delete dancer with uuid: {}", id);

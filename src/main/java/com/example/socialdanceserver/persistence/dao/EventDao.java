@@ -31,11 +31,11 @@ public class EventDao extends EntityDao<EventEntity>{
     protected List<Predicate> buildPredicates(Map<String, String> mapPredicates, CriteriaBuilder builder, Root<EventEntity> root) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (!mapPredicates.get(EVENT_NAME).isBlank()){
+        if (mapPredicates.get(EVENT_NAME) != null && !mapPredicates.get(EVENT_NAME).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("name"), mapPredicates.get(EVENT_NAME)));
         }
 
-        if (!mapPredicates.get(EVENT_CONTACT_INFO_CITY).isBlank()){
+        if (mapPredicates.get(EVENT_CONTACT_INFO_CITY) != null && !mapPredicates.get(EVENT_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(EVENT_CONTACT_INFO_CITY)));
         }
 

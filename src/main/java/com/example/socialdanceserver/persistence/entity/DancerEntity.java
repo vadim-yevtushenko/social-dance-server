@@ -96,9 +96,4 @@ public class DancerEntity extends AbstractBaseEntity {
     @JsonBackReference
     private List<EventEntity> eventParticipant;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "credential_id")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private CredentialEntity credential;
-
 }

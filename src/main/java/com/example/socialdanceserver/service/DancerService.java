@@ -14,11 +14,4 @@ public interface DancerService {
 
     void deleteById(UUID id);
 
-//    Integer checkSignUpByEmail(String email);
-//
-//    Integer checkSignInByEmailAndPassword(String email, String password);
-//
-//    Boolean changePassword(String email, String password);
-//
-//    Boolean changeEmail(String oldEmail, String newEmail);
 }

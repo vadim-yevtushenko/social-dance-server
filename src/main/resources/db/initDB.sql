@@ -188,7 +188,7 @@ CREATE table credential
     id               uuid                              NOT NULL,
     created          TIMESTAMP                         NOT NULL,
     updated          TIMESTAMP                         NOT NULL,
-    dancer_id        uuid,
+    dancer_id        uuid                              NOT NULL,
     email            VARCHAR                           NOT NULL,
     password         VARCHAR                           NOT NULL,
     CONSTRAINT credential_pkey PRIMARY KEY (id),

@@ -32,19 +32,19 @@ public class DancerDao extends EntityDao<DancerEntity>{
     protected List<Predicate> buildPredicates(Map<String, String> mapPredicates, CriteriaBuilder builder, Root<DancerEntity> root) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (!mapPredicates.get(DANCER_NAME).isBlank()){
+        if (mapPredicates.get(DANCER_NAME) != null && !mapPredicates.get(DANCER_NAME).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("name"), mapPredicates.get(DANCER_NAME)));
         }
 
-        if (!mapPredicates.get(DANCER_LAST_NAME).isBlank()){
+        if (mapPredicates.get(DANCER_LAST_NAME) != null && !mapPredicates.get(DANCER_LAST_NAME).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("lastName"), mapPredicates.get(DANCER_LAST_NAME)));
         }
 
-        if (!mapPredicates.get(DANCER_CONTACT_INFO_CITY).isBlank()){
+        if (mapPredicates.get(DANCER_CONTACT_INFO_CITY) != null && !mapPredicates.get(DANCER_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(DANCER_CONTACT_INFO_CITY)));
         }
 
-//        if (!mapPredicates.get(DANCER_CONTACT_INFO_EMAIL).isBlank()){
+//        if (mapPredicates.get(DANCER_CONTACT_INFO_EMAIL) != null && !mapPredicates.get(DANCER_CONTACT_INFO_EMAIL).isBlank()){
 //            predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("email"), mapPredicates.get(DANCER_CONTACT_INFO_EMAIL)));
 //        }
 

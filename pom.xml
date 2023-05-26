@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>Social_Dance_Server</artifactId>
+    <artifactId>social-dance-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Social Dance Server</name>
     <description>Demo project for Spring Boot</description>

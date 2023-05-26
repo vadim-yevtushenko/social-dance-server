@@ -35,9 +35,8 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
     }
 
     @Override
-    public DancerDto registration(String email, String password, String name) {
-        DancerEntity dancerEntity = new DancerEntity();
-        dancerEntity.setName(name);
+    public DancerDto registration(String email, String password, DancerDto dancerDto) {
+        DancerEntity dancerEntity = mapper.map(dancerDto, DancerEntity.class);
 
         CredentialEntity credentialEntity = new CredentialEntity();
         credentialEntity.setEmail(email);

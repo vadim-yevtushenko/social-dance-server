@@ -1,13 +1,12 @@
 package com.example.socialdanceserver.service;
 
 import com.example.socialdanceserver.api.dto.DancerDto;
-import com.example.socialdanceserver.persistence.entity.DancerEntity;
 
 public interface CredentialService {
 
     DancerDto login (String email, String password);
 
-    DancerDto registration (String email, String password, String name);
+    DancerDto registration (String email, String password, DancerDto dancerDto);
 
 //    Integer checkSignUpByEmail(String email);
 //

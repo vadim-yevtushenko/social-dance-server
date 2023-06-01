@@ -14,7 +14,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class DancerServiceImpl extends BaseService<DancerEntity, DancerDto> implements DancerService {
+public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Autowired
     private DancerRepository dancerRepository;

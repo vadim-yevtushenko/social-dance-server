@@ -18,12 +18,12 @@ public class CredentialRestController extends BaseController{
     @Autowired
     private CredentialService credentialService;
 
-    @GetMapping
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     public DancerDto login (@RequestParam(value = "email") String email, @RequestParam(value = "password") String password){
         return credentialService.login(email, password);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
     public DancerDto registration (@RequestParam(value = "email") String email,
                                    @RequestParam(value = "password") String password,
                                    @RequestBody DancerDto dancer){

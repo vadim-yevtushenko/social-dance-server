@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Transactional
-public abstract class BaseService <E extends AbstractBaseEntity, D extends BaseDto> {
+public abstract class BaseService {
 
     @Autowired
     protected transient MapperFacade mapper;

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class SchoolServiceImpl extends BaseService<SchoolEntity, SchoolDto> implements SchoolService {
+public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Autowired
     private SchoolRepository schoolRepository;

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class EventServiceImpl extends BaseService<EventEntity, EventDto> implements EventService {
+public class EventServiceImpl extends BaseService implements EventService {
 
     @Autowired
     private EventRepository eventRepository;

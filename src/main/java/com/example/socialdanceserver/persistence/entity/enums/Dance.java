@@ -19,7 +19,9 @@ public enum Dance {
 
     REGGAETON(6, "Reggaeton"),
 
-    TANGO(7, "Argentine Tango");
+    TANGO(7, "Argentine Tango"),
+
+    MAMBO(8, "Mambo");
 
     private int id;
 

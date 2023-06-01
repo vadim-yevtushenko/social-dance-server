@@ -14,6 +14,8 @@ drop table if exists event;
 drop table if exists dance;
 drop table if exists rating;
 drop table if exists contact_info;
+-- drop table if exists city;
+-- drop table if exists country;
 
 drop sequence if exists school_seq;
 drop sequence if exists dancer_seq;
@@ -24,6 +26,8 @@ drop sequence if exists rating_seq;
 drop sequence if exists review_seq;
 drop sequence if exists hibernate_sequence;
 drop sequence if exists credential_seq;
+-- drop sequence if exists city_seq;
+-- drop sequence if exists country_seq;
 
 CREATE SEQUENCE hibernate_sequence ;
 
@@ -224,7 +228,26 @@ CREATE table review
     FOREIGN KEY (review_owner) REFERENCES dancer (id) ON DELETE CASCADE
 );
 
+CREATE SEQUENCE country_seq START WITH 1;
+CREATE table country
+(
+    id   INTEGER PRIMARY KEY DEFAULT nextval('country_seq'),
+    name VARCHAR  NOT NULL,
+    iso2 VARCHAR,
+    iso3 VARCHAR,
+    CONSTRAINT unique_name UNIQUE (name)
+);
 
+CREATE SEQUENCE city_seq START WITH 1;
+CREATE table city
+(
+    id   INTEGER PRIMARY KEY DEFAULT nextval('city_seq'),
+    name VARCHAR  NOT NULL,
+    country_id INTEGER,
+    admin_name VARCHAR,
+    status VARCHAR,
+    FOREIGN KEY (country_id) REFERENCES country (id)
+);
 
 INSERT INTO dance values (1, 'Salsa'),
                          (2, 'Bachata'),
@@ -232,4 +255,5 @@ INSERT INTO dance values (1, 'Salsa'),
                          (4, 'Zouk'),
                          (5, 'Merenge'),
                          (6, 'Reggaeton'),
-                         (7, 'Argentine Tango');
+                         (7, 'Argentine Tango'),
+                         (8, 'Mambo');

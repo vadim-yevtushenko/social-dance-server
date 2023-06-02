@@ -37,7 +37,8 @@ public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Override
     public DancerDto getById(UUID id) {
-        return mapper.map(dancerRepository.findDistinctDancerEntityById(id), DancerDto.class);
+        Optional<DancerEntity> optionalDancerEntity = dancerRepository.findById(id);
+        return optionalDancerEntity.map(dancer -> mapper.map(dancer, DancerDto.class)).orElse(null);
     }
 
     @Override

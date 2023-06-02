@@ -13,8 +13,6 @@ import java.util.UUID;
 @Repository
 public interface DancerRepository extends JpaRepository<DancerEntity, UUID> {
 
-    DancerEntity findDistinctDancerEntityById(UUID id);
-
     @Query("select dance from DanceEntity dance")
     List<DanceEntity> getAllDances();
 

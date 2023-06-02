@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,7 +43,8 @@ public class EventServiceImpl extends BaseService implements EventService {
 
     @Override
     public EventDto getById(UUID id) {
-        return mapper.map(eventRepository.findDistinctEventEntityById(id), EventDto.class);
+        Optional<EventEntity> optionalEventEntity = eventRepository.findById(id);
+        return optionalEventEntity.map(entity -> mapper.map(entity, EventDto.class)).orElse(null);
     }
 
     @Override

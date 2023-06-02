@@ -8,8 +8,6 @@ import java.util.UUID;
 @Repository
 public interface SchoolRepository extends JpaRepository<SchoolEntity, UUID> {
 
-    SchoolEntity findDistinctSchoolEntityById(UUID id);
-
 //    @Query(value = "select * from abstract_base_entity abe " +
 //            "left join schools s on abe.id = s.id " +
 //            "left join entity_info ei on abe.entity_info_id = ei.id " +

@@ -36,7 +36,8 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     public SchoolDto getById(UUID id) {
-        return mapper.map(schoolRepository.findDistinctSchoolEntityById(id), SchoolDto.class);
+        Optional<SchoolEntity> schoolEntity = schoolRepository.findById(id);
+        return schoolEntity.map(entity -> mapper.map(entity, SchoolDto.class)).orElse(null);
     }
 
     @Override

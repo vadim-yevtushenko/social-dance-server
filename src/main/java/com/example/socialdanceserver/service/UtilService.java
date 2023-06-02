@@ -10,8 +10,8 @@ public interface UtilService {
 
     List<DanceDto> getDances();
 
-    List<CountryDto> getCountries();
+    List<CountryDto> getCountriesByName(String name);
 
-    List<CityDto> getCities();
+    List<CityDto> getCitiesByNameAndCountry(String name, String countryName);
 
 }

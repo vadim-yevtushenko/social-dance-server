@@ -31,12 +31,12 @@ public class UtilServiceImpl extends BaseService implements UtilService {
     }
 
     @Override
-    public List<CountryDto> getCountries() {
-        return null;
+    public List<CountryDto> getCountriesByName(String name) {
+        return mapper.mapAsList(countryRepository.findByNameStartingWithIgnoreCaseOrderByName(name), CountryDto.class);
     }
 
     @Override
-    public List<CityDto> getCities() {
-        return null;
+    public List<CityDto> getCitiesByNameAndCountry(String name, String countryName) {
+        return mapper.mapAsList(cityRepository.findByNameStartingWithIgnoreCaseAndCountry_NameStartingWithIgnoreCaseOrderByName(name, countryName), CityDto.class);
     }
 }

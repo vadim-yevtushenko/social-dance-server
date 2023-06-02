@@ -9,7 +9,5 @@ import java.util.UUID;
 @Repository
 public interface EventRepository extends JpaRepository<EventEntity, UUID> {
 
-    EventEntity findDistinctEventEntityById(UUID id);
-
     Set<EventEntity> findDistinctBySchoolOrganizerId(UUID id);
 }

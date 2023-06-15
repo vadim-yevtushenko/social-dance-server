@@ -31,4 +31,16 @@ public class CredentialRestController extends BaseController{
         return credentialService.registration(email, password, dancer);
     }
 
+    //    @PostMapping("/change-password")
+//    public Boolean changePassword(@RequestParam(value = "email", required = false) String email,
+//                                  @RequestParam(value = "password", required = false) String password){
+//        return dancerService.changePassword(email, password);
+//    }
+//
+//    @PostMapping("/change-email")
+//    public Boolean changeEmail(@RequestParam(value = "oldEmail", required = false) String oldEmail,
+//                               @RequestParam(value = "newEmail", required = false) String newEmail){
+//        return dancerService.changeEmail(oldEmail, newEmail);
+//    }
+
 }

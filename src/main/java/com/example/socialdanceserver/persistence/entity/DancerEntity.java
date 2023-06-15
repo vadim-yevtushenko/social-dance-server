@@ -84,8 +84,8 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
-    @JsonBackReference
-    private List<EventEntity> eventOrganizer;
+//    @JsonBackReference
+    private List<EventEntity> eventsOrganizer;
 
     @ManyToMany
     @JoinTable(

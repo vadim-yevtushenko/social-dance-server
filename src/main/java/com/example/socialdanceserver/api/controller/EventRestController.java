@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Max;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,13 @@ public class EventRestController extends BaseController {
     }
 
     @GetMapping("/organizer/{id}")
-    public List<EventDto> eventsSchoolOrganizerId(@PathVariable UUID id){
+    public List<EventDto> getEventsByOrganizerId(@PathVariable UUID id){
+        log.info("Get event by organizer uuid: {}", id);
+        return eventService.getAllByOrganizerId(id);
+    }
+
+    @GetMapping("/school-organizer/{id}")
+    public List<EventDto> getEventsBySchoolOrganizerId(@PathVariable UUID id){
         log.info("Get event by organizer uuid: {}", id);
         return eventService.getAllBySchoolOrganizerId(id);
     }
@@ -73,13 +80,17 @@ public class EventRestController extends BaseController {
     @PostMapping(value = "/upload-image",
     consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadImage(@RequestParam(value = "id", required = false) UUID id,
-                              @RequestPart(value = "file", required = false)MultipartFile file){
+                              @RequestPart(value = "file", required = false)MultipartFile file) {
         if (file != null){
             EventDto eventDto = getById(id);
             if (eventDto.getImage() != null){
                 imageStorageService.deleteImage(eventDto.getImage());
             }
-            eventDto.setImage(imageStorageService.uploadImage(file));
+            try {
+                eventDto.setImage(imageStorageService.uploadImage(file));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             save(eventDto);
             return "uploaded";
         }
@@ -92,20 +103,6 @@ public class EventRestController extends BaseController {
         imageStorageService.deleteImage(eventDto.getImage());
         eventDto.setImage(null);
         save(eventDto);
-    }
-
-    @GetMapping("/download-image")
-    public ResponseEntity<Resource> downloadImage(@RequestParam(value = "id", required = false) UUID id){
-        EventDto eventDto = getById(id);
-        Resource resource = null;
-        if (eventDto.getImage() != null){
-            resource = imageStorageService.downloadImage(eventDto.getImage());
-            if (resource == null){
-                eventDto.setImage(null);
-                save(eventDto);
-            }
-        }
-        return ResponseEntity.ok().body(resource);
     }
 
 }

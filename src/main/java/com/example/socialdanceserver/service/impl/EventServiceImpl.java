@@ -1,24 +1,28 @@
 package com.example.socialdanceserver.service.impl;
 
+import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.EventDao;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import com.example.socialdanceserver.persistence.entity.EventEntity;
+import com.example.socialdanceserver.persistence.repository.DancerRepository;
 import com.example.socialdanceserver.persistence.repository.EventRepository;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 
 @Service
 public class EventServiceImpl extends BaseService implements EventService {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private DancerRepository dancerRepository;
 
     @Autowired
     private EventDao eventDao;
@@ -37,8 +41,18 @@ public class EventServiceImpl extends BaseService implements EventService {
     }
 
     @Override
+    public List<EventDto> getAllByOrganizerId(UUID id) {
+        Optional<DancerEntity> optionalDancerEntity = dancerRepository.findById(id);
+        DancerEntity dancerEntity = optionalDancerEntity.orElse(null);
+        if (dancerEntity != null) {
+            return mapper.mapAsList(eventRepository.findDistinctByOrganizersInOrderByCreated(Set.of(dancerEntity)), EventDto.class);
+        }
+        return null;
+    }
+
+    @Override
     public List<EventDto> getAllBySchoolOrganizerId(UUID id) {
-        return mapper.mapAsList(eventRepository.findDistinctBySchoolOrganizerId(id), EventDto.class);
+        return mapper.mapAsList(eventRepository.findDistinctBySchoolOrganizerIdOrderByCreated(id), EventDto.class);
     }
 
     @Override

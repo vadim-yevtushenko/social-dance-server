@@ -31,7 +31,7 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         CredentialEntity credentialEntity = credentialRepository.findCredentialEntityByEmail(email);
         checkCredential(credentialEntity, password);
 
-        return  mapper.map(credentialEntity.getDancer(), DancerDto.class);
+        return  dancerService.getDancerDtoFromEntity(credentialEntity.getDancer());
     }
 
     @Override

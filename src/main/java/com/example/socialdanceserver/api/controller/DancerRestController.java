@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Max;
+import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
@@ -74,62 +75,28 @@ public class DancerRestController extends BaseController{
                              @RequestPart(value = "file", required = false) MultipartFile file) {
 
         if (file != null) {
-            DancerDto dancerDto = getById(id);
+            DancerDto dancerDto = dancerService.getById(id);
             if (dancerDto.getImage() != null) {
                 imageStorageService.deleteImage(dancerDto.getImage());
             }
-            dancerDto.setImage(imageStorageService.uploadImage(file));
-            save(dancerDto);
-            return "uploaded";
+            try {
+                String url = imageStorageService.uploadImage(file);
+                dancerDto.setImage(url);
+                dancerService.save(dancerDto);
+                return url;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return "not uploaded";
     }
 
     @DeleteMapping("/delete-image")
-    public void deleteFile(@RequestParam(value = "id", required = false) UUID id){
-        DancerDto dancerDto = getById(id);
+    public void deletePhoto(@RequestParam(value = "id", required = false) UUID id){
+        DancerDto dancerDto = dancerService.getById(id);
         imageStorageService.deleteImage(dancerDto.getImage());
         dancerDto.setImage(null);
-        save(dancerDto);
+        dancerService.save(dancerDto);
     }
 
-    @GetMapping("/download-image")
-    public ResponseEntity<Resource> downloadFile(@RequestParam(value = "id", required = false) UUID id) {
-        DancerDto dancerDto = getById(id);
-        Resource resource = null;
-        if (dancerDto.getImage() != null) {
-            resource = imageStorageService.downloadImage(dancerDto.getImage());
-            if (resource == null){
-                dancerDto.setImage(null);
-                save(dancerDto);
-            }
-        }
-        return ResponseEntity.ok()
-                .body(resource);
-    }
-
-
-//    @GetMapping("/registration")
-//    public Integer checkSignUp(@RequestParam(value = "email", required = false) String email){
-//
-//        return dancerService.checkSignUpByEmail(email);
-//    }
-//
-//    @GetMapping("/identification")
-//    public Integer checkSignIn(@RequestParam(value = "email", required = false) String email,
-//                               @RequestParam(value = "password", required = false) String password){
-//        return dancerService.checkSignInByEmailAndPassword(email, password);
-//    }
-//
-//    @PostMapping("/change-password")
-//    public Boolean changePassword(@RequestParam(value = "email", required = false) String email,
-//                                  @RequestParam(value = "password", required = false) String password){
-//        return dancerService.changePassword(email, password);
-//    }
-//
-//    @PostMapping("/change-email")
-//    public Boolean changeEmail(@RequestParam(value = "oldEmail", required = false) String oldEmail,
-//                               @RequestParam(value = "newEmail", required = false) String newEmail){
-//        return dancerService.changeEmail(oldEmail, newEmail);
-//    }
 }

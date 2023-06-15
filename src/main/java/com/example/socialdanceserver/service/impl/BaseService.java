@@ -1,7 +1,5 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.api.dto.BaseDto;
-import com.example.socialdanceserver.persistence.entity.AbstractBaseEntity;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;

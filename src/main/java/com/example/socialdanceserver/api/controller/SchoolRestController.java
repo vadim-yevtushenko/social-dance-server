@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Max;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,7 +76,11 @@ public class SchoolRestController extends BaseController {
             if (school.getImage() != null){
                 imageStorageService.deleteImage(school.getImage());
             }
-            school.setImage(imageStorageService.uploadImage(file));
+            try {
+                school.setImage(imageStorageService.uploadImage(file));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             save(school);
             return "uploaded";
         }
@@ -88,20 +93,6 @@ public class SchoolRestController extends BaseController {
         imageStorageService.deleteImage(school.getImage());
         school.setImage(null);
         save(school);
-    }
-
-    @GetMapping("/download-image")
-    public ResponseEntity<Resource> downloadImage(@RequestParam(value = "id", required = false) UUID id){
-        SchoolDto school = schoolService.getById(id);
-        Resource resource = null;
-        if (school.getImage() != null){
-            resource = imageStorageService.downloadImage(school.getImage());
-            if (resource == null){
-                school.setImage(null);
-                save(school);
-            }
-        }
-        return ResponseEntity.ok().body(resource);
     }
 
     @GetMapping("/{id}/{dancerId}")

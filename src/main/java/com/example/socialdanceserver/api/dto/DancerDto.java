@@ -40,6 +40,6 @@ public class DancerDto extends BaseDto{
 
     private IdNameContainerDto school;
 
-//    private CredentialEntity credential;
+    private List<IdNameContainerDto> eventsOrganizer;
 
 }

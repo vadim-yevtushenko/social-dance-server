@@ -64,7 +64,7 @@ public class DancerRestController extends BaseController{
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
         log.info("Delete dancer with uuid: {}", id);
-//        deleteFile(id);
+        deleteImage(id);
         dancerService.deleteById(id);
     }
 
@@ -76,23 +76,21 @@ public class DancerRestController extends BaseController{
 
         if (file != null) {
             DancerDto dancerDto = dancerService.getById(id);
-            if (dancerDto.getImage() != null) {
+            if (dancerDto.getImage() != null && !dancerDto.getImage().isBlank()) {
                 imageStorageService.deleteImage(dancerDto.getImage());
             }
-            try {
-                String url = imageStorageService.uploadImage(file);
-                dancerDto.setImage(url);
-                dancerService.save(dancerDto);
-                return url;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+
+            String url = imageStorageService.uploadImage(file);
+            dancerDto.setImage(url);
+            dancerService.save(dancerDto);
+            return url;
         }
+
         return "not uploaded";
     }
 
     @DeleteMapping("/delete-image")
-    public void deletePhoto(@RequestParam(value = "id", required = false) UUID id){
+    public void deleteImage(@RequestParam(value = "id", required = false) UUID id){
         DancerDto dancerDto = dancerService.getById(id);
         imageStorageService.deleteImage(dancerDto.getImage());
         dancerDto.setImage(null);

@@ -62,7 +62,7 @@ public class SchoolRestController extends BaseController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         log.info("Delete school with uuid: {}", id);
-//        deleteImage(id);
+        deleteImage(id);
         schoolService.deleteById(id);
     }
 
@@ -72,17 +72,15 @@ public class SchoolRestController extends BaseController {
     public String uploadImage(@RequestParam(value = "id", required = false) UUID id,
                               @RequestPart(value = "file", required = false) MultipartFile file){
         if (file != null){
-            SchoolDto school = schoolService.getById(id);
-            if (school.getImage() != null){
-                imageStorageService.deleteImage(school.getImage());
+            SchoolDto schoolDto = schoolService.getById(id);
+            if (schoolDto.getImage() != null && !schoolDto.getImage().isBlank()){
+                imageStorageService.deleteImage(schoolDto.getImage());
             }
-            try {
-                school.setImage(imageStorageService.uploadImage(file));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            save(school);
-            return "uploaded";
+
+            String url = imageStorageService.uploadImage(file);
+            schoolDto.setImage(url);
+            schoolService.save(schoolDto);
+            return url;
         }
         return "not uploaded";
     }

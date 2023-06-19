@@ -72,7 +72,7 @@ public class EventRestController extends BaseController {
     @DeleteMapping("/{id}")
     void delete(@PathVariable UUID id){
         log.info("Delete event with uuid: {}", id);
-//        deleteImage(id);
+        deleteImage(id);
         eventService.deleteById(id);
     }
 
@@ -82,17 +82,14 @@ public class EventRestController extends BaseController {
     public String uploadImage(@RequestParam(value = "id", required = false) UUID id,
                               @RequestPart(value = "file", required = false)MultipartFile file) {
         if (file != null){
-            EventDto eventDto = getById(id);
-            if (eventDto.getImage() != null){
+            EventDto eventDto = eventService.getById(id);
+            if (eventDto.getImage() != null && !eventDto.getImage().isBlank()){
                 imageStorageService.deleteImage(eventDto.getImage());
             }
-            try {
-                eventDto.setImage(imageStorageService.uploadImage(file));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            save(eventDto);
-            return "uploaded";
+            String url = imageStorageService.uploadImage(file);
+            eventDto.setImage(url);
+            eventService.save(eventDto);
+            return url;
         }
         return "not uploaded";
     }

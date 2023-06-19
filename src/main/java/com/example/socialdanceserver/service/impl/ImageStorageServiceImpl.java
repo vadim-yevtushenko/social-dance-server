@@ -6,26 +6,14 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.*;
 import com.example.socialdanceserver.service.ImageStorageService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -59,21 +47,21 @@ public class ImageStorageServiceImpl implements ImageStorageService {
 
         String uuidFile = UUID.randomUUID().toString().replace("-", "");
         String[] splitFileName = file.getOriginalFilename().split("\\.");
-        String resultFileName = uuidFile + splitFileName[splitFileName.length - 1];
+        String resultFileName = uuidFile + "." + splitFileName[splitFileName.length - 1];
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setUserMetadata(Map.of("Content-Type", "image/jpeg"));
         try {
             s3client.putObject(
                     bucketName,
-                    IMAGES_FOLDER + resultFileName,
+                    resultFileName,
                     file.getInputStream(),
                     objectMetadata);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        URL url = s3client.generatePresignedUrl(bucketName, "images/" + resultFileName, new Date(10));
+        URL url = s3client.generatePresignedUrl(bucketName, IMAGES_FOLDER + resultFileName, new Date(10));
 
         return url.getProtocol() + "://" + url.getHost() + url.getPath();
     }

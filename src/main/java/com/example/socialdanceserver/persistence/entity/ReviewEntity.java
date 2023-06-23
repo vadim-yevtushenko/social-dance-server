@@ -1,12 +1,8 @@
 package com.example.socialdanceserver.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -20,14 +16,15 @@ public class ReviewEntity extends AbstractBaseEntity{
     @Column(name = "incognito")
     private boolean incognito;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_owner")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
-    private DancerEntity reviewOwner;
+    @Column(name = "dancer_id")
+    private UUID dancerId;
 
-//    @Column(name = "baseDanceEntityId")
-    private UUID baseDanceEntityId;
+    @Column(name = "school_id")
+    private UUID schoolId;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @JoinColumn(name = "rating_id")
+    private RatingEntity rating;
 
     @Column(name = "review")
     private String review;

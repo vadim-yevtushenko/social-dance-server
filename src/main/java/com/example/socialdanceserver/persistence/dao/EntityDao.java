@@ -36,8 +36,10 @@ public abstract class EntityDao <T extends AbstractBaseEntity> {
         criteriaQuery.distinct(true);
         criteriaQuery.select(root);
 
-        List<Order> orders = buildOrders(paginationRequest.getOrders(), builder, root);
-        criteriaQuery.orderBy(orders);
+        if (paginationRequest.getOrders() != null && !paginationRequest.getOrders().isEmpty()){
+            List<Order> orders = buildOrders(paginationRequest.getOrders(), builder, root);
+            criteriaQuery.orderBy(orders);
+        }
 
         if (paginationRequest.getPredicates() != null && !paginationRequest.getPredicates().isEmpty()){
             List<Predicate> predicateList = buildPredicates(paginationRequest.getPredicates(), builder, root);

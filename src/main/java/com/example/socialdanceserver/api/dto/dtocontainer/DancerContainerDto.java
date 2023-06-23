@@ -8,12 +8,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-public class IdNameLastnameContainerDto {
+public class DancerContainerDto {
 
     private UUID id;
 
     private String name;
 
     private String lastName;
+
+    private String image;
 
 }

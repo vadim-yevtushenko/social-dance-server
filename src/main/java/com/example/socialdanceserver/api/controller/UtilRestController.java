@@ -1,13 +1,11 @@
 package com.example.socialdanceserver.api.controller;
 
-import com.example.socialdanceserver.api.dto.DanceDto;
 import com.example.socialdanceserver.api.dto.location.CityDto;
 import com.example.socialdanceserver.api.dto.location.CountryDto;
 import com.example.socialdanceserver.service.UtilService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
@@ -20,11 +18,6 @@ public class UtilRestController extends BaseController{
 
     @Autowired
     private UtilService utilService;
-
-    @GetMapping("/dances")
-    public List<DanceDto> getAllDances() {
-        return utilService.getDances();
-    }
 
     @GetMapping("/countries")
     public List<CountryDto> getCountriesByName(@RequestParam(value = "name", required = false) String name) {

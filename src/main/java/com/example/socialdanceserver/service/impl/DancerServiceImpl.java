@@ -71,7 +71,7 @@ public class DancerServiceImpl extends BaseService implements DancerService {
 
     private List<DancerDto> getDancerDtosFromEntities(List<DancerEntity> dancerEntities) {
 
-        List<DancerDto> dancers = mapper.mapAsList(dancerEntities, DancerDto.class)
+        return mapper.mapAsList(dancerEntities, DancerDto.class)
                 .stream()
                 .peek(dancerDto -> {
                     DancerEntity dancerEntity = dancerEntities.stream()
@@ -83,8 +83,6 @@ public class DancerServiceImpl extends BaseService implements DancerService {
                     dancerDto.setSchool(mapper.map(dancerEntity.getSchoolStudent(), IdNameContainerDto.class));
                 })
                 .collect(Collectors.toList());
-
-        return dancers;
     }
 
     public DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity) {

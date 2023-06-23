@@ -2,8 +2,6 @@ package com.example.socialdanceserver.api.dto;
 
 import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
 import com.example.socialdanceserver.persistence.entity.enums.Level;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -11,9 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class DancerDto extends BaseDto{
 
     private String name;

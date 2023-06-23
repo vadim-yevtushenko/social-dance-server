@@ -3,7 +3,6 @@ package com.example.socialdanceserver.persistence.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -14,11 +13,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class RatingEntity extends AbstractBaseEntity{
 
-//    @Column(name = "ratingOwnerID")
-    private UUID ratingOwnerID;
+    @Column(name = "dancer_id")
+    private UUID dancerId;
 
-//    @Column(name = "baseDanceEntityId")
-    private UUID  baseDanceEntityId;
+    @Column(name = "school_id")
+    private UUID  schoolId;
 
     @Column(name = "rating")
     private int rating;

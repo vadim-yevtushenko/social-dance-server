@@ -1,7 +1,6 @@
 package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.api.dto.PageDto;
-import com.example.socialdanceserver.api.dto.ReviewDto;
 import com.example.socialdanceserver.api.dto.SchoolDto;
 import com.example.socialdanceserver.persistence.dao.SchoolDao;
 import com.example.socialdanceserver.persistence.repository.SchoolRepository;
@@ -49,11 +48,6 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     @Override
     public void deleteById(UUID id) {
         schoolRepository.deleteById(id);
-    }
-
-    @Override
-    public List<ReviewDto> getReviewsBySchoolId(UUID id) {
-        return null;
     }
 
 }

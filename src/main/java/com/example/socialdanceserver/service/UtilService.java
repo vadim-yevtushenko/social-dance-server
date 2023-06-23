@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface UtilService {
 
-    List<DanceDto> getDances();
-
     List<CountryDto> getCountriesByName(String name);
 
     List<CityDto> getCitiesByNameAndCountry(String name, String countryName);

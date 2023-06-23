@@ -33,6 +33,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-oauth2-client</artifactId>-->
+<!--            <version>3.0.6</version>-->
+<!--        </dependency>-->
+
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -98,12 +105,6 @@
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.12.486</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.amazonaws</groupId>-->
-<!--            <artifactId>aws-java-sdk</artifactId>-->
-<!--            <version>1.11.163</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>org.mockito</groupId>

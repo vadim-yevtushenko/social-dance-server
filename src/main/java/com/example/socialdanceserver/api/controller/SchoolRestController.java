@@ -93,30 +93,4 @@ public class SchoolRestController extends BaseController {
         save(school);
     }
 
-    @GetMapping("/{id}/{dancerId}")
-    public Integer getRatingByDancerId(@PathVariable UUID id, @PathVariable UUID dancerId) {
-//        SchoolEntity schoolEntity = schoolService.getById(id);
-//        if (schoolEntity.getRatings() == null) {
-//            return 0;
-//        }
-//        for (RatingEntity schoolRatingEntity : schoolEntity.getRatings()) {
-//            if (schoolRatingEntity.getReviewer_id() == dancerId) {
-//                return schoolRatingEntity.getRating();
-//            }
-//        }
-        return 0;
-    }
-
-    @GetMapping("/reviews/{id}")
-    public List<ReviewDto> findReviewsBySchool(@PathVariable UUID id) {
-        return schoolService.getReviewsBySchoolId(id);
-    }
-
-    @PostMapping("/ratings")
-    public void saveRating(@RequestBody RatingDto ratingDto) {
-    }
-
-    @PostMapping("/reviews")
-    public void saveReview(@RequestBody ReviewDto reviewDto) {
-    }
 }

@@ -50,7 +50,7 @@ public class DancerRestController extends BaseController{
         return dancer;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public DancerDto save(@RequestBody DancerDto dancerDto){
         if (dancerDto.getId() != null){
             log.info("Update dancer with uuid: {}", dancerDto.getId());

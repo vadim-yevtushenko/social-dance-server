@@ -54,7 +54,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
         try {
             s3client.putObject(
                     bucketName,
-                    resultFileName,
+                    IMAGES_FOLDER + resultFileName,
                     file.getInputStream(),
                     objectMetadata);
 

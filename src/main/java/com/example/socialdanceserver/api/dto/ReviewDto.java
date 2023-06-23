@@ -1,6 +1,6 @@
 package com.example.socialdanceserver.api.dto;
 
-import com.example.socialdanceserver.persistence.entity.DancerEntity;
+import com.example.socialdanceserver.api.dto.dtocontainer.DancerContainerDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,12 +14,16 @@ public class ReviewDto extends BaseDto{
 
     private boolean incognito;
 
-    private DancerEntity reviewOwner;
+    private UUID dancerId;
 
-    private UUID baseDanceEntityId;
+    private UUID schoolId;
 
     private String review;
 
+    private RatingDto rating;
+
     private ZonedDateTime created;
+
+    private DancerContainerDto dancerContainer;
 
 }

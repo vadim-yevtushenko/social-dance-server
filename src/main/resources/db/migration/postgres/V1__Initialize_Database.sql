@@ -1,34 +1,3 @@
--- drop table if exists dancers_has_dances;
--- drop table if exists schools_has_dances;
--- drop table if exists events_has_dances;
--- drop table if exists school_has_administrators;
--- drop table if exists school_has_teachers;
--- drop table if exists schools_has_students;
--- drop table if exists events_has_organizers;
--- drop table if exists events_has_dancers;
--- drop table if exists review;
--- drop table if exists credential;
--- drop table if exists dancer;
--- drop table if exists school;
--- drop table if exists event;
--- drop table if exists dance;
--- drop table if exists rating;
--- drop table if exists contact_info;
--- drop table if exists city;
--- drop table if exists country;
-
--- drop sequence if exists school_seq;
--- drop sequence if exists dancer_seq;
--- drop sequence if exists event_seq;
--- drop sequence if exists dance_seq;
--- drop sequence if exists contact_info_seq;
--- drop sequence if exists rating_seq;
--- drop sequence if exists review_seq;
--- drop sequence if exists hibernate_sequence;
--- drop sequence if exists credential_seq;
--- drop sequence if exists city_seq;
--- drop sequence if exists country_seq;
-
 CREATE SEQUENCE hibernate_sequence ;
 
 CREATE SEQUENCE contact_info_seq;
@@ -200,33 +169,6 @@ CREATE table credential
     FOREIGN KEY (dancer_id) REFERENCES dancer (id)
 );
 
-
-
--- CREATE SEQUENCE rating_seq;
--- CREATE table rating
--- (
---     id                      uuid                              NOT NULL,
---     created                 TIMESTAMP                         NOT NULL,
---     updated                 TIMESTAMP                         NOT NULL,
---     base_dance_entity_id    VARCHAR                           NOT NULL,
---     rating_owner_id         VARCHAR                           NOT NULL,
---     rating                  INTEGER                           NOT NULL,
---     CONSTRAINT rating_pkey PRIMARY KEY (id)
--- );
---
--- CREATE SEQUENCE review_seq;
--- CREATE table review
--- (
---     id                      uuid                              NOT NULL,
---     created                 TIMESTAMP                         NOT NULL,
---     updated                 TIMESTAMP                         NOT NULL,
---     review_owner            uuid                              NOT NULL,
---     incognito               BOOLEAN,
---     base_dance_entity_id    VARCHAR                           NOT NULL,
---     review                  VARCHAR                           NOT NULL,
---     CONSTRAINT review_pkey PRIMARY KEY (id),
---     FOREIGN KEY (review_owner) REFERENCES dancer (id) ON DELETE CASCADE
--- );
 
 CREATE SEQUENCE country_seq START WITH 1;
 CREATE table country

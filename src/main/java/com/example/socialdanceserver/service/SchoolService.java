@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface SchoolService {
 
-    PageDto<SchoolDto> getPageSchools(String name, String city, int pageNumber, int size);
+    PageDto<SchoolDto> getPageSchools(String name, String country, String city, int pageNumber, int size);
 
     SchoolDto getById(UUID id);
 

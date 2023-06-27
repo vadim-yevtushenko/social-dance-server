@@ -17,6 +17,8 @@ public class EventDao extends EntityDao<EventEntity>{
 
     public static final String EVENT_NAME = "event.name";
 
+    public static final String EVENT_CONTACT_INFO_COUNTRY = "event.contactInfo.country";
+
     public static final String EVENT_CONTACT_INFO_CITY = "event.contactInfo.city";
 
     @Override
@@ -35,6 +37,10 @@ public class EventDao extends EntityDao<EventEntity>{
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("name"), mapPredicates.get(EVENT_NAME)));
         }
 
+        if (mapPredicates.get(EVENT_CONTACT_INFO_COUNTRY) != null && !mapPredicates.get(EVENT_CONTACT_INFO_COUNTRY).isBlank()){
+            predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("country"), mapPredicates.get(EVENT_CONTACT_INFO_COUNTRY)));
+        }
+
         if (mapPredicates.get(EVENT_CONTACT_INFO_CITY) != null && !mapPredicates.get(EVENT_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(EVENT_CONTACT_INFO_CITY)));
         }
@@ -42,9 +48,10 @@ public class EventDao extends EntityDao<EventEntity>{
         return predicates;
     }
 
-    public Map<String, String> getMapPredicates(String name, String city) {
+    public Map<String, String> getMapPredicates(String name, String country, String city) {
         Map<String, String> mapPredicates = new HashMap<>();
         mapPredicates.put(EVENT_NAME, name);
+        mapPredicates.put(EVENT_CONTACT_INFO_COUNTRY, country);
         mapPredicates.put(EVENT_CONTACT_INFO_CITY, city);
         return mapPredicates;
     }

@@ -8,12 +8,8 @@ public interface CredentialService {
 
     DancerDto registration (String email, String password, DancerDto dancerDto);
 
-//    Integer checkSignUpByEmail(String email);
-//
-//    Integer checkSignInByEmailAndPassword(String email, String password);
-//
-//    Boolean changePassword(String email, String password);
-//
-//    Boolean changeEmail(String oldEmail, String newEmail);
+    void changePassword(String email, String password);
+
+    String changeEmail(String oldEmail, String newEmail);
 
 }

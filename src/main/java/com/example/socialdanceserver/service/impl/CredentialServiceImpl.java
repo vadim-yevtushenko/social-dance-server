@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CredentialServiceImpl extends BaseService implements CredentialService {
 
-    private static final String PASSWORD_VALIDATION_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,25}$";
+//    private static final String PASSWORD_VALIDATION_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,25}$";
 
     @Autowired
     private CredentialRepository credentialRepository;
@@ -45,6 +45,22 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         credentialEntity = credentialRepository.save(credentialEntity);
 
         return mapper.map(credentialEntity.getDancer(), DancerDto.class);
+    }
+
+    @Override
+    public void changePassword(String email, String password) {
+        CredentialEntity credentialEntity = credentialRepository.findCredentialEntityByEmail(email);
+        credentialEntity.setPassword(passwordEncoder.encode(password));
+        credentialRepository.save(credentialEntity);
+    }
+
+    @Override
+    public String changeEmail(String oldEmail, String newEmail) {
+        CredentialEntity credentialEntity = credentialRepository.findCredentialEntityByEmail(oldEmail);
+        credentialEntity.setEmail(newEmail);
+        credentialEntity = credentialRepository.save(credentialEntity);
+
+        return credentialEntity.getEmail();
     }
 
     private void checkCredential(CredentialEntity credential, String password) {

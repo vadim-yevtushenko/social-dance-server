@@ -6,13 +6,10 @@ import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Max;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,12 +29,13 @@ public class EventRestController extends BaseController {
 
     @GetMapping
     public PageDto<EventDto> getEvents(@RequestParam(value = "name", required = false) String name,
+                                       @RequestParam(value = "country", required = false) String country,
                                        @RequestParam(value = "city", required = false) String city,
                                        @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
                                        @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
-        log.info("Get events name: {}, city: {}, pageNumber: {}, size: {}", name, city, pageNumber, size);
+        log.info("Get events name: {}, country: {}, city: {},pageNumber: {}, size: {}", name, country, city, pageNumber, size);
 
-        return eventService.getPageEvents(name, city, pageNumber, size);
+        return eventService.getPageEvents(name, country, city, pageNumber, size);
     }
 
     @GetMapping("/organizer/{id}")

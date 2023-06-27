@@ -1,6 +1,5 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.UUID;
 
 public interface EventService {
 
-    PageDto<EventDto> getPageEvents(String name, String city, int pageNumber, int size);
+    PageDto<EventDto> getPageEvents(String name, String country, String city, int pageNumber, int size);
 
     List<EventDto> getAllByOrganizerId(UUID id);
 

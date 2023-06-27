@@ -17,6 +17,8 @@ public class SchoolDao extends EntityDao<SchoolEntity>{
 
     public static final String SCHOOL_NAME = "school.name";
 
+    public static final String SCHOOL_CONTACT_INFO_COUNTRY = "school.contactInfo.country";
+
     public static final String SCHOOL_CONTACT_INFO_CITY = "school.contactInfo.city";
 
 
@@ -36,6 +38,10 @@ public class SchoolDao extends EntityDao<SchoolEntity>{
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("name"), mapPredicates.get(SCHOOL_NAME)));
         }
 
+        if (mapPredicates.get(SCHOOL_CONTACT_INFO_COUNTRY) != null && !mapPredicates.get(SCHOOL_CONTACT_INFO_COUNTRY).isBlank()){
+            predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("country"), mapPredicates.get(SCHOOL_CONTACT_INFO_COUNTRY)));
+        }
+
         if (mapPredicates.get(SCHOOL_CONTACT_INFO_CITY) != null && !mapPredicates.get(SCHOOL_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(SCHOOL_CONTACT_INFO_CITY)));
         }
@@ -43,9 +49,10 @@ public class SchoolDao extends EntityDao<SchoolEntity>{
         return predicates;
     }
 
-    public Map<String, String> getMapPredicates(String name, String city) {
+    public Map<String, String> getMapPredicates(String name, String country, String city) {
         Map<String, String> mapPredicates = new HashMap<>();
         mapPredicates.put(SCHOOL_NAME, name);
+        mapPredicates.put(SCHOOL_CONTACT_INFO_COUNTRY, country);
         mapPredicates.put(SCHOOL_CONTACT_INFO_CITY, city);
         return mapPredicates;
     }

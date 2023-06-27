@@ -1,6 +1,5 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.EventDao;
@@ -28,9 +27,9 @@ public class EventServiceImpl extends BaseService implements EventService {
     private EventDao eventDao;
 
     @Override
-    public PageDto<EventDto> getPageEvents(String name, String city, int pageNumber, int size) {
+    public PageDto<EventDto> getPageEvents(String name, String country, String city, int pageNumber, int size) {
 
-        Map<String, String> mapPredicates = eventDao.getMapPredicates(name, city);
+        Map<String, String> mapPredicates = eventDao.getMapPredicates(name, country, city);
         int total = eventDao.getTotal(mapPredicates);
 
         PaginationRequest paginationRequest = buildPaginationRequest(List.of("name"), mapPredicates, pageNumber, size, total);

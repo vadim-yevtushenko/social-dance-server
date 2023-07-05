@@ -48,9 +48,10 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
     }
 
     @Override
-    public void changePassword(String email, String password) {
+    public void changePassword(String email, String newPassword, String oldPassword) {
         CredentialEntity credentialEntity = credentialRepository.findCredentialEntityByEmail(email);
-        credentialEntity.setPassword(passwordEncoder.encode(password));
+        checkCredential(credentialEntity, oldPassword);
+        credentialEntity.setPassword(passwordEncoder.encode(newPassword));
         credentialRepository.save(credentialEntity);
     }
 
@@ -66,7 +67,7 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
     private void checkCredential(CredentialEntity credential, String password) {
         if (credential != null) {
             if (!passwordEncoder.matches(password, credential.getPassword())) {
-                throw new BadCredentialsException("Given credentials do not match.");
+                throw new BadCredentialsException("Current password is wrong.");
             }
         } else {
             throw new AuthenticationCredentialsNotFoundException("No credentials found to use.");

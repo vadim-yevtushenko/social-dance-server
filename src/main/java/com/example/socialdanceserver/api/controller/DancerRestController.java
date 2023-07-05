@@ -33,12 +33,13 @@ public class DancerRestController extends BaseController{
     @GetMapping
     public PageDto<DancerDto> getDancers (@RequestParam(value = "name", required = false) String name,
                                           @RequestParam(value = "lastName", required = false) String lastName,
+                                          @RequestParam(value = "country", required = false) String country,
                                           @RequestParam(value = "city", required = false) String city,
                                           @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
                                           @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
         log.info("Get dancers name: {}, lastName: {}, city: {}, pageNumber: {}, size: {}", name, lastName, city, pageNumber, size);
 
-        return dancerService.getPageDancers(name, lastName, city, pageNumber, size);
+        return dancerService.getPageDancers(name, lastName, country, city, pageNumber, size);
     }
 
     @GetMapping("/{id}")
@@ -64,8 +65,11 @@ public class DancerRestController extends BaseController{
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id){
         log.info("Delete dancer with uuid: {}", id);
-        deleteImage(id);
+        DancerDto dancerDto = dancerService.getById(id);
         dancerService.deleteById(id);
+        if (dancerDto.getImage() != null && !dancerDto.getImage().equals("")){
+            imageStorageService.deleteImage(dancerDto.getImage());
+        }
     }
 
     @ResponseBody
@@ -80,7 +84,7 @@ public class DancerRestController extends BaseController{
                 imageStorageService.deleteImage(dancerDto.getImage());
             }
 
-            String url = imageStorageService.uploadImage(file);
+            String url = imageStorageService.uploadImage(file, id);
             dancerDto.setImage(url);
             dancerService.save(dancerDto);
             return url;

@@ -26,7 +26,7 @@ public class SchoolEntity extends AbstractBaseEntity {
     @Column(name = "image")
     private String image;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "contact_info_id")
     private ContactInfoEntity contactInfo;
 
@@ -64,10 +64,5 @@ public class SchoolEntity extends AbstractBaseEntity {
     @LazyCollection(LazyCollectionOption.EXTRA)
     @JsonManagedReference
     private List<DancerEntity> students;
-
-//    @OneToMany(mappedBy = "baseDanceEntityId", fetch = FetchType.EAGER,
-//            cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private List<ReviewEntity> reviews;
 
 }

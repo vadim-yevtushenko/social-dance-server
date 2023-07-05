@@ -16,4 +16,8 @@ public interface ReviewService {
 
     List<ReviewEntity> getBySchoolIdAndDancerId(UUID schoolId, UUID dancerId);
 
+    List<ReviewEntity> getBySchoolId(UUID schoolId);
+
+    void deleteReviewEntities(List<ReviewEntity> reviewEntities);
+
 }

@@ -8,7 +8,7 @@ public interface CredentialService {
 
     DancerDto registration (String email, String password, DancerDto dancerDto);
 
-    void changePassword(String email, String password);
+    void changePassword(String email, String newPassword, String oldPassword);
 
     String changeEmail(String oldEmail, String newEmail);
 

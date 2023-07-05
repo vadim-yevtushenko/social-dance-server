@@ -16,6 +16,8 @@ public class DancerDao extends EntityDao<DancerEntity>{
 
     public static final String DANCER_LAST_NAME = "dancer.lastName";
 
+    public static final String DANCER_CONTACT_INFO_COUNTRY = "dancer.contactInfo.country";
+
     public static final String DANCER_CONTACT_INFO_CITY = "dancer.contactInfo.city";
 
 //    public static final String DANCER_CONTACT_INFO_EMAIL = "dancer.contactInfo.email";
@@ -40,6 +42,10 @@ public class DancerDao extends EntityDao<DancerEntity>{
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.get("lastName"), mapPredicates.get(DANCER_LAST_NAME)));
         }
 
+        if (mapPredicates.get(DANCER_CONTACT_INFO_COUNTRY) != null && !mapPredicates.get(DANCER_CONTACT_INFO_COUNTRY).isBlank()){
+            predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("country"), mapPredicates.get(DANCER_CONTACT_INFO_COUNTRY)));
+        }
+
         if (mapPredicates.get(DANCER_CONTACT_INFO_CITY) != null && !mapPredicates.get(DANCER_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(DANCER_CONTACT_INFO_CITY)));
         }
@@ -51,10 +57,11 @@ public class DancerDao extends EntityDao<DancerEntity>{
         return predicates;
     }
 
-    public Map<String, String> getMapPredicates(String name, String lastName, String city) {
+    public Map<String, String> getMapPredicates(String name, String lastName, String country, String city) {
         Map<String, String> mapPredicates = new HashMap<>();
         mapPredicates.put(DANCER_NAME, name);
         mapPredicates.put(DANCER_LAST_NAME, lastName);
+        mapPredicates.put(DANCER_CONTACT_INFO_COUNTRY, country);
         mapPredicates.put(DANCER_CONTACT_INFO_CITY, city);
         return mapPredicates;
     }

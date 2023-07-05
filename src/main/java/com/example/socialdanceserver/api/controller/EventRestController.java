@@ -2,6 +2,7 @@ package com.example.socialdanceserver.api.controller;
 
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.api.exceptions.notfound.NotFoundException;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -70,8 +71,11 @@ public class EventRestController extends BaseController {
     @DeleteMapping("/{id}")
     void delete(@PathVariable UUID id){
         log.info("Delete event with uuid: {}", id);
-        deleteImage(id);
+        EventDto eventDto = getById(id);
         eventService.deleteById(id);
+        if (eventDto.getImage() != null && !eventDto.getImage().equals("")) {
+            imageStorageService.deleteImage(eventDto.getImage());
+        }
     }
 
     @ResponseBody
@@ -84,7 +88,7 @@ public class EventRestController extends BaseController {
             if (eventDto.getImage() != null && !eventDto.getImage().isBlank()){
                 imageStorageService.deleteImage(eventDto.getImage());
             }
-            String url = imageStorageService.uploadImage(file);
+            String url = imageStorageService.uploadImage(file, id);
             eventDto.setImage(url);
             eventService.save(eventDto);
             return url;

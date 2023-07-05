@@ -36,7 +36,7 @@ public class EventEntity extends AbstractBaseEntity {
     @Column(name = "date_finish_event")
     private ZonedDateTime dateFinishEvent;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "contact_info_id")
     private ContactInfoEntity contactInfo;
 

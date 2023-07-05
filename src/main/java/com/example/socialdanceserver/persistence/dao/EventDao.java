@@ -6,10 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -44,6 +41,8 @@ public class EventDao extends EntityDao<EventEntity>{
         if (mapPredicates.get(EVENT_CONTACT_INFO_CITY) != null && !mapPredicates.get(EVENT_CONTACT_INFO_CITY).isBlank()){
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(EVENT_CONTACT_INFO_CITY)));
         }
+
+//        predicates.add(builder.greaterThanOrEqualTo(root.get("dateFinishEvent"), ZonedDateTime.now()));
 
         return predicates;
     }

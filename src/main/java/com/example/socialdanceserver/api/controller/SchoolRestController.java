@@ -57,8 +57,11 @@ public class SchoolRestController extends BaseController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         log.info("Delete school with uuid: {}", id);
-        deleteImage(id);
+        SchoolDto school = schoolService.getById(id);
         schoolService.deleteById(id);
+        if (school.getImage() != null && !school.getImage().equals("")){
+            imageStorageService.deleteImage(school.getImage());
+        }
     }
 
     @ResponseBody
@@ -72,7 +75,7 @@ public class SchoolRestController extends BaseController {
                 imageStorageService.deleteImage(schoolDto.getImage());
             }
 
-            String url = imageStorageService.uploadImage(file);
+            String url = imageStorageService.uploadImage(file, id);
             schoolDto.setImage(url);
             schoolService.save(schoolDto);
             return url;

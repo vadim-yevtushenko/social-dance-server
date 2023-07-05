@@ -7,6 +7,7 @@ import com.example.socialdanceserver.persistence.dao.SchoolDao;
 import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.persistence.entity.SchoolEntity;
 import com.example.socialdanceserver.service.RatingService;
+import com.example.socialdanceserver.service.ReviewService;
 import com.example.socialdanceserver.service.SchoolService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     private RatingService ratingService;
 
     @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
     private SchoolDao schoolDao;
 
     @Override
@@ -32,7 +36,7 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         Map<String, String> mapPredicates = schoolDao.getMapPredicates(name, country, city);
         int total = schoolDao.getTotal(mapPredicates);
 
-        PaginationRequest paginationRequest = buildPaginationRequest(List.of("name"), mapPredicates, pageNumber, size, total);
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("image"), mapPredicates, pageNumber, size, total);
 
         List<SchoolEntity> schoolEntities = schoolDao.load(paginationRequest);
 
@@ -60,6 +64,8 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     public void deleteById(UUID id) {
+        reviewService.deleteReviewEntities(reviewService.getBySchoolId(id));
+        ratingService.deleteRatings(ratingService.getBySchoolId(id));
         schoolRepository.deleteById(id);
     }
 

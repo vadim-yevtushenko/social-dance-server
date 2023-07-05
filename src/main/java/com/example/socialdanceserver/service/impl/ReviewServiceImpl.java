@@ -11,8 +11,6 @@ import com.example.socialdanceserver.persistence.entity.ReviewEntity;
 import com.example.socialdanceserver.persistence.repository.DancerRepository;
 import com.example.socialdanceserver.persistence.repository.RatingRepository;
 import com.example.socialdanceserver.persistence.repository.ReviewRepository;
-import com.example.socialdanceserver.service.DancerService;
-import com.example.socialdanceserver.service.RatingService;
 import com.example.socialdanceserver.service.ReviewService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +65,16 @@ public class ReviewServiceImpl extends BaseService implements ReviewService {
     @Override
     public List<ReviewEntity> getBySchoolIdAndDancerId(UUID schoolId, UUID dancerId) {
         return reviewRepository.findReviewEntitiesBySchoolIdAndDancerId(schoolId, dancerId);
+    }
+
+    @Override
+    public List<ReviewEntity> getBySchoolId(UUID schoolId) {
+        return reviewRepository.findReviewEntitiesBySchoolId(schoolId);
+    }
+
+    @Override
+    public void deleteReviewEntities(List<ReviewEntity> reviewEntities) {
+        reviewRepository.deleteAll(reviewEntities);
     }
 
     private List<ReviewDto> getReviewDtosFromEntities(List<ReviewEntity> reviewEntities) {

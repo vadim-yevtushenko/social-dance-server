@@ -32,7 +32,7 @@ public class EventServiceImpl extends BaseService implements EventService {
         Map<String, String> mapPredicates = eventDao.getMapPredicates(name, country, city);
         int total = eventDao.getTotal(mapPredicates);
 
-        PaginationRequest paginationRequest = buildPaginationRequest(List.of("name"), mapPredicates, pageNumber, size, total);
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("dateFinishEvent"), mapPredicates, pageNumber, size, total);
 
         List<EventEntity> eventEntities = eventDao.load(paginationRequest);
 
@@ -62,13 +62,8 @@ public class EventServiceImpl extends BaseService implements EventService {
 
     @Override
     public EventDto save(EventDto eventDto) {
-        EventEntity oldEventEntity = new EventEntity();
-//        if (eventDto.getId() != null){
-//            oldEventEntity = eventRepository.getById(eventDto.getId());
-//        }
-//        eventDto.setDateEvent(ZonedDateTime.now().plusDays(10).plusHours(15));
-//        eventDto.setDateFinishEvent(ZonedDateTime.now().plusDays(10).plusHours(19));
         EventEntity eventEntity = mapper.map(eventDto, EventEntity.class);
+
         return mapper.map(eventRepository.save(eventEntity), EventDto.class);
     }
 

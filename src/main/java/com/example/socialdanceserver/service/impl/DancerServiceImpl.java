@@ -23,9 +23,9 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     private DancerDao dancerDao;
 
     @Override
-    public PageDto<DancerDto> getPageDancers(String name, String lastName, String city, int pageNumber, int size) {
+    public PageDto<DancerDto> getPageDancers(String name, String lastName, String country, String city, int pageNumber, int size) {
 
-        Map<String, String> mapPredicates = dancerDao.getMapPredicates(name, lastName, city);
+        Map<String, String> mapPredicates = dancerDao.getMapPredicates(name, lastName, country, city);
         int total = dancerDao.getTotal(mapPredicates);
 
         PaginationRequest paginationRequest = buildPaginationRequest(List.of("name", "lastName"), mapPredicates, pageNumber, size, total);

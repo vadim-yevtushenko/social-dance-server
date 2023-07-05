@@ -1,6 +1,5 @@
 CREATE SEQUENCE hibernate_sequence ;
 
-CREATE SEQUENCE contact_info_seq;
 CREATE table contact_info
 (
     id               uuid                              NOT NULL,
@@ -25,7 +24,6 @@ CREATE table dance
 
 
 
-CREATE SEQUENCE school_seq;
 CREATE table school
 (
     id                           uuid                              NOT NULL,
@@ -36,7 +34,7 @@ CREATE table school
     contact_info_id              uuid,
     image                        VARCHAR,
     CONSTRAINT school_pkey PRIMARY KEY (id),
-    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id) ON DELETE CASCADE
+    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 
 CREATE table schools_has_dances
@@ -50,7 +48,6 @@ CREATE table schools_has_dances
 
 
 
-CREATE SEQUENCE dancer_seq;
 CREATE table dancer
 (
     id                  uuid                              NOT NULL,
@@ -79,7 +76,6 @@ CREATE table dancers_has_dances
 
 
 
-CREATE SEQUENCE event_seq;
 CREATE table event
 (
     id                      uuid                              NOT NULL,
@@ -155,7 +151,6 @@ CREATE table schools_has_students
 
 
 
-CREATE SEQUENCE credential_seq;
 CREATE table credential
 (
     id               uuid                              NOT NULL,
@@ -166,7 +161,7 @@ CREATE table credential
     password         VARCHAR                           NOT NULL,
     CONSTRAINT credential_pkey PRIMARY KEY (id),
     CONSTRAINT credential_email UNIQUE (email),
-    FOREIGN KEY (dancer_id) REFERENCES dancer (id)
+    FOREIGN KEY (dancer_id) REFERENCES dancer (id) ON DELETE CASCADE
 );
 
 

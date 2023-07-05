@@ -45,6 +45,16 @@ public class RatingServiceImpl extends BaseService implements RatingService {
     }
 
     @Override
+    public List<RatingEntity> getBySchoolId(UUID schoolId) {
+        return ratingRepository.findRatingEntitiesBySchoolId(schoolId);
+    }
+
+    @Override
+    public void deleteRatings(List<RatingEntity> ratingEntities) {
+        ratingRepository.deleteAll(ratingEntities);
+    }
+
+    @Override
     public GeneralRatingDto createGeneralRatingForSchool(UUID schoolId) {
         List<RatingEntity> ratingEntities = ratingRepository.findRatingEntitiesBySchoolId(schoolId);
 

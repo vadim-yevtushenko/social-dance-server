@@ -12,4 +12,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, UUID> {
 
     List<ReviewEntity> findReviewEntitiesBySchoolIdAndDancerId(UUID schoolId, UUID dancerId);
 
+    List<ReviewEntity> findReviewEntitiesBySchoolId(UUID schoolId);
+
 }

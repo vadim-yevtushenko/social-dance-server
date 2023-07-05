@@ -4,7 +4,6 @@ import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.service.CredentialService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -18,12 +17,12 @@ public class CredentialRestController extends BaseController{
     @Autowired
     private CredentialService credentialService;
 
-    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/login")
     public DancerDto login (@RequestParam(value = "email") String email, @RequestParam(value = "password") String password){
         return credentialService.login(email, password);
     }
 
-    @PostMapping(value = "/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/registration")
     public DancerDto registration (@RequestParam(value = "email") String email,
                                    @RequestParam(value = "password") String password,
                                    @RequestBody DancerDto dancer){
@@ -33,8 +32,9 @@ public class CredentialRestController extends BaseController{
 
     @PostMapping("/change-password")
     public void changePassword(@RequestParam(value = "email") String email,
-                                  @RequestParam(value = "password") String password){
-        credentialService.changePassword(email, password);
+                                  @RequestParam(value = "newPassword") String newPassword,
+                               @RequestParam(value = "oldPassword") String oldPassword){
+        credentialService.changePassword(email, newPassword, oldPassword);
     }
 
     @PostMapping("/change-email")

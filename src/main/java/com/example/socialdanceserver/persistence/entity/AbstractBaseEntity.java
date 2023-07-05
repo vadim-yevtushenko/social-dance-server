@@ -39,15 +39,4 @@ public abstract class AbstractBaseEntity {
         updated = ZonedDateTime.now();
     }
 
-//    public AverageRatingDto createAverageRating() {
-//        if (ratings == null || ratings.size() == 0) {
-//            return null;
-//        }
-//        int sum = 0;
-//        for (RatingEntity ratingEntity : ratings) {
-//            sum += ratingEntity.getRating();
-//        }
-//        return new AverageRatingDto((float)sum / ratings.size(), ratings.size());
-//    }
-
 }

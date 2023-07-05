@@ -21,7 +21,7 @@ public class CredentialEntity extends AbstractBaseEntity{
     @Column(name = "password")
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "dancer_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DancerEntity dancer;

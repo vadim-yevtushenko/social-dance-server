@@ -13,11 +13,11 @@ public class ContactInfoDto {
 
     private String city;
 
-    private String street;
+    private String address;
 
-    private String building;
+    private String latitude;
 
-    private String flat;
+    private String longitude;
 
     private String phoneNumber;
 

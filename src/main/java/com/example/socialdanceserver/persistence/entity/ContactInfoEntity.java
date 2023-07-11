@@ -13,25 +13,25 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class ContactInfoEntity extends AbstractBaseEntity{
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "country")
     private String country;
 
     @Column(name = "city")
     private String city;
 
-    @Column(name = "street")
-    private String street;
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "building")
-    private String building;
+    @Column(name = "latitude")
+    private double latitude;
 
-    @Column(name = "flat")
-    private String flat;
-
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
-    @Column(name = "email")
-    private String email;
+    @Column(name = "longitude")
+    private double longitude;
 
 }

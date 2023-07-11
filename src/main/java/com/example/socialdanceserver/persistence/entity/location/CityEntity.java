@@ -1,10 +1,6 @@
 package com.example.socialdanceserver.persistence.entity.location;
 
-import com.example.socialdanceserver.persistence.entity.enums.CityStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "city")
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class CityEntity {
@@ -31,7 +28,9 @@ public class CityEntity {
     @Column(name = "admin_name")
     private String adminName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private CityStatus status;
+    @Column(name = "lat")
+    private double lat;
+
+    @Column(name = "lng")
+    private double lng;
 }

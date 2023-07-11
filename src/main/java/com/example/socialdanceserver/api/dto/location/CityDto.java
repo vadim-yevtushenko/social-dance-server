@@ -1,6 +1,5 @@
 package com.example.socialdanceserver.api.dto.location;
 
-import com.example.socialdanceserver.persistence.entity.enums.CityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +17,8 @@ public class CityDto {
 
     private String adminName;
 
-    private CityStatus status;
+    private double lat;
+
+    private double lng;
 
 }

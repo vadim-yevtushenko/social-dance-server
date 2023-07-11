@@ -7,9 +7,9 @@ CREATE table contact_info
     updated          TIMESTAMP                         NOT NULL,
     country          VARCHAR,
     city             VARCHAR,
-    street           VARCHAR,
-    building         VARCHAR,
-    flat             VARCHAR,
+    address          VARCHAR,
+    latitude         DOUBLE PRECISION,
+    longitude        DOUBLE PRECISION,
     phone_number     VARCHAR,
     email            VARCHAR,
     CONSTRAINT contact_info_pkey PRIMARY KEY (id)
@@ -89,8 +89,7 @@ CREATE table event
     date_finish_event       TIMESTAMP                         NOT NULL,
     image                   VARCHAR,
     CONSTRAINT event_pkey PRIMARY KEY (id),
-    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id),
-    FOREIGN KEY (school_organizer_id) REFERENCES school (id)
+    FOREIGN KEY (contact_info_id) REFERENCES contact_info (id)
 );
 
 CREATE table events_has_dances
@@ -182,7 +181,8 @@ CREATE table city
     name VARCHAR  NOT NULL,
     country_id INTEGER,
     admin_name VARCHAR,
-    status VARCHAR,
+    lat DOUBLE PRECISION,
+    lng DOUBLE PRECISION,
     FOREIGN KEY (country_id) REFERENCES country (id)
 );
 

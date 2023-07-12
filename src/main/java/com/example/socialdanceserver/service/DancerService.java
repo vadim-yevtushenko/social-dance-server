@@ -1,33 +1,21 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.dto.DancerTo;
-import com.example.socialdanceserver.model.Dancer;
+import com.example.socialdanceserver.api.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
 
-import java.util.List;
+import java.util.UUID;
 
 public interface DancerService {
 
-    List<Dancer> getAllByType();
+    PageDto<DancerDto> getPageDancers(String name, String lastName, String country, String city, int pageNumber, int size);
 
-    List<Dancer> getAllByCity(String city);
+    DancerDto getById(UUID id);
 
-    List<Dancer> getAllByName(String name);
+    DancerDto save(DancerDto dancerDto);
 
-    List<Dancer> getAllBySurname(String surname);
+    void deleteById(UUID id);
 
-    List<Dancer> getAllByNameAndSurname(String name, String surname);
+    DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity);
 
-    Dancer getById(int id);
-
-    DancerTo save(DancerTo dancerTo);
-
-    void deleteById(int id);
-
-    Integer checkSignUpByEmail(String email);
-
-    Integer checkSignInByEmailAndPassword(String email, String password);
-
-    Boolean changePassword(String email, String password);
-
-    Boolean changeEmail(String oldEmail, String newEmail);
 }

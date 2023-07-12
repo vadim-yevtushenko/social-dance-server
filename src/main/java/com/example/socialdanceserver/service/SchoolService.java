@@ -1,39 +1,17 @@
 package com.example.socialdanceserver.service;
 
-import com.example.socialdanceserver.dto.RatingTo;
-import com.example.socialdanceserver.dto.ReviewTo;
-import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Review;
-import com.example.socialdanceserver.model.School;
-
-import java.util.List;
+import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.api.dto.SchoolDto;
+import java.util.UUID;
 
 public interface SchoolService {
 
-    List<AbstractBaseEntity> getAll();
+    PageDto<SchoolDto> getPageSchools(String name, String country, String city, int pageNumber, int size);
 
-    List<School> getAllByType();
+    SchoolDto getById(UUID id);
 
-    List<School> getAllByOwnerId(int id);
+    SchoolDto save(SchoolDto school);
 
-    List<School> getAllByCity(String city);
-
-    List<Review> getReviewsBySchoolId(int id);
-
-    School getById(int id);
-
-    School save(School school);
-
-    void createRating(RatingTo ratingTo);
-
-    void createReview(ReviewTo reviewTo);
-
-    void saveRating(RatingTo ratingTo);
-
-    void saveReview(ReviewTo reviewTo);
-
-    void update(School school);
-
-    void deleteById(int id);
+    void deleteById(UUID id);
 
 }

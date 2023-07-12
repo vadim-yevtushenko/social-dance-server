@@ -1,104 +1,99 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.DancerTo;
-import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Dancer;
-import com.example.socialdanceserver.repository.DancerRepository;
+import com.example.socialdanceserver.api.dto.DancerDto;
+import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
+import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.persistence.dao.DancerDao;
+import com.example.socialdanceserver.persistence.entity.DancerEntity;
+import com.example.socialdanceserver.persistence.repository.DancerRepository;
 import com.example.socialdanceserver.service.DancerService;
-import com.example.socialdanceserver.util.DancerUtils;
+import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
-public class DancerServiceImpl implements DancerService {
+public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Autowired
     private DancerRepository dancerRepository;
 
+    @Autowired
+    private DancerDao dancerDao;
+
     @Override
-    public List<Dancer> getAllByType() {
-        return dancerRepository.findAllByType();
+    public PageDto<DancerDto> getPageDancers(String name, String lastName, String country, String city, int pageNumber, int size) {
+
+        Map<String, String> mapPredicates = dancerDao.getMapPredicates(name, lastName, country, city);
+        int total = dancerDao.getTotal(mapPredicates);
+
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("name", "lastName"), mapPredicates, pageNumber, size, total);
+
+        List<DancerEntity> dancerEntities = dancerDao.load(paginationRequest);
+
+        return new PageDto<>(total, getDancerDtosFromEntities(dancerEntities));
     }
 
     @Override
-    public List<Dancer> getAllByCity(String city) {
-        return dancerRepository.findAllByCity(city);
+    public DancerDto getById(UUID id) {
+        Optional<DancerEntity> optionalDancerEntity = dancerRepository.findById(id);
+        return optionalDancerEntity.map(this::getDancerDtoFromEntity).orElse(null);
     }
 
     @Override
-    public List<Dancer> getAllByName(String name) {
-        return dancerRepository.findAllByName(name);
-    }
+    public DancerDto save(DancerDto dancerDto) {
+        DancerEntity dancerEntity = mapper.map(dancerDto, DancerEntity.class);
 
-    @Override
-    public List<Dancer> getAllBySurname(String surname) {
-        return dancerRepository.findAllBySurname(surname);
-    }
-
-    @Override
-    public List<Dancer> getAllByNameAndSurname(String name, String surname) {
-        return dancerRepository.findAllByNameAndSurname(name, surname);
-    }
-
-    @Override
-    public Dancer getById(int id) {
-        Dancer dancer = null;
-        Optional<AbstractBaseEntity> dancerOptional = dancerRepository.findById(id);
-        if (dancerOptional.isPresent()){
-            dancer = (Dancer) dancerOptional.get();
+        if (dancerDto.getId() != null){
+            DancerEntity oldDancerEntity = dancerRepository.findById(dancerDto.getId()).orElse(null);
+            dancerEntity = getDancerEntityFromDto(dancerEntity, oldDancerEntity);
         }
-        return dancer;
+
+        return mapper.map(dancerRepository.save(dancerEntity), DancerDto.class);
+    }
+
+    private DancerEntity getDancerEntityFromDto(DancerEntity dancerEntity, DancerEntity oldDancerEntity) {
+
+        dancerEntity.setEventsOrganizer(oldDancerEntity.getEventsOrganizer());
+        dancerEntity.setSchoolAdministrator(oldDancerEntity.getSchoolAdministrator());
+        dancerEntity.setSchoolTeacher(oldDancerEntity.getSchoolTeacher());
+        dancerEntity.setSchoolStudent(oldDancerEntity.getSchoolStudent());
+        dancerEntity.setEventParticipant(oldDancerEntity.getEventParticipant());
+
+        return dancerEntity;
     }
 
     @Override
-    public DancerTo save(DancerTo dancerTo) {
-        Dancer oldDancer = new Dancer();
-        if (dancerTo.getId() != null){
-            oldDancer = getById(dancerTo.getId());
-        }
-        Dancer dancer = DancerUtils.fromDancerTo(dancerTo, oldDancer);
-        return DancerUtils.createDancerTo(dancerRepository.save(dancer));
-    }
-
-    @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
         dancerRepository.deleteById(id);
     }
 
-    @Override
-    public Integer checkSignUpByEmail(String email) {
-        Integer check = dancerRepository.checkSignUpByEmail(email);
-        if (check == null){
-            return 0;
-        }
-        return check;
+    private List<DancerDto> getDancerDtosFromEntities(List<DancerEntity> dancerEntities) {
+
+        return mapper.mapAsList(dancerEntities, DancerDto.class)
+                .stream()
+                .peek(dancerDto -> {
+                    DancerEntity dancerEntity = dancerEntities.stream()
+                            .filter(dancer -> dancer.getId().equals(dancerDto.getId()))
+                            .findAny()
+                            .orElse(null);
+                    dancerDto.setAdministrator(mapper.map(dancerEntity.getSchoolAdministrator(), IdNameContainerDto.class));
+                    dancerDto.setTeacher(mapper.map(dancerEntity.getSchoolTeacher(), IdNameContainerDto.class));
+                    dancerDto.setSchool(mapper.map(dancerEntity.getSchoolStudent(), IdNameContainerDto.class));
+                })
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public Integer checkSignInByEmailAndPassword(String email, String password) {
-        Integer check = dancerRepository.checkSignInByEmailAndPassword(email, password);
-        if (check == null){
-            return 0;
-        }
-        return check;
+    public DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity) {
+
+        DancerDto dancerDto = mapper.map(dancerEntity, DancerDto.class);
+        dancerDto.setAdministrator(mapper.map(dancerEntity.getSchoolAdministrator(), IdNameContainerDto.class));
+        dancerDto.setTeacher(mapper.map(dancerEntity.getSchoolTeacher(), IdNameContainerDto.class));
+        dancerDto.setSchool(mapper.map(dancerEntity.getSchoolStudent(), IdNameContainerDto.class));
+        dancerDto.setEventsOrganizer(mapper.mapAsList(dancerEntity.getEventsOrganizer(), IdNameContainerDto.class));
+
+        return dancerDto;
     }
 
-    @Override
-    public Boolean changePassword(String email, String password) {
-        dancerRepository.changePassword(email, password);
-        return true;
-    }
-
-    @Override
-    public Boolean changeEmail(String oldEmail, String newEmail) {
-        Integer checkEmail = dancerRepository.checkSignUpByEmail(newEmail);
-        if (checkEmail == null){
-            dancerRepository.changeEmail(oldEmail, newEmail);
-            return true;
-        }
-        return false;
-    }
 }

@@ -1,27 +1,23 @@
 package com.example.socialdanceserver.service;
 
-
-import com.example.socialdanceserver.dto.EventTo;
-import com.example.socialdanceserver.model.AbstractBaseEntity;
-import com.example.socialdanceserver.model.Event;
-
+import com.example.socialdanceserver.api.dto.EventDto;
+import com.example.socialdanceserver.api.dto.PageDto;
 import java.util.List;
+import java.util.UUID;
 
 public interface EventService {
 
-    List<AbstractBaseEntity> getAll();
+    PageDto<EventDto> getPageEvents(String name, String country, String city, int pageNumber, int size);
 
-    List<Event> getAllByType();
+    List<EventDto> getAllByOrganizerId(UUID id);
 
-    List<Event> getAllByOwnerId(int id);
+    List<EventDto> getAllBySchoolOrganizerId(UUID id);
 
-    List<Event> getAllByCity(String city);
+    EventDto getById(UUID id);
 
-    Event getById(int id);
-
-    EventTo save(EventTo eventTo);
+    EventDto save(EventDto eventDto);
 
 //    void update(Event event);
 
-    void deleteById(int id);
+    void deleteById(UUID id);
 }

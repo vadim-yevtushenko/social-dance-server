@@ -1,74 +1,81 @@
 package com.example.socialdanceserver.service.impl;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.*;
+import com.example.socialdanceserver.config.properties.AwsProperties;
 import com.example.socialdanceserver.service.ImageStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URL;
+import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class ImageStorageServiceImpl implements ImageStorageService {
 
-    @Value("${upload.path}")
-    private String uploadPath;
+    @Autowired
+    private AwsProperties awsProperties;
+
+    @Value("${s3.bucket-name}")
+    private String bucketName;
+
+    private final String IMAGES_FOLDER = "images/";
 
     @Override
-    public String uploadImage(MultipartFile file) {
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdir();
-        }
+    public String uploadImage(MultipartFile file, UUID id) {
 
-        String uuidFile = UUID.randomUUID().toString().replace("-", "");
-        String resultFileName = uuidFile + "." + file.getOriginalFilename();
+        AWSCredentials credentials = new BasicAWSCredentials(awsProperties.getKey(), awsProperties.getSecretKey());
 
+        AmazonS3 s3client = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.EU_NORTH_1)
+                .build();
 
-        try (FileOutputStream output = new FileOutputStream(uploadDir + "/" + resultFileName)) {
-            output.write(file.getBytes());
+        String uuidFile = id.toString().replace("-", "");
+        String[] splitFileName = file.getOriginalFilename().split("\\.");
+        String resultFileName = uuidFile + "." + splitFileName[splitFileName.length - 1];
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setUserMetadata(Map.of("Content-Type", "image/jpeg"));
+        try {
+            s3client.putObject(
+                    bucketName,
+                    IMAGES_FOLDER + resultFileName,
+                    file.getInputStream(),
+                    objectMetadata);
+
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return resultFileName;
+        URL url = s3client.generatePresignedUrl(bucketName, IMAGES_FOLDER + resultFileName, new Date(10));
+
+        return url.getProtocol() + "://" + url.getHost() + url.getPath();
     }
 
     @Override
-    public Resource downloadImage(String imageName) {
-        Path path = Paths.get(uploadPath).toAbsolutePath().normalize();
-        Path imagePath = path.resolve(imageName).normalize();
-        Resource resource = null;
-        if (imagePath.toFile().exists()) {
-            try {
-                resource = new UrlResource(imagePath.toUri());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
-        return resource;
-    }
+    public void deleteImage(String url) {
+        AWSCredentials credentials = new BasicAWSCredentials(awsProperties.getKey(), awsProperties.getSecretKey());
 
-    @Override
-    public void deleteImage(String fileName) {
-        new Thread(() -> {
-            Path path = Paths.get(uploadPath).toAbsolutePath().normalize();
-            Path imagePath = path.resolve(fileName).normalize();
-            if (imagePath.toFile().exists()) {
-                try {
-                    Thread.sleep(3000);
-                    Files.deleteIfExists(imagePath);
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        AmazonS3 s3client = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(Regions.EU_NORTH_1)
+                .build();
+
+        String[] splitUrl = url.split("/");
+        String fileName = splitUrl[splitUrl.length - 1];
+
+        s3client.deleteObject(bucketName, IMAGES_FOLDER + fileName);
+
     }
 }

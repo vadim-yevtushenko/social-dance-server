@@ -1,112 +1,72 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.dto.RatingTo;
-import com.example.socialdanceserver.dto.ReviewTo;
-import com.example.socialdanceserver.model.*;
-import com.example.socialdanceserver.repository.SchoolRepository;
+import com.example.socialdanceserver.api.dto.GeneralRatingDto;
+import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.api.dto.SchoolDto;
+import com.example.socialdanceserver.persistence.dao.SchoolDao;
+import com.example.socialdanceserver.persistence.repository.SchoolRepository;
+import com.example.socialdanceserver.persistence.entity.SchoolEntity;
+import com.example.socialdanceserver.service.RatingService;
+import com.example.socialdanceserver.service.ReviewService;
 import com.example.socialdanceserver.service.SchoolService;
-import com.example.socialdanceserver.util.DateTimeUtils;
+import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class SchoolServiceImpl implements SchoolService {
+public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Autowired
     private SchoolRepository schoolRepository;
 
-    @Override
-    public List<AbstractBaseEntity> getAll() {
-        return schoolRepository.findAll();
-    }
+    @Autowired
+    private RatingService ratingService;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private SchoolDao schoolDao;
 
     @Override
-    public List<School> getAllByType() {
-        List<School> schoolList = new ArrayList<>(new HashSet<>(schoolRepository.findAllByType()));
-        schoolList.sort(Comparator.comparing(s -> s.getEntityInfo().getCity().toLowerCase(Locale.ROOT)));
-        return schoolList;
-    }
+    public PageDto<SchoolDto> getPageSchools(String name, String country, String city, int pageNumber, int size) {
 
-    @Override
-    public List<School> getAllByOwnerId(int id) {
-        return schoolRepository.findAllByOwnerId(id);
-    }
+        Map<String, String> mapPredicates = schoolDao.getMapPredicates(name, country, city);
+        int total = schoolDao.getTotal(mapPredicates);
 
-    @Override
-    public List<School> getAllByCity(String city) {
-        return new ArrayList<>(new HashSet<>(schoolRepository.findAllByCity(city)));
-    }
+        PaginationRequest paginationRequest = buildPaginationRequest(List.of("image"), mapPredicates, pageNumber, size, total);
 
-    @Override
-    public List<Review> getReviewsBySchoolId(int id) {
-        return new HashSet<>(getById(id).getReviews())
-                .stream().sorted(Comparator.comparing(Review::getDateTime))
+        List<SchoolEntity> schoolEntities = schoolDao.load(paginationRequest);
+
+        List<SchoolDto> schoolDtos = mapper.mapAsList(schoolEntities, SchoolDto.class).stream()
+                .peek(schoolDto -> {
+                    GeneralRatingDto generalRatingDto = ratingService.createGeneralRatingForSchool(schoolDto.getId());
+                    schoolDto.setGeneralRating(generalRatingDto);
+                })
                 .collect(Collectors.toList());
+
+        return new PageDto<>(total, schoolDtos);
     }
 
     @Override
-    public School getById(int id) {
-        School school = null;
-        Optional<AbstractBaseEntity> optionalSchool = schoolRepository.findById(id);
-        if (optionalSchool.isPresent()){
-            school = (School) optionalSchool.get();
-        }
-        return school;
+    public SchoolDto getById(UUID id) {
+        Optional<SchoolEntity> schoolEntity = schoolRepository.findById(id);
+        return schoolEntity.map(entity -> mapper.map(entity, SchoolDto.class)).orElse(null);
     }
 
     @Override
-    public School save(School school) {
-        return schoolRepository.save(school);
+    public SchoolDto save(SchoolDto school) {
+        SchoolEntity schoolEntity = mapper.map(school, SchoolEntity.class);
+        return mapper.map(schoolRepository.save(schoolEntity), SchoolDto.class);
     }
 
     @Override
-    public void createRating(RatingTo ratingTo) {
-        schoolRepository.createRating(ratingTo.getEntityId(),
-                ratingTo.getReviewerId(), ratingTo.getRating());
-    }
-
-    @Override
-    public void createReview(ReviewTo reviewTo) {
-        schoolRepository.createReview(reviewTo.getAbstractBaseEntityId(),
-                reviewTo.getSchoolId(), reviewTo.getReview(),
-                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()),
-                reviewTo.getIncognito());
-    }
-
-    @Override
-    public void saveRating(RatingTo ratingTo) {
-        School school = getById(ratingTo.getEntityId());
-        boolean isExist = false;
-        for (Rating rating : school.getRatings()){
-            if (rating.getReviewer_id() == ratingTo.getReviewerId()){
-                isExist = true;
-                break;
-            }
-        }
-        if (isExist) {
-            schoolRepository.saveRating(ratingTo.getReviewerId(), ratingTo.getRating());
-        } else {
-            System.out.println(ratingTo);
-            schoolRepository.createRating(ratingTo.getEntityId(), ratingTo.getReviewerId(), ratingTo.getRating());
-        }
-    }
-
-    @Override
-    public void saveReview(ReviewTo reviewTo) {
-        schoolRepository.saveReview(reviewTo.getId(), reviewTo.getReview(),
-                DateTimeUtils.fromDateToLocalDateTime(reviewTo.getDateTime()));
-    }
-
-    @Override
-    public void update(School school) {
-        schoolRepository.save(school);
-    }
-
-    @Override
-    public void deleteById(int id) {
+    public void deleteById(UUID id) {
+        reviewService.deleteReviewEntities(reviewService.getBySchoolId(id));
+        ratingService.deleteRatings(ratingService.getBySchoolId(id));
         schoolRepository.deleteById(id);
     }
+
 }

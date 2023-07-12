@@ -7,7 +7,9 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
+import com.example.socialdanceserver.config.properties.AwsProperties;
 import com.example.socialdanceserver.service.ImageStorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,14 +22,8 @@ import java.util.UUID;
 @Service
 public class ImageStorageServiceImpl implements ImageStorageService {
 
-    @Value("${upload.path}")
-    private String uploadPath;
-
-    @Value("${s3.key}")
-    private String awsKey;
-
-    @Value("${s3.secret-key}")
-    private String awsSecretKey;
+    @Autowired
+    private AwsProperties awsProperties;
 
     @Value("${s3.bucket-name}")
     private String bucketName;
@@ -37,7 +33,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     @Override
     public String uploadImage(MultipartFile file, UUID id) {
 
-        AWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+        AWSCredentials credentials = new BasicAWSCredentials(awsProperties.getKey(), awsProperties.getSecretKey());
 
         AmazonS3 s3client = AmazonS3ClientBuilder
                 .standard()
@@ -68,7 +64,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
 
     @Override
     public void deleteImage(String url) {
-        AWSCredentials credentials = new BasicAWSCredentials(awsKey, awsSecretKey);
+        AWSCredentials credentials = new BasicAWSCredentials(awsProperties.getKey(), awsProperties.getSecretKey());
 
         AmazonS3 s3client = AmazonS3ClientBuilder
                 .standard()

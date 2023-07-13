@@ -15,9 +15,9 @@ public class ContactInfoDto {
 
     private String address;
 
-    private String latitude;
+    private Double latitude;
 
-    private String longitude;
+    private Double longitude;
 
     private String phoneNumber;
 

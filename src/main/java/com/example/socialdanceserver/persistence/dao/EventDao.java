@@ -6,6 +6,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class EventDao extends EntityDao<EventEntity>{
             predicates.add(buildLikeContainingStringIgnoringCase(builder, root.join("contactInfo").get("city"), mapPredicates.get(EVENT_CONTACT_INFO_CITY)));
         }
 
-//        predicates.add(builder.greaterThanOrEqualTo(root.get("dateFinishEvent"), ZonedDateTime.now()));
+        predicates.add(builder.greaterThanOrEqualTo(root.get("dateFinishEvent"), ZonedDateTime.now()));
 
         return predicates;
     }

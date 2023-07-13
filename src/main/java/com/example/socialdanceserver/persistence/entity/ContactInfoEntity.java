@@ -29,9 +29,9 @@ public class ContactInfoEntity extends AbstractBaseEntity{
     private String address;
 
     @Column(name = "latitude")
-    private double latitude;
+    private Double latitude;
 
     @Column(name = "longitude")
-    private double longitude;
+    private Double longitude;
 
 }

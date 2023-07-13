@@ -14,6 +14,4 @@ public class IdNameContainerDto {
 
     private String name;
 
-    private String image;
-
 }

@@ -43,4 +43,9 @@ public class CredentialRestController extends BaseController{
         return credentialService.changeEmail(email, newEmail);
     }
 
+    @PostMapping("/reset_password")
+    public void resetPassword(@RequestParam(value = "email") String email){
+        credentialService.resetPassword(email);
+    }
+
 }

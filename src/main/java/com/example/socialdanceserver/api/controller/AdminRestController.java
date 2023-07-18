@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = AdminRestController.REST_URL)
-@CrossOrigin(origins = "http://localhost:3000")
 public class AdminRestController extends BaseController{
 
     static final String REST_URL = "/admin";

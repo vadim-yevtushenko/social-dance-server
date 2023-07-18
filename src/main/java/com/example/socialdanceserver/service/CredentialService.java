@@ -12,4 +12,6 @@ public interface CredentialService {
 
     String changeEmail(String oldEmail, String newEmail);
 
+    void resetPassword(String email);
+
 }

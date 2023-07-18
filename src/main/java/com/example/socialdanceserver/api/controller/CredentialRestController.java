@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping(value = CredentialRestController.REST_URL)
+@CrossOrigin(origins = "http://localhost:3000")
 public class CredentialRestController extends BaseController{
 
     static final String REST_URL = "/credential";

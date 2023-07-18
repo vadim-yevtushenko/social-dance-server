@@ -13,6 +13,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = RatingRestController.REST_URL)
+@CrossOrigin(origins = "http://localhost:3000")
 public class RatingRestController {
 
     static final String REST_URL = "/ratings";

@@ -15,6 +15,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = SchoolRestController.REST_URL)
+@CrossOrigin(origins = "http://localhost:3000")
 public class SchoolRestController extends BaseController {
 
     static final String REST_URL = "/schools";

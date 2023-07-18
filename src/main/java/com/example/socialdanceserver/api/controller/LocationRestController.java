@@ -11,6 +11,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = LocationRestController.REST_URL)
+@CrossOrigin(origins = "http://localhost:3000")
 public class LocationRestController extends BaseController{
 
     static final String REST_URL = "/location";

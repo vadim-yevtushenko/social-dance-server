@@ -18,7 +18,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping(value = DancerRestController.REST_URL)
-@CrossOrigin(origins = {"http://localhost:3000", "https://social-dances.netlify.app"})
+//@CrossOrigin(origins = {"http://localhost:3000", "https://social-dances.netlify.app"})
 public class DancerRestController extends BaseController{
 
     static final String REST_URL = "/dancers";

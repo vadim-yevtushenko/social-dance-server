@@ -4,10 +4,12 @@ import com.example.socialdanceserver.api.exceptions.notfound.NotFoundException;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.UUID;
 
 @Transactional
+@CrossOrigin(origins = "http://localhost:3000")
 public abstract class BaseController {
 
     @Autowired

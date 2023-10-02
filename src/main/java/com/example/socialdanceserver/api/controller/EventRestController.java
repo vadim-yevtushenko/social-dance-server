@@ -87,7 +87,7 @@ public class EventRestController extends BaseController {
             if (eventDto.getImage() != null && !eventDto.getImage().isBlank()){
                 imageStorageService.deleteImage(eventDto.getImage());
             }
-            String url = imageStorageService.uploadImage(file, id);
+            String url = imageStorageService.uploadImage(file);
             eventDto.setImage(url);
             eventService.save(eventDto);
             return url;

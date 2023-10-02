@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface ImageStorageService {
 
-    String uploadImage(MultipartFile file, UUID id);
+    String uploadImage(MultipartFile file);
 
     void deleteImage(String imageName);
 

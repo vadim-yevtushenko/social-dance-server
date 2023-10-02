@@ -31,7 +31,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
     private final String IMAGES_FOLDER = "images/";
 
     @Override
-    public String uploadImage(MultipartFile file, UUID id) {
+    public String uploadImage(MultipartFile file) {
 
         AWSCredentials credentials = new BasicAWSCredentials(awsProperties.getKey(), awsProperties.getSecretKey());
 
@@ -41,7 +41,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
                 .withRegion(Regions.EU_NORTH_1)
                 .build();
 
-        String uuidFile = id.toString().replace("-", "");
+        String uuidFile = UUID.randomUUID().toString().replace("-", "");
         String resultFileName = uuidFile + ".jpeg";
 
         ObjectMetadata objectMetadata = new ObjectMetadata();

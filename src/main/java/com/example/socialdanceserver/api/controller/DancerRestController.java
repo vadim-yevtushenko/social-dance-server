@@ -83,7 +83,7 @@ public class DancerRestController extends BaseController{
                 imageStorageService.deleteImage(dancerDto.getImage());
             }
 
-            String url = imageStorageService.uploadImage(file, id);
+            String url = imageStorageService.uploadImage(file);
             dancerDto.setImage(url);
             dancerService.save(dancerDto);
             return url;

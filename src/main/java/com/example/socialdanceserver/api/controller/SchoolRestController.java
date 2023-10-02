@@ -74,7 +74,7 @@ public class SchoolRestController extends BaseController {
                 imageStorageService.deleteImage(schoolDto.getImage());
             }
 
-            String url = imageStorageService.uploadImage(file, id);
+            String url = imageStorageService.uploadImage(file);
             schoolDto.setImage(url);
             schoolService.save(schoolDto);
             return url;

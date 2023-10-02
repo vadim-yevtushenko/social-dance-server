@@ -42,8 +42,7 @@ public class ImageStorageServiceImpl implements ImageStorageService {
                 .build();
 
         String uuidFile = id.toString().replace("-", "");
-        String[] splitFileName = file.getOriginalFilename().split("\\.");
-        String resultFileName = uuidFile + "." + splitFileName[splitFileName.length - 1];
+        String resultFileName = uuidFile + ".jpeg";
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setUserMetadata(Map.of("Content-Type", "image/jpeg"));

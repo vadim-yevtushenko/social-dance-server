@@ -30,6 +30,10 @@ public class SchoolEntity extends AbstractBaseEntity {
     @JoinColumn(name = "contact_info_id")
     private ContactInfoEntity contactInfo;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "social_networks_id")
+    private SocialNetworks socialNetworks;
+
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(
             name = "schools_has_dances",

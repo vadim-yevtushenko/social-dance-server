@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ContactInfoDto {
+public class ContactInfoDto extends BaseDto{
 
     private String country;
 

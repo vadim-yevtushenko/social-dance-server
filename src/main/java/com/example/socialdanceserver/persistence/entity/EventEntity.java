@@ -40,6 +40,10 @@ public class EventEntity extends AbstractBaseEntity {
     @JoinColumn(name = "contact_info_id")
     private ContactInfoEntity contactInfo;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "social_networks_id")
+    private SocialNetworks socialNetworks;
+
     @ManyToMany()
     @JoinTable(
             name = "events_has_dances",

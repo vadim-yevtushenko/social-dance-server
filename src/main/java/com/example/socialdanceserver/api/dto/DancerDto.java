@@ -25,6 +25,8 @@ public class DancerDto extends BaseDto{
 
     private ContactInfoDto contactInfo;
 
+    private SocialNetworksDto socialNetworks;
+
     private Level level;
 
     private List<DanceDto> dances;

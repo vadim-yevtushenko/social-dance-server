@@ -47,7 +47,7 @@ public class DancerServiceImpl extends BaseService implements DancerService {
 
         if (dancerDto.getId() != null){
             DancerEntity oldDancerEntity = dancerRepository.findById(dancerDto.getId()).orElse(null);
-            dancerEntity = getDancerEntityFromDto(dancerEntity, oldDancerEntity);
+            getDancerEntityFromDto(dancerEntity, oldDancerEntity);
         }
 
         return mapper.map(dancerRepository.save(dancerEntity), DancerDto.class);

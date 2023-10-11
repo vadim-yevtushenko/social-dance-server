@@ -15,11 +15,11 @@ public abstract class BaseController {
     @Autowired
     protected transient MapperFacade mapper;
 
-    protected void validateFound(Object object, Class<?> clazz, UUID id) {
+    public void validateFound(Object object, Class<?> clazz, UUID id) {
         validateFound(object, clazz.getSimpleName() + " with ID " + id + " not found.");
     }
 
-    protected void validateFound(Object object, String errorMessage) {
+    public void validateFound(Object object, String errorMessage) {
         if (object == null) {
             throw new NotFoundException(errorMessage);
         }

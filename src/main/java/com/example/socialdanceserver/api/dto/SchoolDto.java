@@ -18,6 +18,8 @@ public class SchoolDto extends BaseDto{
 
     private ContactInfoDto contactInfo;
 
+    private SocialNetworksDto socialNetworks;
+
     private List<DanceDto> dances;
 
     private List<DancerDto> administrators;

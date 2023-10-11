@@ -2,7 +2,6 @@ package com.example.socialdanceserver.api.controller;
 
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.PageDto;
-import com.example.socialdanceserver.api.exceptions.notfound.NotFoundException;
 import com.example.socialdanceserver.service.EventService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +52,9 @@ public class EventRestController extends BaseController {
     @GetMapping("/{id}")
     public EventDto getById(@PathVariable UUID id){
         log.info("Get event by uuid: {}", id);
-        return eventService.getById(id);
+        EventDto eventDto = eventService.getById(id);
+        validateFound(eventDto, EventDto.class, id);
+        return eventDto;
     }
 
     @PostMapping
@@ -70,7 +71,8 @@ public class EventRestController extends BaseController {
     @DeleteMapping("/{id}")
     void delete(@PathVariable UUID id){
         log.info("Delete event with uuid: {}", id);
-        EventDto eventDto = getById(id);
+        EventDto eventDto = eventService.getById(id);
+        validateFound(eventDto, EventDto.class, id);
         eventService.deleteById(id);
         if (eventDto.getImage() != null && !eventDto.getImage().equals("")) {
             imageStorageService.deleteImage(eventDto.getImage());
@@ -84,6 +86,7 @@ public class EventRestController extends BaseController {
                               @RequestPart(value = "file", required = false)MultipartFile file) {
         if (file != null){
             EventDto eventDto = eventService.getById(id);
+            validateFound(eventDto, EventDto.class, id);
             if (eventDto.getImage() != null && !eventDto.getImage().isBlank()){
                 imageStorageService.deleteImage(eventDto.getImage());
             }
@@ -97,7 +100,8 @@ public class EventRestController extends BaseController {
 
     @DeleteMapping("/delete-image")
     public void deleteImage(@RequestParam(value = "id",required = false) UUID id){
-        EventDto eventDto = getById(id);
+        EventDto eventDto = eventService.getById(id);
+        validateFound(eventDto, EventDto.class, id);
         imageStorageService.deleteImage(eventDto.getImage());
         eventDto.setImage(null);
         save(eventDto);

@@ -6,13 +6,10 @@ import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.Max;
-import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
@@ -44,10 +41,10 @@ public class DancerRestController extends BaseController{
     @GetMapping("/{id}")
     public DancerDto getById(@PathVariable UUID id){
         log.info("Get dancer by uuid: {}", id);
-        DancerDto dancer = dancerService.getById(id);
-        validateFound(dancer, DancerDto.class, id);
+        DancerDto dancerDto = dancerService.getById(id);
+        validateFound(dancerDto, DancerDto.class, id);
 
-        return dancer;
+        return dancerDto;
     }
 
     @PostMapping
@@ -65,6 +62,7 @@ public class DancerRestController extends BaseController{
     public void delete(@PathVariable UUID id){
         log.info("Delete dancer with uuid: {}", id);
         DancerDto dancerDto = dancerService.getById(id);
+        validateFound(dancerDto, DancerDto.class, id);
         dancerService.deleteById(id);
         if (dancerDto.getImage() != null && !dancerDto.getImage().equals("")){
             imageStorageService.deleteImage(dancerDto.getImage());
@@ -79,6 +77,7 @@ public class DancerRestController extends BaseController{
 
         if (file != null) {
             DancerDto dancerDto = dancerService.getById(id);
+            validateFound(dancerDto, DancerDto.class, id);
             if (dancerDto.getImage() != null && !dancerDto.getImage().isBlank()) {
                 imageStorageService.deleteImage(dancerDto.getImage());
             }
@@ -89,12 +88,13 @@ public class DancerRestController extends BaseController{
             return url;
         }
 
-        return "not uploaded";
+        return "";
     }
 
     @DeleteMapping("/delete-image")
     public void deleteImage(@RequestParam(value = "id", required = false) UUID id){
         DancerDto dancerDto = dancerService.getById(id);
+        validateFound(dancerDto, DancerDto.class, id);
         imageStorageService.deleteImage(dancerDto.getImage());
         dancerDto.setImage(null);
         dancerService.save(dancerDto);

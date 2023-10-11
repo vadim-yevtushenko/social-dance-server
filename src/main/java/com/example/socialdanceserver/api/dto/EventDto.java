@@ -20,6 +20,8 @@ public class EventDto extends BaseDto{
 
     private ContactInfoDto contactInfo;
 
+    private SocialNetworksDto socialNetworks;
+
     private ZonedDateTime dateEvent;
 
     private ZonedDateTime dateFinishEvent;

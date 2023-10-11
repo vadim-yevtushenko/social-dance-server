@@ -39,7 +39,9 @@ public class SchoolRestController extends BaseController {
     @GetMapping("/{id}")
     public SchoolDto getById(@PathVariable UUID id) {
         log.info("Get school by uuid: {}", id);
-        return schoolService.getById(id);
+        SchoolDto schoolDto = schoolService.getById(id);
+        validateFound(schoolDto, SchoolDto.class, id);
+        return schoolDto;
     }
 
     @PostMapping
@@ -56,10 +58,11 @@ public class SchoolRestController extends BaseController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         log.info("Delete school with uuid: {}", id);
-        SchoolDto school = schoolService.getById(id);
+        SchoolDto schoolDto = schoolService.getById(id);
+        validateFound(schoolDto, SchoolDto.class, id);
         schoolService.deleteById(id);
-        if (school.getImage() != null && !school.getImage().equals("")){
-            imageStorageService.deleteImage(school.getImage());
+        if (schoolDto.getImage() != null && !schoolDto.getImage().equals("")){
+            imageStorageService.deleteImage(schoolDto.getImage());
         }
     }
 
@@ -70,6 +73,7 @@ public class SchoolRestController extends BaseController {
                               @RequestPart(value = "file", required = false) MultipartFile file){
         if (file != null){
             SchoolDto schoolDto = schoolService.getById(id);
+            validateFound(schoolDto, SchoolDto.class, id);
             if (schoolDto.getImage() != null && !schoolDto.getImage().isBlank()){
                 imageStorageService.deleteImage(schoolDto.getImage());
             }
@@ -84,10 +88,11 @@ public class SchoolRestController extends BaseController {
 
     @DeleteMapping("/delete-image")
     public void deleteImage(@RequestParam(value = "id", required = false) UUID id){
-        SchoolDto school = schoolService.getById(id);
-        imageStorageService.deleteImage(school.getImage());
-        school.setImage(null);
-        save(school);
+        SchoolDto schoolDto = schoolService.getById(id);
+        validateFound(schoolDto, SchoolDto.class, id);
+        imageStorageService.deleteImage(schoolDto.getImage());
+        schoolDto.setImage(null);
+        save(schoolDto);
     }
 
 }

@@ -12,6 +12,8 @@ public interface SchoolService {
 
     SchoolDto save(SchoolDto school);
 
+    SchoolDto saveWithCheck(SchoolDto school, UUID schoolAdminId);
+
     void deleteById(UUID id);
 
 }

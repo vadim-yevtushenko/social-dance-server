@@ -45,14 +45,15 @@ public class SchoolRestController extends BaseController {
     }
 
     @PostMapping
-    public SchoolDto save(@RequestBody SchoolDto school) {
+    public SchoolDto save(@RequestParam(value = "id", required = false) UUID id,
+                          @RequestBody SchoolDto school) {
         if (school.getId() != null){
-            log.info("Update school with uuid: {}", school.getId());
+            log.info("Update school with uuid: {}, admin uuid: {}", school.getId(), id);
         } else {
-            log.info("Create new school");
+            log.info("Create new school, admin uuid: {}", id);
         }
 
-        return schoolService.save(school);
+        return schoolService.saveWithCheck(school, id);
     }
 
     @DeleteMapping("/{id}")
@@ -92,7 +93,7 @@ public class SchoolRestController extends BaseController {
         validateFound(schoolDto, SchoolDto.class, id);
         imageStorageService.deleteImage(schoolDto.getImage());
         schoolDto.setImage(null);
-        save(schoolDto);
+        schoolService.save(schoolDto);
     }
 
 }

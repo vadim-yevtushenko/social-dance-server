@@ -1,0 +1,1 @@
+ALTER TABLE event ADD CONSTRAINT fk_event_school_id FOREIGN KEY (school_organizer_id) REFERENCES school (id);

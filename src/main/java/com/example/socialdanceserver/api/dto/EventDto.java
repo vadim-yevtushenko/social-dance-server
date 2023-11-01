@@ -1,11 +1,11 @@
 package com.example.socialdanceserver.api.dto;
 
+import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -28,7 +28,7 @@ public class EventDto extends BaseDto{
 
     private ZonedDateTime created;
 
-    private UUID schoolOrganizerId;
+    private IdNameContainerDto schoolOrganizer;
 
     private List<DancerDto> organizers;
 

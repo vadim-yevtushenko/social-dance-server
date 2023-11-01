@@ -3,7 +3,6 @@ package com.example.socialdanceserver.persistence.entity;
 import com.example.socialdanceserver.persistence.entity.enums.Level;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -61,7 +60,6 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "school_id")}
     )
-//    @JsonBackReference
     private SchoolEntity schoolAdministrator;
 
     @ManyToOne
@@ -70,7 +68,6 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "school_id")}
     )
-//    @JsonBackReference
     private SchoolEntity schoolTeacher;
 
     @ManyToOne
@@ -79,7 +76,6 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "school_id")}
     )
-//    @JsonBackReference
     private SchoolEntity schoolStudent;
 
     @ManyToMany
@@ -88,7 +84,6 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
-//    @JsonBackReference
     private List<EventEntity> eventsOrganizer;
 
     @ManyToMany
@@ -97,6 +92,7 @@ public class DancerEntity extends AbstractBaseEntity {
             joinColumns = {@JoinColumn(name = "dancer_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
+
     @JsonBackReference
     private List<EventEntity> eventParticipant;
 

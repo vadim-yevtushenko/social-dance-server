@@ -3,16 +3,21 @@ package com.example.socialdanceserver.service.impl;
 import com.example.socialdanceserver.api.dto.GeneralRatingDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.api.dto.SchoolDto;
+import com.example.socialdanceserver.api.exceptions.badrequest.BadRequestException;
 import com.example.socialdanceserver.persistence.dao.SchoolDao;
-import com.example.socialdanceserver.persistence.repository.SchoolRepository;
+import com.example.socialdanceserver.persistence.entity.AbstractBaseEntity;
 import com.example.socialdanceserver.persistence.entity.SchoolEntity;
+import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.service.RatingService;
 import com.example.socialdanceserver.service.ReviewService;
 import com.example.socialdanceserver.service.SchoolService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,8 +62,18 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     }
 
     @Override
-    public SchoolDto save(SchoolDto school) {
-        SchoolEntity schoolEntity = mapper.map(school, SchoolEntity.class);
+    public SchoolDto save(SchoolDto schoolDto) {
+
+        SchoolEntity schoolEntity = mapper.map(schoolDto, SchoolEntity.class);
+        return mapper.map(schoolRepository.save(schoolEntity), SchoolDto.class);
+    }
+
+    @Override
+    public SchoolDto saveWithCheck(SchoolDto schoolDto, UUID schoolAdminId) {
+
+        checkSchoolBeforeSaving(schoolDto, schoolAdminId);
+
+        SchoolEntity schoolEntity = mapper.map(schoolDto, SchoolEntity.class);
         return mapper.map(schoolRepository.save(schoolEntity), SchoolDto.class);
     }
 
@@ -67,6 +82,20 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         reviewService.deleteReviewEntities(reviewService.getBySchoolId(id));
         ratingService.deleteRatings(ratingService.getBySchoolId(id));
         schoolRepository.deleteById(id);
+    }
+
+    private void checkSchoolBeforeSaving(SchoolDto schoolDto, UUID adminId) {
+        if (schoolDto.getAdministrators().isEmpty()){
+            throw new BadRequestException("Failed to save! The school must have at least one administrator.");
+        }
+        if (schoolDto.getId() != null){
+            SchoolEntity schoolEntity = schoolRepository.getById(schoolDto.getId());
+            List<UUID> uuids = schoolEntity.getAdministrators().stream().map(AbstractBaseEntity::getId).collect(Collectors.toList());
+            if (!uuids.contains(adminId)) {
+                throw new BadRequestException("Failed to save! You are not an administrator of this school.");
+            }
+        }
+
     }
 
 }

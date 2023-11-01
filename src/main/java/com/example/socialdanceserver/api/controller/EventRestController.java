@@ -39,13 +39,13 @@ public class EventRestController extends BaseController {
 
     @GetMapping("/organizer/{id}")
     public List<EventDto> getEventsByOrganizerId(@PathVariable UUID id){
-        log.info("Get event by organizer uuid: {}", id);
+        log.info("Get events by organizer uuid: {}", id);
         return eventService.getAllByOrganizerId(id);
     }
 
     @GetMapping("/school-organizer/{id}")
     public List<EventDto> getEventsBySchoolOrganizerId(@PathVariable UUID id){
-        log.info("Get event by organizer uuid: {}", id);
+        log.info("Get event by school organizer uuid: {}", id);
         return eventService.getAllBySchoolOrganizerId(id);
     }
 

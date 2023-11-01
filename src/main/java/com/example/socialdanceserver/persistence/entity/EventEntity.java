@@ -27,8 +27,9 @@ public class EventEntity extends AbstractBaseEntity {
     @Column(name = "image")
     private String image;
 
-    @Column(name = "school_organizer_id")
-    private UUID schoolOrganizerId;
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "school_organizer_id")
+    private SchoolEntity schoolOrganizer;
 
     @Column(name = "date_event")
     private ZonedDateTime dateEvent;

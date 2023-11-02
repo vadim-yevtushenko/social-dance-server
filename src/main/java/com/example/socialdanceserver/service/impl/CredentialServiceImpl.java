@@ -100,7 +100,13 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         emailService.sendEmails(List.of(internetAddress), "Reset password", message);
     }
 
-    private void checkCredential(CredentialEntity credential, String password) {
+    @Override
+    public CredentialEntity getByEmail(String email) {
+        return credentialRepository.findCredentialEntityByEmail(email);
+    }
+
+    @Override
+    public void checkCredential(CredentialEntity credential, String password) {
         if (credential != null) {
             if (!passwordEncoder.matches(password, credential.getPassword())) {
                 throw new BadCredentialsException("Current password is wrong.");
@@ -111,11 +117,10 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
     }
 
     private String generatePassword() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("abcdefghijklmnopqrstuvwxyz");
-        stringBuilder.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        stringBuilder.append("0123456789");
-        char[] characters = stringBuilder.toString().toCharArray();
+        String charsStr = "abcdefghijklmnopqrstuvwxyz" +
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+                "0123456789";
+        char[] characters = charsStr.toCharArray();
         return RandomStringUtils.random(8, 0, characters.length, false, false, characters, new SecureRandom());
     }
 

@@ -14,6 +14,8 @@ public interface DancerService {
 
     DancerDto save(DancerDto dancerDto);
 
+    void deleteByIdWithCheckCredentials(UUID id, String email, String password);
+
     void deleteById(UUID id);
 
     DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity);

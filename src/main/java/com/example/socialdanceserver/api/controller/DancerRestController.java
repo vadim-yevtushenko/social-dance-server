@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.constraints.Max;
 import java.util.UUID;
 
@@ -60,11 +59,13 @@ public class DancerRestController extends BaseController{
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable UUID id,
+                       @RequestParam(value = "email") String email,
+                       @RequestParam(value = "password") String password){
         log.info("Delete dancer with uuid: {}", id);
         DancerDto dancerDto = dancerService.getById(id);
         validateFound(dancerDto, DancerDto.class, id);
-        dancerService.deleteById(id);
+        dancerService.deleteByIdWithCheckCredentials(id, email, password);
         if (dancerDto.getImage() != null && !dancerDto.getImage().equals("")){
             imageStorageService.deleteImage(dancerDto.getImage());
         }

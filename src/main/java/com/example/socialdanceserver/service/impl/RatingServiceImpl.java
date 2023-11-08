@@ -27,7 +27,7 @@ public class RatingServiceImpl extends BaseService implements RatingService {
         RatingEntity ratingEntity = ratingRepository.save(mapper.map(rating, RatingEntity.class));
 
         if (rating.getId() == null){
-            List<ReviewEntity> reviewEntities = reviewService.getBySchoolIdAndDancerId(rating.getSchoolId(), rating.getDancerId());
+            List<ReviewEntity> reviewEntities = reviewService.getByObjectIdAndDancerId(rating.getObjectId(), rating.getDancerId());
             reviewEntities.forEach(reviewEntity -> reviewEntity.setRating(ratingEntity));
             reviewService.saveAll(reviewEntities);
         }
@@ -36,8 +36,8 @@ public class RatingServiceImpl extends BaseService implements RatingService {
     }
 
     @Override
-    public RatingDto getBySchoolIdAndDancerId(UUID schoolId, UUID dancerId) {
-        RatingDto ratingDto = mapper.map(ratingRepository.findRatingEntityBySchoolIdAndDancerId(schoolId, dancerId), RatingDto.class);
+    public RatingDto getByObjectIdAndDancerId(UUID objectId, UUID dancerId) {
+        RatingDto ratingDto = mapper.map(ratingRepository.findRatingEntityByObjectIdAndDancerId(objectId, dancerId), RatingDto.class);
         if (ratingDto == null){
             return new RatingDto();
         }
@@ -45,8 +45,8 @@ public class RatingServiceImpl extends BaseService implements RatingService {
     }
 
     @Override
-    public List<RatingEntity> getBySchoolId(UUID schoolId) {
-        return ratingRepository.findRatingEntitiesBySchoolId(schoolId);
+    public List<RatingEntity> getByObjectId(UUID objectId) {
+        return ratingRepository.findRatingEntitiesByObjectId(objectId);
     }
 
     @Override
@@ -55,8 +55,8 @@ public class RatingServiceImpl extends BaseService implements RatingService {
     }
 
     @Override
-    public GeneralRatingDto createGeneralRatingForSchool(UUID schoolId) {
-        List<RatingEntity> ratingEntities = ratingRepository.findRatingEntitiesBySchoolId(schoolId);
+    public GeneralRatingDto createGeneralRatingForObject(UUID objectId) {
+        List<RatingEntity> ratingEntities = ratingRepository.findRatingEntitiesByObjectId(objectId);
 
         GeneralRatingDto generalRating = new GeneralRatingDto();
         generalRating.setAverage(calcAverageRating(ratingEntities));

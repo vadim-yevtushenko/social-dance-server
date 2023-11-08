@@ -16,7 +16,7 @@ public class ReviewDto extends BaseDto{
 
     private UUID dancerId;
 
-    private UUID schoolId;
+    private UUID objectId;
 
     private String review;
 

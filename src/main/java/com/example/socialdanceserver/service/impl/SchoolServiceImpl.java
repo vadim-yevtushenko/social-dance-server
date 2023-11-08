@@ -52,7 +52,7 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 
         List<SchoolDto> schoolDtos = mapper.mapAsList(schoolEntities, SchoolDto.class).stream()
                 .peek(schoolDto -> {
-                    GeneralRatingDto generalRatingDto = ratingService.createGeneralRatingForSchool(schoolDto.getId());
+                    GeneralRatingDto generalRatingDto = ratingService.createGeneralRatingForObject(schoolDto.getId());
                     schoolDto.setGeneralRating(generalRatingDto);
                 })
                 .collect(Collectors.toList());
@@ -106,16 +106,9 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
 
     @Override
     public void deleteById(UUID id) {
-        reviewService.deleteReviewEntities(reviewService.getBySchoolId(id));
-        ratingService.deleteRatings(ratingService.getBySchoolId(id));
-        schoolRepository.deleteById(id);
-    }
+        reviewService.deleteReviewEntities(reviewService.getByObjectId(id));
+        ratingService.deleteRatings(ratingService.getByObjectId(id));
 
-    @Override
-    public void deleteByIdWithCheck(UUID id, UUID schoolAdminId) {
-        checkAdminForAccess(id, schoolAdminId);
-        reviewService.deleteReviewEntities(reviewService.getBySchoolId(id));
-        ratingService.deleteRatings(ratingService.getBySchoolId(id));
         SchoolEntity schoolEntity = schoolRepository.getById(id);
 
         if (schoolEntity.getImage() != null && !schoolEntity.getImage().equals("")){
@@ -123,6 +116,12 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         }
 
         schoolRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIdWithCheck(UUID id, UUID schoolAdminId) {
+        checkAdminForAccess(id, schoolAdminId);
+        deleteById(id);
     }
 
     @Override

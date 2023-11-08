@@ -12,11 +12,11 @@ public interface ReviewService {
 
     void saveAll(List<ReviewEntity> reviews);
 
-    PageDto<ReviewDto> getPageReviewsBySchoolId(UUID schoolId, int pageNumber, int size);
+    PageDto<ReviewDto> getPageReviewsByObjectId(UUID objectId, int pageNumber, int size);
 
-    List<ReviewEntity> getBySchoolIdAndDancerId(UUID schoolId, UUID dancerId);
+    List<ReviewEntity> getByObjectIdAndDancerId(UUID objectId, UUID dancerId);
 
-    List<ReviewEntity> getBySchoolId(UUID schoolId);
+    List<ReviewEntity> getByObjectId(UUID objectId);
 
     void deleteReviewEntities(List<ReviewEntity> reviewEntities);
 

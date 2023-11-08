@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.UUID;
 
 @Slf4j
@@ -20,14 +19,14 @@ public class RatingRestController extends BaseController{
     @Autowired
     private RatingService ratingService;
 
-    @GetMapping("/{schoolId}")
-    public GeneralRatingDto getGeneralRating(@PathVariable UUID schoolId) {
-        return ratingService.createGeneralRatingForSchool(schoolId);
+    @GetMapping("/{objectId}")
+    public GeneralRatingDto getGeneralRating(@PathVariable UUID objectId) {
+        return ratingService.createGeneralRatingForObject(objectId);
     }
 
     @GetMapping
-    public RatingDto getRating(@RequestParam(value = "schoolId") UUID schoolId, @RequestParam(value = "dancerId") UUID dancerId) {
-        return ratingService.getBySchoolIdAndDancerId(schoolId, dancerId);
+    public RatingDto getRating(@RequestParam(value = "objectId") UUID objectId, @RequestParam(value = "dancerId") UUID dancerId) {
+        return ratingService.getByObjectIdAndDancerId(objectId, dancerId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

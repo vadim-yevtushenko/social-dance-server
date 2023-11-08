@@ -20,10 +20,10 @@ public class ReviewRestController extends BaseController{
     ReviewService reviewService;
 
     @GetMapping
-    public PageDto<ReviewDto> getReviewsBySchool(@RequestParam(value = "schoolId", required = false) UUID schoolId,
+    public PageDto<ReviewDto> getReviewsBySchool(@RequestParam(value = "objectId", required = false) UUID objectId,
                                                  @RequestParam(value = "pageNumber", defaultValue = "1") int pageNumber,
                                                  @RequestParam(value = "size", defaultValue = "10") @Max(50) int size){
-        return reviewService.getPageReviewsBySchoolId(schoolId, pageNumber, size);
+        return reviewService.getPageReviewsByObjectId(objectId, pageNumber, size);
     }
 
     @PostMapping

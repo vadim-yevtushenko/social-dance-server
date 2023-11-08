@@ -2,6 +2,7 @@ package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.EventDto;
+import com.example.socialdanceserver.api.dto.GeneralRatingDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.EventDao;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
@@ -11,10 +12,12 @@ import com.example.socialdanceserver.persistence.repository.EventRepository;
 import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.EventService;
+import com.example.socialdanceserver.service.RatingService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl extends BaseService implements EventService {
@@ -25,6 +28,8 @@ public class EventServiceImpl extends BaseService implements EventService {
     @Autowired
     private DancerService dancerService;
 
+    @Autowired
+    private RatingService ratingService;
 
     @Autowired
     private SchoolRepository schoolRepository;
@@ -42,7 +47,14 @@ public class EventServiceImpl extends BaseService implements EventService {
 
         List<EventEntity> eventEntities = eventDao.load(paginationRequest);
 
-        return new PageDto<>(total, mapper.mapAsList(eventEntities, EventDto.class));
+        List<EventDto> eventDtos = mapper.mapAsList(eventEntities, EventDto.class).stream()
+                .peek(eventDto -> {
+                    GeneralRatingDto generalRatingDto = ratingService.createGeneralRatingForObject(eventDto.getId());
+                    eventDto.setGeneralRating(generalRatingDto);
+                })
+                .collect(Collectors.toList());
+
+        return new PageDto<>(total, eventDtos);
     }
 
     @Override

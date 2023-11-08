@@ -36,4 +36,6 @@ public class EventDto extends BaseDto{
 
     private List<DancerDto> dancers;
 
+    private GeneralRatingDto generalRating;
+
 }

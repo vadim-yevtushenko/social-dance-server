@@ -12,7 +12,7 @@ public class RatingDto extends BaseDto{
 
     private UUID dancerId;
 
-    private UUID schoolId;
+    private UUID objectId;
 
     private int rating;
 

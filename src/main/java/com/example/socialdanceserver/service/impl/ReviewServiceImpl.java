@@ -1,6 +1,5 @@
 package com.example.socialdanceserver.service.impl;
 
-import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.api.dto.ReviewDto;
 import com.example.socialdanceserver.api.dto.dtocontainer.DancerContainerDto;
@@ -15,7 +14,6 @@ import com.example.socialdanceserver.service.ReviewService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,7 +37,7 @@ public class ReviewServiceImpl extends BaseService implements ReviewService {
     @Override
     public ReviewDto save(ReviewDto review) {
         ReviewEntity reviewEntity = mapper.map(review, ReviewEntity.class);
-        RatingEntity ratingEntity = ratingRepository.findRatingEntityBySchoolIdAndDancerId(review.getSchoolId(), review.getDancerId());
+        RatingEntity ratingEntity = ratingRepository.findRatingEntityByObjectIdAndDancerId(review.getObjectId(), review.getDancerId());
         if (ratingEntity.getId() != null){
             reviewEntity.setRating(ratingEntity);
         }
@@ -52,8 +50,8 @@ public class ReviewServiceImpl extends BaseService implements ReviewService {
     }
 
     @Override
-    public PageDto<ReviewDto> getPageReviewsBySchoolId(UUID schoolId, int pageNumber, int size) {
-        Map<String, String> mapPredicates = reviewDao.getMapPredicates(schoolId.toString());
+    public PageDto<ReviewDto> getPageReviewsByObjectId(UUID objectId, int pageNumber, int size) {
+        Map<String, String> mapPredicates = reviewDao.getMapPredicates(objectId.toString());
         int total = reviewDao.getTotal(mapPredicates);
 
         PaginationRequest paginationRequest = buildPaginationRequest(List.of("created"), mapPredicates, pageNumber, size, total);
@@ -63,13 +61,13 @@ public class ReviewServiceImpl extends BaseService implements ReviewService {
     }
 
     @Override
-    public List<ReviewEntity> getBySchoolIdAndDancerId(UUID schoolId, UUID dancerId) {
-        return reviewRepository.findReviewEntitiesBySchoolIdAndDancerId(schoolId, dancerId);
+    public List<ReviewEntity> getByObjectIdAndDancerId(UUID objectId, UUID dancerId) {
+        return reviewRepository.findReviewEntitiesByObjectIdAndDancerId(objectId, dancerId);
     }
 
     @Override
-    public List<ReviewEntity> getBySchoolId(UUID schoolId) {
-        return reviewRepository.findReviewEntitiesBySchoolId(schoolId);
+    public List<ReviewEntity> getByObjectId(UUID objectId) {
+        return reviewRepository.findReviewEntitiesByObjectId(objectId);
     }
 
     @Override

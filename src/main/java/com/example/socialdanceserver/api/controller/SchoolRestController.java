@@ -41,7 +41,7 @@ public class SchoolRestController extends BaseController {
     }
 
     @PostMapping
-    public SchoolDto save(@RequestParam(value = "adminId", required = false) UUID adminId,
+    public SchoolDto save(@RequestParam(value = "adminId") UUID adminId,
                           @RequestBody SchoolDto school) {
         if (school.getId() != null){
             log.info("Update school with uuid: {}, admin uuid: {}", school.getId(), adminId);
@@ -54,7 +54,7 @@ public class SchoolRestController extends BaseController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id,
-                       @RequestParam(value = "adminId", required = false) UUID adminId) {
+                       @RequestParam(value = "adminId") UUID adminId) {
         log.info("Delete school with uuid: {}, admin uuid: {}", id, adminId);
 
         schoolService.deleteByIdWithCheck(id, adminId);
@@ -63,16 +63,16 @@ public class SchoolRestController extends BaseController {
     @ResponseBody
     @PostMapping(value = "/upload-image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadImage(@RequestParam(value = "id", required = false) UUID id,
-                              @RequestParam(value = "adminId", required = false) UUID adminId,
+    public String uploadImage(@RequestParam(value = "id") UUID id,
+                              @RequestParam(value = "adminId") UUID adminId,
                               @RequestPart(value = "file", required = false) MultipartFile file){
 
         return schoolService.uploadSchoolImage(id, adminId, file);
     }
 
     @DeleteMapping("/delete-image")
-    public void deleteImage(@RequestParam(value = "id", required = false) UUID id,
-                            @RequestParam(value = "adminId", required = false) UUID adminId){
+    public void deleteImage(@RequestParam(value = "id") UUID id,
+                            @RequestParam(value = "adminId") UUID adminId){
 
         schoolService.deleteSchoolImage(id, adminId);
     }

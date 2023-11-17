@@ -58,53 +58,38 @@ public class EventRestController extends BaseController {
     }
 
     @PostMapping
-    public EventDto save(@RequestBody EventDto eventDto){
+    public EventDto save(@RequestParam(value = "organizerId") UUID organizerId,
+                         @RequestBody EventDto eventDto){
         if (eventDto.getId() != null){
-            log.info("Update event with uuid: {}", eventDto.getId());
+            log.info("Update event with uuid: {}, organizer uuid: {}", eventDto.getId(), organizerId);
         } else {
-            log.info("Create new event");
+            log.info("Create new event, organizer uuid: {}", organizerId);
         }
 
-        return eventService.save(eventDto);
+        return eventService.saveWithCheck(eventDto, organizerId);
     }
 
     @DeleteMapping("/{id}")
-    void delete(@PathVariable UUID id){
-        log.info("Delete event with uuid: {}", id);
-        EventDto eventDto = eventService.getById(id);
-        validateFound(eventDto, EventDto.class, id);
-        eventService.deleteById(id);
-        if (eventDto.getImage() != null && !eventDto.getImage().equals("")) {
-            imageStorageService.deleteImage(eventDto.getImage());
-        }
+    void delete(@PathVariable UUID id,
+                @RequestParam(value = "organizerId") UUID organizerId){
+        log.info("Delete event with uuid: {}, organizer uuid: {}", id, organizerId);
+        eventService.deleteByIdWithCheck(id, organizerId);
     }
 
     @ResponseBody
     @PostMapping(value = "/upload-image",
     consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadImage(@RequestParam(value = "id", required = false) UUID id,
+    public String uploadImage(@RequestParam(value = "id") UUID id,
+                              @RequestParam(value = "organizerId") UUID organizerId,
                               @RequestPart(value = "file", required = false)MultipartFile file) {
-        if (file != null){
-            EventDto eventDto = eventService.getById(id);
-            validateFound(eventDto, EventDto.class, id);
-            if (eventDto.getImage() != null && !eventDto.getImage().isBlank()){
-                imageStorageService.deleteImage(eventDto.getImage());
-            }
-            String url = imageStorageService.uploadImage(file);
-            eventDto.setImage(url);
-            eventService.save(eventDto);
-            return url;
-        }
-        return "not uploaded";
+
+        return eventService.uploadEventImage(id, organizerId, file);
     }
 
     @DeleteMapping("/delete-image")
-    public void deleteImage(@RequestParam(value = "id",required = false) UUID id){
-        EventDto eventDto = eventService.getById(id);
-        validateFound(eventDto, EventDto.class, id);
-        imageStorageService.deleteImage(eventDto.getImage());
-        eventDto.setImage(null);
-        save(eventDto);
+    public void deleteImage(@RequestParam(value = "id") UUID id,
+                            @RequestParam(value = "organizerId") UUID organizerId){
+        eventService.deleteEventImage(id, organizerId);
     }
 
 }

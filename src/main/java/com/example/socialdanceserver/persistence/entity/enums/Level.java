@@ -13,7 +13,7 @@ public enum Level {
 
     ADVANCED("Advanced"),
 
-    TEACHER("Teacher");
+    PROFESSIONAL("Professional");
 
     private String name;
 

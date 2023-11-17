@@ -4,18 +4,19 @@ import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.GeneralRatingDto;
 import com.example.socialdanceserver.api.dto.PageDto;
+import com.example.socialdanceserver.api.exceptions.badrequest.BadRequestException;
 import com.example.socialdanceserver.persistence.dao.EventDao;
+import com.example.socialdanceserver.persistence.entity.AbstractBaseEntity;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import com.example.socialdanceserver.persistence.entity.EventEntity;
 import com.example.socialdanceserver.persistence.entity.SchoolEntity;
 import com.example.socialdanceserver.persistence.repository.EventRepository;
 import com.example.socialdanceserver.persistence.repository.SchoolRepository;
-import com.example.socialdanceserver.service.DancerService;
-import com.example.socialdanceserver.service.EventService;
-import com.example.socialdanceserver.service.RatingService;
+import com.example.socialdanceserver.service.*;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,13 @@ public class EventServiceImpl extends BaseService implements EventService {
     private RatingService ratingService;
 
     @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
     private SchoolRepository schoolRepository;
+
+    @Autowired
+    private ImageStorageService imageStorageService;
 
     @Autowired
     private EventDao eventDao;
@@ -90,8 +97,68 @@ public class EventServiceImpl extends BaseService implements EventService {
     }
 
     @Override
+    public EventDto saveWithCheck(EventDto eventDto, UUID eventOrganizerId) {
+        if (eventDto.getOrganizers().isEmpty()){
+            throw new BadRequestException("Failed to save! The school must have at least one organizer.");
+        }
+        if (eventDto.getId() != null){
+            checkOrganizerForAccess(eventDto.getId(), eventOrganizerId);
+        }
+
+        return save(eventDto);
+    }
+
+    @Override
+    public String uploadEventImage(UUID id, UUID eventOrganizerId, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new BadRequestException("Failed to upload! File is empty.");
+        }
+        EventEntity eventEntity = eventRepository.findById(id).orElseGet(EventEntity::new);
+        if (eventEntity.getImage() != null && !eventEntity.getImage().isBlank()){
+            imageStorageService.deleteImage(eventEntity.getImage());
+        }
+
+        String url = imageStorageService.uploadImage(file);
+        eventEntity.setImage(url);
+        eventRepository.save(eventEntity);
+        return url;
+    }
+
+    @Override
     public void deleteById(UUID id) {
+        EventEntity eventEntity = eventRepository.findById(id).orElseGet(EventEntity::new);
+        validateFound(eventEntity.getId(), EventEntity.class, id);
+        reviewService.deleteReviewEntities(reviewService.getByObjectId(id));
+        ratingService.deleteRatings(ratingService.getByObjectId(id));
+
+        if (eventEntity.getImage() != null && !eventEntity.getImage().equals("")) {
+            imageStorageService.deleteImage(eventEntity.getImage());
+        }
         eventRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIdWithCheck(UUID id, UUID organizerId) {
+        checkOrganizerForAccess(id, organizerId);
+        deleteById(id);
+    }
+
+    @Override
+    public void deleteEventImage(UUID id, UUID organizerId) {
+        checkOrganizerForAccess(id, organizerId);
+        EventEntity eventEntity = eventRepository.findById(id).orElseGet(EventEntity::new);
+        imageStorageService.deleteImage(eventEntity.getImage());
+        eventEntity.setImage(null);
+        eventRepository.save(eventEntity);
+    }
+
+    private void checkOrganizerForAccess(UUID id, UUID organizerId) {
+        EventEntity eventEntity = eventRepository.findById(id).orElseGet(EventEntity::new);
+        validateFound(eventEntity.getId(), EventEntity.class, id);
+        List<UUID> uuids = eventEntity.getOrganizers().stream().map(AbstractBaseEntity::getId).collect(Collectors.toList());
+        if (!uuids.contains(organizerId)) {
+            throw new BadRequestException("Failed to save! You are not an organizer of this event.");
+        }
     }
 
 }

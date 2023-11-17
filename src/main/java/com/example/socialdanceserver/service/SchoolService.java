@@ -3,7 +3,6 @@ package com.example.socialdanceserver.service;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.api.dto.SchoolDto;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.UUID;
 
 public interface SchoolService {

@@ -7,6 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Level {
 
+    UNDEFINED("Undefined"),
+
     JUNIOR("Junior"),
 
     MIDDLE("Middle"),

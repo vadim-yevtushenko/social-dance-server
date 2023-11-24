@@ -5,9 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "event")
@@ -32,10 +31,10 @@ public class EventEntity extends AbstractBaseEntity {
     private SchoolEntity schoolOrganizer;
 
     @Column(name = "date_event")
-    private ZonedDateTime dateEvent;
+    private LocalDateTime dateEvent;
 
     @Column(name = "date_finish_event")
-    private ZonedDateTime dateFinishEvent;
+    private LocalDateTime dateFinishEvent;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "contact_info_id")
@@ -71,6 +70,5 @@ public class EventEntity extends AbstractBaseEntity {
     )
     @LazyCollection(LazyCollectionOption.EXTRA)
     private List<DancerEntity> dancers;
-
 
 }

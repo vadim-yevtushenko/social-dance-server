@@ -1,4 +1,4 @@
-package com.example.socialdanceserver.config;
+package com.example.socialdanceserver.config.orika;
 
 import dev.akkinoc.spring.boot.orika.OrikaMapperFactoryConfigurer;
 import lombok.extern.java.Log;

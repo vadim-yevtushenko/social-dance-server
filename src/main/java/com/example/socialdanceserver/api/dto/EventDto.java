@@ -4,6 +4,8 @@ import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -22,9 +24,9 @@ public class EventDto extends BaseDto{
 
     private SocialNetworksDto socialNetworks;
 
-    private ZonedDateTime dateEvent;
+    private LocalDateTime dateEvent;
 
-    private ZonedDateTime dateFinishEvent;
+    private LocalDateTime dateFinishEvent;
 
     private ZonedDateTime created;
 

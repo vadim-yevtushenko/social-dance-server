@@ -59,13 +59,11 @@ public class DancerRestController extends BaseController{
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id,
-                       @RequestParam(value = "email") String email,
-                       @RequestParam(value = "password") String password){
+    public void delete(@PathVariable UUID id){
         log.info("Delete dancer with uuid: {}", id);
         DancerDto dancerDto = dancerService.getById(id);
         validateFound(dancerDto, DancerDto.class, id);
-        dancerService.deleteByIdWithCheckCredentials(id, email, password);
+        dancerService.deleteById(id);
         if (dancerDto.getImage() != null && !dancerDto.getImage().equals("")){
             imageStorageService.deleteImage(dancerDto.getImage());
         }

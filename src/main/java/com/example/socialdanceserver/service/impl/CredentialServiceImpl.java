@@ -47,6 +47,9 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
 
     @Override
     public DancerDto registration(String email, String password, DancerDto dancerDto) {
+        if (isUsedEmail(email)){
+            throw new BadCredentialsException(String.format("Dancer with address %s already exist.", email));
+        }
         if (!isValidPassword(password)) {
             throw new BadCredentialsException("The password must contain uppercase and lowercase letters and numbers.");
         }

@@ -4,7 +4,6 @@ import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.DancerDao;
-import com.example.socialdanceserver.persistence.entity.CredentialEntity;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import com.example.socialdanceserver.persistence.repository.DancerRepository;
 import com.example.socialdanceserver.service.CredentialService;
@@ -18,10 +17,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class DancerServiceImpl extends BaseService implements DancerService {
-
-    @Lazy
-    @Autowired
-    private CredentialService credentialService;
 
     @Autowired
     private DancerRepository dancerRepository;
@@ -69,13 +64,6 @@ public class DancerServiceImpl extends BaseService implements DancerService {
         dancerEntity.setEventParticipant(oldDancerEntity.getEventParticipant());
 
         return dancerEntity;
-    }
-
-    @Override
-    public void deleteByIdWithCheckCredentials(UUID id, String email, String password) {
-        CredentialEntity credentialEntity = credentialService.getByEmail(email);
-        credentialService.checkCredential(credentialEntity, password);
-        dancerRepository.deleteById(id);
     }
 
     @Override

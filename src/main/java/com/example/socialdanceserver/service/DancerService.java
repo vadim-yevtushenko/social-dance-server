@@ -3,7 +3,6 @@ package com.example.socialdanceserver.service;
 import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
-
 import java.util.UUID;
 
 public interface DancerService {
@@ -13,8 +12,6 @@ public interface DancerService {
     DancerDto getById(UUID id);
 
     DancerDto save(DancerDto dancerDto);
-
-    void deleteByIdWithCheckCredentials(UUID id, String email, String password);
 
     void deleteById(UUID id);
 

@@ -3,9 +3,6 @@ package com.example.socialdanceserver.persistence.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
 
 @Entity
@@ -23,7 +20,6 @@ public class CredentialEntity extends AbstractBaseEntity{
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "dancer_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private DancerEntity dancer;
 
 }

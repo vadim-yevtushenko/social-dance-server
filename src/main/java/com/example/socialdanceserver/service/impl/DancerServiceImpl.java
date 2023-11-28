@@ -6,11 +6,9 @@ import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.DancerDao;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import com.example.socialdanceserver.persistence.repository.DancerRepository;
-import com.example.socialdanceserver.service.CredentialService;
 import com.example.socialdanceserver.service.DancerService;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -96,6 +94,11 @@ public class DancerServiceImpl extends BaseService implements DancerService {
         dancerDto.setEventsOrganizer(mapper.mapAsList(dancerEntity.getEventsOrganizer(), IdNameContainerDto.class));
 
         return dancerDto;
+    }
+
+    @Override
+    public List<DancerEntity> getDancersByCity(String city) {
+        return dancerRepository.findDancerEntitiesByContactInfo_City(city);
     }
 
 }

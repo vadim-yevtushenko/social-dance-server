@@ -3,6 +3,7 @@ package com.example.socialdanceserver.service;
 import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
+import java.util.List;
 import java.util.UUID;
 
 public interface DancerService {
@@ -16,5 +17,7 @@ public interface DancerService {
     void deleteById(UUID id);
 
     DancerDto getDancerDtoFromEntity(DancerEntity dancerEntity);
+
+    List<DancerEntity> getDancersByCity(String city);
 
 }

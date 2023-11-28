@@ -75,6 +75,11 @@ public class ReviewServiceImpl extends BaseService implements ReviewService {
         reviewRepository.deleteAll(reviewEntities);
     }
 
+    @Override
+    public void deleteById(UUID id) {
+        reviewRepository.deleteById(id);
+    }
+
     private List<ReviewDto> getReviewDtosFromEntities(List<ReviewEntity> reviewEntities) {
         return mapper.mapAsList(reviewEntities, ReviewDto.class)
                 .stream()

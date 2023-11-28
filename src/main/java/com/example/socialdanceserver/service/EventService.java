@@ -27,4 +27,6 @@ public interface EventService {
     void deleteByIdWithCheck(UUID id, UUID organizerId);
 
     void deleteEventImage(UUID id, UUID organizerId);
+
+    void sendEmailsWhenEventCreated(EventDto event);
 }

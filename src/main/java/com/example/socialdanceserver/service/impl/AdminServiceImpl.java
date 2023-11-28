@@ -22,7 +22,7 @@ public class AdminServiceImpl extends BaseService implements AdminService {
     }
 
     private String createMessage(String email, String fullName, String message) {
-        String formattedMessage = message.replaceAll("\n", "<br>");
-        return String.format("<br>Message from %s<br>Email for answer: %s<br><br>%s", fullName, email, formattedMessage);
+        String formattedMessage = message.replaceAll("\n", "<br/>");
+        return String.format("<br/>Message from %s<br/>Email for answer: %s<br/><br/>%s", fullName, email, formattedMessage);
     }
 }

@@ -20,4 +20,6 @@ public interface ReviewService {
 
     void deleteReviewEntities(List<ReviewEntity> reviewEntities);
 
+    void deleteById(UUID id);
+
 }

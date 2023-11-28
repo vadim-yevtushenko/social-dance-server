@@ -92,4 +92,9 @@ public class EventRestController extends BaseController {
         eventService.deleteEventImage(id, organizerId);
     }
 
+    @PostMapping(value = "/notify-created")
+    void sendNotificationOfCreation(@RequestBody EventDto event) {
+        eventService.sendEmailsWhenEventCreated(event);
+    }
+
 }

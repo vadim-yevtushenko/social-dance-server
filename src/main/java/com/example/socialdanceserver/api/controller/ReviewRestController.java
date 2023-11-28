@@ -17,7 +17,7 @@ public class ReviewRestController extends BaseController{
     static final String REST_URL = "/reviews";
 
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
 
     @GetMapping
     public PageDto<ReviewDto> getReviewsBySchool(@RequestParam(value = "objectId", required = false) UUID objectId,
@@ -29,5 +29,10 @@ public class ReviewRestController extends BaseController{
     @PostMapping
     public ReviewDto save(@RequestBody ReviewDto reviewDto) {
         return reviewService.save(reviewDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        reviewService.deleteById(id);
     }
 }

@@ -23,4 +23,6 @@ public interface SchoolService {
 
     void deleteSchoolImage(UUID id, UUID schoolAdminId);
 
+    void sendEmailsWhenSchoolCreated(SchoolDto school);
+
 }

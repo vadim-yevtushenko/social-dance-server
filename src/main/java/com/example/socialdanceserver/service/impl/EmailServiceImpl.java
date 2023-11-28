@@ -27,13 +27,14 @@ public class EmailServiceImpl extends BaseService implements EmailService {
 
         helper.setSubject(subject);
 
-        InternetAddress fromAddress = new InternetAddress("socialdance214@gmail.com", "Social Dance Webapp");
+        InternetAddress fromAddress = new InternetAddress("socialdance214@gmail.com", "Social Dances Webapp");
         helper.setFrom(fromAddress);
 
         helper.setTo(convertToArray(toAddresses));
 
         if (text != null) {
-            helper.setText(text, true);
+            message.setContent(text, "text/html");
+//            helper.setText(text, true);
         } else {
             helper.setText("", false);
         }

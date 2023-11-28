@@ -77,4 +77,9 @@ public class SchoolRestController extends BaseController {
         schoolService.deleteSchoolImage(id, adminId);
     }
 
+    @PostMapping(value = "/notify-created")
+    public void sendNotificationOfCreation(@RequestBody SchoolDto school) {
+        schoolService.sendEmailsWhenSchoolCreated(school);
+    }
+
 }

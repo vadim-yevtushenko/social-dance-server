@@ -45,6 +45,7 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         return  dancerService.getDancerDtoFromEntity(credentialEntity.getDancer());
     }
 
+    @SneakyThrows
     @Override
     public DancerDto registration(String email, String password, DancerDto dancerDto) {
         if (isUsedEmail(email)){
@@ -60,6 +61,13 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         credentialEntity.setPassword(passwordEncoder.encode(password));
         credentialEntity.setDancer(dancerEntity);
         credentialEntity = credentialRepository.save(credentialEntity);
+
+        String fullName = dancerEntity.getName() + " " + dancerEntity.getLastName();
+        InternetAddress internetAddress = new InternetAddress(email, fullName);
+        String subject = "Registration in Social Dances Webapp";
+        String message = String.format("<br/><br/>Welcome to Social Dances Webapp.<br/><br/>Your login: %s,<br/>Your password: %s<br/><br/>",
+                email, password);
+        emailService.sendEmails(List.of(internetAddress), subject, message);
 
         return mapper.map(credentialEntity.getDancer(), DancerDto.class);
     }

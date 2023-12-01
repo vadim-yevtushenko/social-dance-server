@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Log
-public class OrikaConfiguration implements OrikaMapperFactoryConfigurer {
+public class OrikaConfig implements OrikaMapperFactoryConfigurer {
 
     @Override
     public void configure(MapperFactory orikaMapperFactory) {

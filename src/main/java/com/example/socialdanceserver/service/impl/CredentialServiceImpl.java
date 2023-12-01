@@ -1,6 +1,8 @@
 package com.example.socialdanceserver.service.impl;
 
 import com.example.socialdanceserver.api.dto.DancerDto;
+import com.example.socialdanceserver.api.exceptions.badrequest.BadRequestException;
+import com.example.socialdanceserver.config.security.jwt.JwtProvider;
 import com.example.socialdanceserver.persistence.entity.CredentialEntity;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import com.example.socialdanceserver.persistence.repository.CredentialRepository;
@@ -10,13 +12,16 @@ import com.example.socialdanceserver.service.EmailService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.mail.internet.InternetAddress;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,17 +42,25 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Lazy
+    @Autowired
+    private JwtProvider jwtProvider;
+
     @Override
-    public DancerDto login(String email, String password) {
+    public Map<String, Object> login(String email, String password) {
         CredentialEntity credentialEntity = credentialRepository.findCredentialEntityByEmail(email);
         checkCredential(credentialEntity, password);
 
-        return  dancerService.getDancerDtoFromEntity(credentialEntity.getDancer());
+        String token = jwtProvider.createToken(email, password);
+
+        DancerDto dancerDto = dancerService.getDancerDtoFromEntity(credentialEntity.getDancer());
+
+        return  Map.of("dancer", dancerDto, "token", token);
     }
 
     @SneakyThrows
     @Override
-    public DancerDto registration(String email, String password, DancerDto dancerDto) {
+    public Map<String, Object> registration(String email, String password, DancerDto dancerDto) {
         if (isUsedEmail(email)){
             throw new BadCredentialsException(String.format("Dancer with address %s already exist.", email));
         }
@@ -69,11 +82,12 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
                 email, password);
         emailService.sendEmails(List.of(internetAddress), subject, message);
 
-        return mapper.map(credentialEntity.getDancer(), DancerDto.class);
+        String token = jwtProvider.createToken(email, password);
+        return Map.of("dancer", mapper.map(credentialEntity.getDancer(), DancerDto.class), "token", token);
     }
 
     @Override
-    public void changePassword(String email, String newPassword, String oldPassword) {
+    public String changePassword(String email, String newPassword, String oldPassword) {
         if (!isValidPassword(newPassword)) {
             throw new BadCredentialsException("The password must contain uppercase and lowercase letters and numbers.");
         }
@@ -81,15 +95,18 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         checkCredential(credentialEntity, oldPassword);
         credentialEntity.setPassword(passwordEncoder.encode(newPassword));
         credentialRepository.save(credentialEntity);
+        return jwtProvider.createToken(email, newPassword);
     }
 
     @Override
-    public String changeEmail(String oldEmail, String newEmail) {
+    public String changeEmail(String oldEmail, String newEmail, String password) {
+        if (isUsedEmail(newEmail)){
+            throw new BadRequestException("This email is used.");
+        }
         CredentialEntity credentialEntity = credentialRepository.findCredentialEntityByEmail(oldEmail);
         credentialEntity.setEmail(newEmail);
-        credentialEntity = credentialRepository.save(credentialEntity);
 
-        return credentialEntity.getEmail();
+        return jwtProvider.createToken(newEmail, password);
     }
 
     @SneakyThrows

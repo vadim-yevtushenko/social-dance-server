@@ -2,16 +2,17 @@ package com.example.socialdanceserver.service;
 
 import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.persistence.entity.CredentialEntity;
+import java.util.Map;
 
 public interface CredentialService {
 
-    DancerDto login (String email, String password);
+    Map<String, Object> login (String email, String password);
 
-    DancerDto registration (String email, String password, DancerDto dancerDto);
+    Map<String, Object> registration (String email, String password, DancerDto dancerDto);
 
-    void changePassword(String email, String newPassword, String oldPassword);
+    String changePassword(String email, String newPassword, String oldPassword);
 
-    String changeEmail(String oldEmail, String newEmail);
+    String changeEmail(String oldEmail, String newEmail, String password);
 
     void resetPassword(String email);
 

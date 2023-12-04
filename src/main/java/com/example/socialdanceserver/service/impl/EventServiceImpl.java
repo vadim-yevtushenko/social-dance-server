@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.internet.InternetAddress;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -169,16 +168,7 @@ public class EventServiceImpl extends BaseService implements EventService {
     @Override
     public void sendEmailsWhenEventCreated(EventDto event) {
         String city = event.getContactInfo().getCity();
-        List<DancerEntity> dancers = dancerService.getDancersByCity(city);
-        List<InternetAddress> internetAddresses = dancers.stream()
-                .map(dancer -> {
-                    try {
-                        return new InternetAddress(dancer.getContactInfo().getEmail(), dancer.getName() + " " + dancer.getLastName());
-                    } catch (UnsupportedEncodingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+        List<InternetAddress> internetAddresses = dancerService.getInternetAddressesByCity(city);
         String subject = "Created new event";
         String message = String.format("<br/><br/>Created new event %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new event:<br/>" +

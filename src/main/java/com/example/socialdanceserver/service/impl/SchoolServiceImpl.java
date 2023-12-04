@@ -6,7 +6,6 @@ import com.example.socialdanceserver.api.dto.SchoolDto;
 import com.example.socialdanceserver.api.exceptions.badrequest.BadRequestException;
 import com.example.socialdanceserver.persistence.dao.SchoolDao;
 import com.example.socialdanceserver.persistence.entity.AbstractBaseEntity;
-import com.example.socialdanceserver.persistence.entity.DancerEntity;
 import com.example.socialdanceserver.persistence.entity.SchoolEntity;
 import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.service.*;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.internet.InternetAddress;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -149,16 +147,7 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
     @Override
     public void sendEmailsWhenSchoolCreated(SchoolDto school) {
         String city = school.getContactInfo().getCity();
-        List<DancerEntity> dancers = dancerService.getDancersByCity(city);
-        List<InternetAddress> internetAddresses = dancers.stream()
-                .map(dancer -> {
-                    try {
-                        return new InternetAddress(dancer.getContactInfo().getEmail(), dancer.getName() + " " + dancer.getLastName());
-                    } catch (UnsupportedEncodingException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+        List<InternetAddress> internetAddresses = dancerService.getInternetAddressesByCity(city);
         String subject = "Created new school";
         String message = String.format("<br/><br/>Created new school %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new school:<br/>" +

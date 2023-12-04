@@ -59,20 +59,17 @@ public class DancerRestController extends BaseController{
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable UUID id,
+                       @RequestParam(value = "password") String password){
         log.info("Delete dancer with uuid: {}", id);
-        DancerDto dancerDto = dancerService.getById(id);
-        validateFound(dancerDto, DancerDto.class, id);
-        dancerService.deleteById(id);
-        if (dancerDto.getImage() != null && !dancerDto.getImage().equals("")){
-            imageStorageService.deleteImage(dancerDto.getImage());
-        }
+
+        dancerService.deleteById(id, password);
     }
 
     @ResponseBody
     @PostMapping(value = "/upload-image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String uploadFile(@RequestParam(value = "id", required = false) UUID id,
+    public String uploadFile(@RequestParam(value = "id") UUID id,
                              @RequestPart(value = "file", required = false) MultipartFile file) {
 
         if (file != null) {

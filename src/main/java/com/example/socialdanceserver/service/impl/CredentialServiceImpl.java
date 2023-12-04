@@ -12,9 +12,9 @@ import com.example.socialdanceserver.service.EmailService;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ import javax.mail.internet.InternetAddress;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +31,13 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
 
     private static final String PASSWORD_VALIDATION_REGEX = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,25}$";
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Autowired
     private CredentialRepository credentialRepository;
 
+    @Lazy
     @Autowired
     private DancerService dancerService;
 
@@ -78,8 +83,10 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         String fullName = dancerEntity.getName() + " " + dancerEntity.getLastName();
         InternetAddress internetAddress = new InternetAddress(email, fullName);
         String subject = "Registration in Social Dances Webapp";
-        String message = String.format("<br/><br/>Welcome to Social Dances Webapp.<br/><br/>Your login: %s,<br/>Your password: %s<br/><br/>",
-                email, password);
+        String message = String.format("<br/><br/>Welcome to Social Dances Webapp.<br/>" +
+                        "<br/>Your login: %s,<br/>Your password: %s<br/>" +
+                        "%s<br/><br/>",
+                email, password, frontendUrl);
         emailService.sendEmails(List.of(internetAddress), subject, message);
 
         String token = jwtProvider.createToken(email, password);
@@ -141,6 +148,14 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
             }
         } else {
             throw new AuthenticationCredentialsNotFoundException("No credentials found to use.");
+        }
+    }
+
+    @Override
+    public void checkPassword(UUID dancerId, String password) {
+        String encodedPassword = credentialRepository.fetchPasswordByDancerId(dancerId);
+        if (!passwordEncoder.matches(password, encodedPassword)) {
+            throw new BadCredentialsException("Current password is wrong.");
         }
     }
 

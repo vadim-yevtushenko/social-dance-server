@@ -5,11 +5,15 @@ import com.example.socialdanceserver.api.dto.dtocontainer.IdNameContainerDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.persistence.dao.DancerDao;
 import com.example.socialdanceserver.persistence.entity.DancerEntity;
+import com.example.socialdanceserver.persistence.entity.SchoolEntity;
 import com.example.socialdanceserver.persistence.repository.DancerRepository;
-import com.example.socialdanceserver.service.DancerService;
+import com.example.socialdanceserver.service.*;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,6 +22,20 @@ public class DancerServiceImpl extends BaseService implements DancerService {
 
     @Autowired
     private DancerRepository dancerRepository;
+
+    @Autowired
+    private CredentialService credentialService;
+
+    @Lazy
+    @Autowired
+    private SchoolService schoolService;
+
+    @Lazy
+    @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private ImageStorageService imageStorageService;
 
     @Autowired
     private DancerDao dancerDao;
@@ -53,7 +71,7 @@ public class DancerServiceImpl extends BaseService implements DancerService {
         return mapper.map(dancerRepository.save(dancerEntity), DancerDto.class);
     }
 
-    private DancerEntity getDancerEntityFromDto(DancerEntity dancerEntity, DancerEntity oldDancerEntity) {
+    private void getDancerEntityFromDto(DancerEntity dancerEntity, DancerEntity oldDancerEntity) {
 
         dancerEntity.setEventsOrganizer(oldDancerEntity.getEventsOrganizer());
         dancerEntity.setSchoolAdministrator(oldDancerEntity.getSchoolAdministrator());
@@ -61,11 +79,31 @@ public class DancerServiceImpl extends BaseService implements DancerService {
         dancerEntity.setSchoolStudent(oldDancerEntity.getSchoolStudent());
         dancerEntity.setEventParticipant(oldDancerEntity.getEventParticipant());
 
-        return dancerEntity;
     }
 
     @Override
-    public void deleteById(UUID id) {
+    public void deleteById(UUID id, String password) {
+        credentialService.checkPassword(id, password);
+
+        DancerEntity dancer = dancerRepository.findById(id).orElse(new DancerEntity());
+        validateFound(dancer.getId(), UUID.class, id);
+        if (dancer.getSchoolAdministrator() != null) {
+            SchoolEntity school = dancer.getSchoolAdministrator();
+            if (school.getAdministrators().size() == 1) {
+                schoolService.deleteById(school.getId());
+            }
+        }
+        if (dancer.getEventsOrganizer() != null) {
+            dancer.getEventsOrganizer().forEach(event -> {
+                if (event.getOrganizers().size() == 1) {
+                    eventService.deleteById(event.getId());
+                }
+            });
+        }
+        if (dancer.getImage() != null && !dancer.getImage().equals("")){
+            imageStorageService.deleteImage(dancer.getImage());
+        }
+
         dancerRepository.deleteById(id);
     }
 
@@ -99,6 +137,20 @@ public class DancerServiceImpl extends BaseService implements DancerService {
     @Override
     public List<DancerEntity> getDancersByCity(String city) {
         return dancerRepository.findDancerEntitiesByContactInfo_City(city);
+    }
+
+    @Override
+    public List<InternetAddress> getInternetAddressesByCity(String city) {
+        List<String> emails = dancerRepository.fetchEmailsByCity(city);
+        return emails.stream()
+                .map(email -> {
+                    try {
+                        return new InternetAddress(email);
+                    } catch (AddressException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
 }

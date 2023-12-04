@@ -3,6 +3,7 @@ package com.example.socialdanceserver.service;
 import com.example.socialdanceserver.api.dto.DancerDto;
 import com.example.socialdanceserver.persistence.entity.CredentialEntity;
 import java.util.Map;
+import java.util.UUID;
 
 public interface CredentialService {
 
@@ -19,5 +20,7 @@ public interface CredentialService {
     CredentialEntity getByEmail(String email);
 
     void checkCredential(CredentialEntity credential, String password);
+
+    void checkPassword(UUID dancerId, String password);
 
 }

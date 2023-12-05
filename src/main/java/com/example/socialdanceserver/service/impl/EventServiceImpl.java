@@ -175,7 +175,7 @@ public class EventServiceImpl extends BaseService implements EventService {
         String subject = "Created new event";
         String message = String.format("<br/><br/>Created new event %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new event:<br/>" +
-                "%s/%s<br/><br/>", event.getName(), city, frontendUrl, event.getId());
+                "%s/events/%s<br/><br/>", event.getName(), city, frontendUrl, event.getId());
         emailService.sendEmails(internetAddresses, subject, message);
     }
 

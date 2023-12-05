@@ -153,9 +153,11 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         String city = school.getContactInfo().getCity();
         List<InternetAddress> internetAddresses = dancerService.getInternetAddressesByCity(city);
         String subject = "Created new school";
+        String unsubscribeMessage = String.format("If you want to unsubscribe from notifications remove the city from your profile.<br/>" +
+                "%s/profile<br/><br/>", frontendUrl);
         String message = String.format("<br/><br/>Created new school %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new school:<br/>" +
-                "%s/schools/%s<br/><br/>", school.getName(), city, frontendUrl, school.getId());
+                "%s/schools/%s<br/><br/>%s", school.getName(), city, frontendUrl, school.getId(), unsubscribeMessage);
         emailService.sendEmails(internetAddresses, subject, message);
     }
 

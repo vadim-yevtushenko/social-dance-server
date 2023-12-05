@@ -33,7 +33,7 @@ public class EmailServiceImpl extends BaseService implements EmailService {
         helper.setTo(convertToArray(toAddresses));
 
         if (text != null) {
-            message.setContent(text, "text/html");
+            message.setContent(text, "text/html; charset=utf-8");
 //            helper.setText(text, true);
         } else {
             helper.setText("", false);

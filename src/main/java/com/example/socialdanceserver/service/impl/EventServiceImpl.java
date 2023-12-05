@@ -173,9 +173,11 @@ public class EventServiceImpl extends BaseService implements EventService {
         String city = event.getContactInfo().getCity();
         List<InternetAddress> internetAddresses = dancerService.getInternetAddressesByCity(city);
         String subject = "Created new event";
+        String unsubscribeMessage = String.format("If you want to unsubscribe from notifications remove the city from your profile.<br/>" +
+                "%s/profile<br/><br/>", frontendUrl);
         String message = String.format("<br/><br/>Created new event %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new event:<br/>" +
-                "%s/events/%s<br/><br/>", event.getName(), city, frontendUrl, event.getId());
+                "%s/events/%s<br/><br/>%s", event.getName(), city, frontendUrl, event.getId(), unsubscribeMessage);
         emailService.sendEmails(internetAddresses, subject, message);
     }
 

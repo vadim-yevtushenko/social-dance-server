@@ -15,6 +15,7 @@ import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.service.*;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.internet.InternetAddress;
@@ -23,6 +24,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl extends BaseService implements EventService {
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     @Autowired
     private EventRepository eventRepository;
@@ -64,7 +68,6 @@ public class EventServiceImpl extends BaseService implements EventService {
                     eventDto.setGeneralRating(generalRatingDto);
                 })
                 .collect(Collectors.toList());
-
         return new PageDto<>(total, eventDtos);
     }
 
@@ -172,7 +175,7 @@ public class EventServiceImpl extends BaseService implements EventService {
         String subject = "Created new event";
         String message = String.format("<br/><br/>Created new event %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new event:<br/>" +
-                "http://localhost:3000/events/%s<br/><br/>", event.getName(), city, event.getId());
+                "%s/%s<br/><br/>", event.getName(), city, frontendUrl, event.getId());
         emailService.sendEmails(internetAddresses, subject, message);
     }
 

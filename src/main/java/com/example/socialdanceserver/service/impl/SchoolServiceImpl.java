@@ -11,6 +11,7 @@ import com.example.socialdanceserver.persistence.repository.SchoolRepository;
 import com.example.socialdanceserver.service.*;
 import com.example.socialdanceserver.service.model.PaginationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.mail.internet.InternetAddress;
@@ -22,6 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class SchoolServiceImpl extends BaseService implements SchoolService {
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     @Autowired
     private SchoolRepository schoolRepository;
@@ -151,7 +155,7 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         String subject = "Created new school";
         String message = String.format("<br/><br/>Created new school %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new school:<br/>" +
-                "http://localhost:3000/schools/%s<br/><br/>", school.getName(), city, school.getId());
+                "%s/%s<br/><br/>", school.getName(), city, frontendUrl, school.getId());
         emailService.sendEmails(internetAddresses, subject, message);
     }
 

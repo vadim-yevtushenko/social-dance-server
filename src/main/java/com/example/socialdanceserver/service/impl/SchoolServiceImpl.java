@@ -155,7 +155,7 @@ public class SchoolServiceImpl extends BaseService implements SchoolService {
         String subject = "Created new school";
         String message = String.format("<br/><br/>Created new school %s in %s city.<br/><br/>" +
                 "You can follow the link to view the new school:<br/>" +
-                "%s/%s<br/><br/>", school.getName(), city, frontendUrl, school.getId());
+                "%s/schools/%s<br/><br/>", school.getName(), city, frontendUrl, school.getId());
         emailService.sendEmails(internetAddresses, subject, message);
     }
 

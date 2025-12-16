@@ -3,7 +3,6 @@ package com.example.socialdanceserver.api.controller;
 import com.example.socialdanceserver.api.dto.EventDto;
 import com.example.socialdanceserver.api.dto.PageDto;
 import com.example.socialdanceserver.service.EventService;
-import com.example.socialdanceserver.service.ImageStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,9 +18,6 @@ import java.util.UUID;
 public class EventRestController extends BaseController {
 
     static final String REST_URL = "/events";
-
-    @Autowired
-    private ImageStorageService imageStorageService;
 
     @Autowired
     private EventService eventService;

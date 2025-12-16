@@ -50,7 +50,7 @@ public class SchoolControllerTest extends BaseTest {
     }
 
     @Test
-    public void getPageEventsTest() throws Exception {
+    public void getPageSchoolsTest() throws Exception {
         List<SchoolDto> schools= testDataService.createTestSchools();
         PageDto<SchoolDto> schoolPageDto = new PageDto<>(schools.size(), schools);
 
@@ -83,7 +83,7 @@ public class SchoolControllerTest extends BaseTest {
     }
 
     @Test
-    public void createEvent() throws Exception {
+    public void createSchool() throws Exception {
         SchoolDto schoolDto= testDataService.createTestSchool();
 
         Mockito.when(schoolService.save(any(SchoolDto.class)))

@@ -90,7 +90,10 @@ public class CredentialServiceImpl extends BaseService implements CredentialServ
         emailService.sendEmails(List.of(internetAddress), subject, message);
 
         String token = jwtProvider.createToken(email, password);
-        return Map.of("dancer", mapper.map(credentialEntity.getDancer(), DancerDto.class), "token", token);
+        return Map.of(
+                "dancer", mapper.map(credentialEntity.getDancer(), DancerDto.class),
+                "token", token
+        );
     }
 
     @Override
